@@ -1,0 +1,387 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{69FD593F-4C80-4483-866C-84C851039F11}</ProjectGuid>
+			<ProjectType>CppVCLApplication</ProjectType>
+			<MainSource>Almas3.cpp</MainSource>
+			<Config Condition="'$(Config)'==''">Release</Config>
+			<ProjectVersion>12.2</ProjectVersion>
+			<Base>True</Base>
+			<Platform>Win32</Platform>
+			<AppType>Application</AppType>
+			<FrameworkType>VCL</FrameworkType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<BCC_AutoDepCheck>false</BCC_AutoDepCheck>
+			<BCC_PCHInject>pch1.h</BCC_PCHInject>
+			<BCC_waus>false</BCC_waus>
+			<BCC_wpar>false</BCC_wpar>
+			<LinkPackageStatics>rtl.lib;vcl.lib;vclx.lib;dbrtl.lib;vcldb.lib;bdertl.lib;vcldbx.lib;Tee.lib</LinkPackageStatics>
+			<TASM_Defines>Almas100;$(TASM_Defines)</TASM_Defines>
+			<BRCC_Defines>Almas100;$(BRCC_Defines)</BRCC_Defines>
+			<ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
+			<DCC_UnitSearchPath>.\;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<ILINK_AppType>Windows</ILINK_AppType>
+			<PackageImports>rtl.bpi;vcl.bpi;vclx.bpi;bcbsmp.bpi;dbrtl.bpi;vcldb.bpi;adortl.bpi;ibsmp.bpi;bdertl.bpi;vcldbx.bpi;teeui.bpi;teedb.bpi;tee.bpi;dss.bpi;ibxpress.bpi;dsnap.bpi;vclie.bpi;inetdb.bpi;inet.bpi;webdsnap.bpi;bcbie.bpi;bcboffice2k.bpi</PackageImports>
+			<BCC_PCHCache>true</BCC_PCHCache>
+			<BCC_IncludePath>$(BDS)\projects;$(BDS)\include;$(BDS)\include\vcl;$(BDS)\include\dinkumware;$(BCC_IncludePath)</BCC_IncludePath>
+			<BRCC_IncludePath>$(BDS)\projects;$(BDS)\include;$(BDS)\include\vcl;$(BDS)\include\dinkumware;$(BRCC_IncludePath)</BRCC_IncludePath>
+			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
+			<DCC_IncludePath>.\;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_IncludePath)</DCC_IncludePath>
+			<TASM_IncludePath>$(BDS)\projects;$(BDS)\include;$(BDS)\include\vcl;$(BDS)\include\dinkumware;$(TASM_IncludePath)</TASM_IncludePath>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
+			<BCC_DisableOptimizations>true</BCC_DisableOptimizations>
+			<FinalOutputDir>.</FinalOutputDir>
+			<OutputExt>exe</OutputExt>
+			<TASM_AdditionalSwitches> /w2</TASM_AdditionalSwitches>
+			<AllPackageLibs>rtl.lib;vcl.lib;vclx.lib;dbrtl.lib;vcldb.lib;bdertl.lib;vcldbx.lib;Tee.lib</AllPackageLibs>
+			<BCC_GenerateMultithreaded>true</BCC_GenerateMultithreaded>
+			<DCC_AdditionalSwitches> -M</DCC_AdditionalSwitches>
+			<ILINK_LibraryPath>$(BDS)\projects;$(BDS)\lib\obj;$(BDS)\lib;$(BDS)\lib\psdk;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<BCC_UserSuppliedOptions> -a4 -Vx -r- -k -Ve</BCC_UserSuppliedOptions>
+			<BCC_Defines>NO_STRICT;$(BCC_Defines)</BCC_Defines>
+			<BCC_InlineFunctionExpansion>false</BCC_InlineFunctionExpansion>
+			<BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
+			<Multithreaded>true</Multithreaded>
+		</PropertyGroup>
+		<Import Project="op100.optset" Condition="'$(Cfg_1)'!='' And Exists('op100.optset')"/>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<BCC_UserSuppliedOptions> -a4 -Vx -r- -k -Ve -k</BCC_UserSuppliedOptions>
+			<ILINK_LibraryPath>$(BDS)\lib\debug;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+			<IntermediateOutputDir>Debug_Build</IntermediateOutputDir>
+			<DCC_Define>DEBUG;$(DCC_Define);$(DCC_Define)</DCC_Define>
+			<ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
+			<TASM_Debugging>Full</TASM_Debugging>
+			<DCC_AdditionalSwitches> -M -V</DCC_AdditionalSwitches>
+			<TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+			<CfgDependentOn>op100.optset</CfgDependentOn>
+		</PropertyGroup>
+		<Import Project="op111.optset" Condition="'$(Cfg_2)'!='' And Exists('op111.optset')"/>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+			<BCC_UserSuppliedOptions> -a4 -Vx -r- -k -Ve -r</BCC_UserSuppliedOptions>
+			<BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
+			<IntermediateOutputDir>Release_Build</IntermediateOutputDir>
+			<DCC_AdditionalSwitches> -M -$O+</DCC_AdditionalSwitches>
+			<TASM_Debugging>None</TASM_Debugging>
+			<ILINK_LibraryPath>$(BDS)\lib\release;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<BCC_InlineFunctionExpansion>true</BCC_InlineFunctionExpansion>
+			<CfgDependentOn>op111.optset</CfgDependentOn>
+		</PropertyGroup>
+		<ItemGroup>
+			<CppCompile Include="ProbPoviderUnit.cpp">
+				<BuildOrder>62</BuildOrder>
+				<DependentOn>ProbPoviderUnit.h</DependentOn>
+				<BuildOrder>6</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ProbalityUnit.cpp">
+				<BuildOrder>41</BuildOrder>
+				<Form>ProbalityForm</Form>
+				<DependentOn>ProbalityUnit.h</DependentOn>
+				<BuildOrder>2</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="PropertyUnit.cpp">
+				<BuildOrder>4</BuildOrder>
+				<Form>PropertyForm</Form>
+				<DependentOn>PropertyUnit.h</DependentOn>
+				<BuildOrder>38</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ProbSetModelUnit.cpp">
+				<BuildOrder>7</BuildOrder>
+				<Form>ProbSetModelForm</Form>
+				<DependentOn>ProbSetModelUnit.h</DependentOn>
+				<BuildOrder>65</BuildOrder>
+			</CppCompile>
+			<None Include="ModelSupport_Almas3\default.txaPackage"/>
+			<CppCompile Include="MillersUnit.cpp">
+				<BuildOrder>50</BuildOrder>
+				<Form>MillersForm</Form>
+				<DependentOn>MillersUnit.h</DependentOn>
+				<BuildOrder>5</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="PictUnit.cpp">
+				<BuildOrder>35</BuildOrder>
+				<Form>PictuteForm</Form>
+				<DependentOn>PictUnit.h</DependentOn>
+				<BuildOrder>3</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Monitoring.cpp">
+				<BuildOrder>8</BuildOrder>
+				<Form>MonitoringForm</Form>
+				<DependentOn>Monitoring.h</DependentOn>
+				<BuildOrder>13</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas1ProbSetUnit.cpp">
+				<BuildOrder>8</BuildOrder>
+				<DependentOn>Almas1ProbSetUnit.h</DependentOn>
+				<BuildOrder>59</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="DefectUnit.cpp">
+				<Form>DefectForm</Form>
+				<DependentOn>DefectUnit.h</DependentOn>
+				<BuildOrder>32</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas6ProbSetUnit.cpp">
+				<DependentOn>Almas6ProbSetUnit.h</DependentOn>
+				<BuildOrder>31</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MaskEditUnit.cpp">
+				<Form>MaskEditForm</Form>
+				<DependentOn>MaskEditUnit.h</DependentOn>
+				<BuildOrder>34</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="DefectEditUnit.cpp">
+				<Form>DefectEditForm</Form>
+				<DependentOn>DefectEditUnit.h</DependentOn>
+				<BuildOrder>33</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="SurfaceUnit.cpp">
+				<BuildOrder>26</BuildOrder>
+				<Form>SurfaceForm</Form>
+				<DependentOn>SurfaceUnit.h</DependentOn>
+				<BuildOrder>19</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ScreenCopyUnit.cpp">
+				<BuildOrder>44</BuildOrder>
+				<Form>ScreenCopyForm</Form>
+				<DependentOn>ScreenCopyUnit.h</DependentOn>
+				<BuildOrder>0</BuildOrder>
+			</CppCompile>
+			<None Include="ModelSupport_Almas3\default.txvpck"/>
+			<CppCompile Include="Almas5ProbSetUnit.cpp">
+				<DependentOn>Almas5ProbSetUnit.h</DependentOn>
+				<BuildOrder>27</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Matrix.cpp">
+				<BuildOrder>17</BuildOrder>
+				<BuildOrder>16</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas2ProbSetUnit.cpp">
+				<DependentOn>Almas2ProbSetUnit.h</DependentOn>
+				<BuildOrder>23</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas3ProbSetUnit.cpp">
+				<DependentOn>Almas3ProbSetUnit.h</DependentOn>
+				<BuildOrder>24</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="KeysControl.cpp">
+				<BuildOrder>14</BuildOrder>
+				<DependentOn>KeysControl.h</DependentOn>
+				<BuildOrder>12</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas3.cpp">
+				<BuildOrder>2</BuildOrder>
+				<BuildOrder>14</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="GlobalUnit.cpp">
+				<DependentOn>GlobalUnit.h</DependentOn>
+				<BuildOrder>22</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Main.cpp">
+				<Form>MainForm</Form>
+				<DependentOn>Main.h</DependentOn>
+				<BuildOrder>20</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="DFT.cpp">
+				<BuildOrder>47</BuildOrder>
+				<DependentOn>DFT.h</DependentOn>
+				<BuildOrder>1</BuildOrder>
+			</CppCompile>
+			<ResFiles Include="Almas3.res">
+				<BuildOrder>5</BuildOrder>
+				<BuildOrder>15</BuildOrder>
+			</ResFiles>
+			<CppCompile Include="GLDrow.cpp">
+				<DependentOn>GLDrow.h</DependentOn>
+				<BuildOrder>11</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas4ProbSetUnit.cpp">
+				<DependentOn>Almas4ProbSetUnit.h</DependentOn>
+				<BuildOrder>26</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Dissolution.cpp">
+				<BuildOrder>29</BuildOrder>
+				<DependentOn>Dissolution.h</DependentOn>
+				<BuildOrder>17</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MaskUnit.cpp">
+				<BuildOrder>32</BuildOrder>
+				<Form>MaskForm</Form>
+				<DependentOn>MaskUnit.h</DependentOn>
+				<BuildOrder>18</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="InfoUnit.cpp">
+				<BuildOrder>23</BuildOrder>
+				<Form>InfoForm</Form>
+				<DependentOn>InfoUnit.h</DependentOn>
+				<BuildOrder>21</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="QuantityByGroupeUnit.cpp">
+				<Form>QuantityByGroupeForm</Form>
+				<DependentOn>QuantityByGroupeUnit.h</DependentOn>
+				<BuildOrder>30</BuildOrder>
+			</CppCompile>
+			<None Include="pch1.h">
+				<BuildOrder>30</BuildOrder>
+			</None>
+			<CppCompile Include="BaseProbSetUnit.cpp">
+				<BuildOrder>56</BuildOrder>
+				<DependentOn>BaseProbSetUnit.h</DependentOn>
+				<BuildOrder>10</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="DistributionUnit.cpp">
+				<Form>DistributionForm</Form>
+				<DependentOn>DistributionUnit.h</DependentOn>
+				<BuildOrder>28</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ProgressUnit.cpp">
+				<Form>ProgressForm</Form>
+				<DependentOn>ProgressUnit.h</DependentOn>
+				<BuildOrder>35</BuildOrder>
+			</CppCompile>
+			<FormResources Include="ProbalityUnit.dfm"/>
+			<FormResources Include="PropertyUnit.dfm"/>
+			<FormResources Include="ProbSetModelUnit.dfm"/>
+			<FormResources Include="MillersUnit.dfm"/>
+			<FormResources Include="PictUnit.dfm"/>
+			<FormResources Include="Monitoring.dfm"/>
+			<FormResources Include="DefectUnit.dfm"/>
+			<FormResources Include="MaskEditUnit.dfm"/>
+			<FormResources Include="DefectEditUnit.dfm"/>
+			<FormResources Include="SurfaceUnit.dfm"/>
+			<FormResources Include="ScreenCopyUnit.dfm"/>
+			<FormResources Include="Main.dfm"/>
+			<FormResources Include="MaskUnit.dfm"/>
+			<FormResources Include="InfoUnit.dfm"/>
+			<FormResources Include="QuantityByGroupeUnit.dfm"/>
+			<FormResources Include="DistributionUnit.dfm"/>
+			<FormResources Include="ProgressUnit.dfm"/>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+				<DependentOn>op111.optset</DependentOn>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+				<DependentOn>op100.optset</DependentOn>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Cpp.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>CPlusPlusBuilder.Personality.12</Borland.Personality>
+			<Borland.ProjectType>CppVCLApplication</Borland.ProjectType>
+			<BorlandProject>
+				<CPlusPlusBuilder.Personality>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1049</VersionInfo>
+						<VersionInfo Name="CodePage">1251</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+					</VersionInfoKeys>
+					<ExcludedPackages>
+						<ExcludedPackages Name="c:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL">Borland Web Wizard Package</ExcludedPackages>
+					</ExcludedPackages>
+					<HistoryLists_hlIncludePath>
+						<HistoryLists_hlIncludePath Name="Count">3</HistoryLists_hlIncludePath>
+						<HistoryLists_hlIncludePath Name="Item0">$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl</HistoryLists_hlIncludePath>
+						<HistoryLists_hlIncludePath Name="Item1">C:\Nscom\C++Projects\Almas;$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl</HistoryLists_hlIncludePath>
+						<HistoryLists_hlIncludePath Name="Item2">C:\Nscom\C++Projects\Almas;.;.\back;$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl</HistoryLists_hlIncludePath>
+					</HistoryLists_hlIncludePath>
+					<HistoryLists_hlLibraryPath>
+						<HistoryLists_hlLibraryPath Name="Count">3</HistoryLists_hlLibraryPath>
+						<HistoryLists_hlLibraryPath Name="Item0">$(BCB)\projects;$(BCB)\lib\obj;$(BCB)\lib</HistoryLists_hlLibraryPath>
+						<HistoryLists_hlLibraryPath Name="Item1">C:\Nscom\C++Projects\Almas;$(BCB)\projects;$(BCB)\lib\obj;$(BCB)\lib</HistoryLists_hlLibraryPath>
+						<HistoryLists_hlLibraryPath Name="Item2">C:\Nscom\C++Projects\Almas;.;.\back;$(BCB)\projects;$(BCB)\lib\obj;$(BCB)\lib</HistoryLists_hlLibraryPath>
+					</HistoryLists_hlLibraryPath>
+					<HistoryLists_hlConditionals>
+						<HistoryLists_hlConditionals Name="Count">3</HistoryLists_hlConditionals>
+						<HistoryLists_hlConditionals Name="Item0">Almas100</HistoryLists_hlConditionals>
+						<HistoryLists_hlConditionals Name="Item1">Almas111</HistoryLists_hlConditionals>
+						<HistoryLists_hlConditionals Name="Item2">Almas110</HistoryLists_hlConditionals>
+					</HistoryLists_hlConditionals>
+					<HistoryLists_hlUnitAliases>
+						<HistoryLists_hlUnitAliases Name="Count">1</HistoryLists_hlUnitAliases>
+						<HistoryLists_hlUnitAliases Name="Item0">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE</HistoryLists_hlUnitAliases>
+					</HistoryLists_hlUnitAliases>
+					<Debugging>
+						<Debugging Name="DebugSourceDirs"/>
+					</Debugging>
+					<Parameters>
+						<Parameters Name="RemoteHost"/>
+						<Parameters Name="RemotePath"/>
+						<Parameters Name="RemoteLauncher"/>
+						<Parameters Name="RemoteCWD"/>
+						<Parameters Name="RemoteDebug">False</Parameters>
+						<Parameters Name="RemoteParams"/>
+						<Parameters Name="UseRemoteLauncher">False</Parameters>
+						<Parameters Name="RunParams"/>
+						<Parameters Name="Launcher"/>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="DebugCWD"/>
+						<Parameters Name="HostApplication"/>
+						<Parameters Name="Debug Symbols Search Path"/>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<Compiler>
+						<Compiler Name="ShowInfoMsgs">0</Compiler>
+						<Compiler Name="LinkDebugVcl">1</Compiler>
+						<Compiler Name="LinkCGLIB">0</Compiler>
+					</Compiler>
+					<CORBA>
+						<CORBA Name="AddServerUnit">1</CORBA>
+						<CORBA Name="AddClientUnit">1</CORBA>
+						<CORBA Name="PrecompiledHeaders">1</CORBA>
+					</CORBA>
+					<ProjectProperties>
+						<ProjectProperties Name="AutoShowDeps">False</ProjectProperties>
+						<ProjectProperties Name="ManagePaths">False</ProjectProperties>
+						<ProjectProperties Name="VerifyPackages">False</ProjectProperties>
+					</ProjectProperties>
+					<Source>
+						<Source Name="MainSource">Almas3.cpp</Source>
+					</Source>
+					<Excluded_Packages>
+						<Excluded_Packages Name="$(BDS)\bin\bcboffice2k120.bpl">CodeGear C++Builder Office 2000 Servers Package</Excluded_Packages>
+						<Excluded_Packages Name="$(BDS)\bin\bcbofficexp120.bpl">CodeGear C++Builder Office XP Servers Package</Excluded_Packages>
+					</Excluded_Packages>
+				</CPlusPlusBuilder.Personality>
+				<Platforms>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+				<ModelSupport>True</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="Almas3.exe"/>
+    <OBJFILES value="Almas3.obj Monitoring.obj GLDrow.obj KeysControl.obj Matrix.obj Main.obj 
+      InfoUnit.obj SurfaceUnit.obj Dissolution.obj MaskUnit.obj PictUnit.obj 
+      PropertyUnit.obj ProbalityUnit.obj ScreenCopyUnit.obj DFT.obj 
+      MillersUnit.obj QuantityByGroupeUnit.obj BaseProbSetUnit.obj 
+      Almas1ProbSetUnit.obj ProbPoviderUnit.obj ProbSetModelUnit.obj"/>
+    <RESFILES value="Almas3.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) Monitoring.dfm Main.dfm InfoUnit.dfm SurfaceUnit.dfm 
+      MaskUnit.dfm PictUnit.dfm PropertyUnit.dfm ProbalityUnit.dfm 
+      ScreenCopyUnit.dfm MillersUnit.dfm QuantityByGroupeUnit.dfm 
+      ProbSetModelUnit.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value="vcldbx.lib bdertl.lib vcldb.lib dbrtl.lib vclx.lib vcl.lib rtl.lib"/>
+    <SPARELIBS value="rtl.lib vcl.lib vclx.lib dbrtl.lib vcldb.lib bdertl.lib vcldbx.lib"/>
+    <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi dbrtl.bpi vcldb.bpi adortl.bpi 
+      ibsmp.bpi bdertl.bpi vcldbx.bpi qrpt.bpi teeui.bpi teedb.bpi tee.bpi 
+      dss.bpi teeqr.bpi ibxpress.bpi dsnap.bpi vclie.bpi inetdb.bpi inet.bpi 
+      nmfast.bpi webdsnap.bpi bcbie.bpi dclocx.bpi bcb2kaxserver.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="Almas100"/>
+    <SYSDEFINES value="NO_STRICT"/>
+    <MAINSOURCE value="Almas3.cpp"/>
+    <INCLUDEPATH value="$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="$(BCB)\projects;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par -w-8027 -w-8026"/>
+    <WARNOPTSTR value=""/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I$(BCB)\projects -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp 
+      -DAlmas100 -boa"/>
+    <CFLAG1 value="-Od -H=c:\PROGRA~1\borland\CBUILD~1\lib\vcld.csm -Hc -Vx -Ve -X- -r- -a4 
+      -b- -k -y -v -vi- -c -tWM"/>
+    <CFLAG2 value=""/>
+    <CFLAG3 value=""/>
+    <PFLAGS value="-AWinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE 
+      -$YD -$W -$O- -$A8 -v -JPHNV -M -JPHNE"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zd"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -v"/>
+    <IFLAGS value=""/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="Almas3.cpp" FORMNAME="" UNITNAME="Almas3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Almas3.res" FORMNAME="" UNITNAME="Almas3" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Monitoring.cpp" FORMNAME="MonitoringForm" UNITNAME="Monitoring" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="GLDrow.cpp" FORMNAME="" UNITNAME="GLDrow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="KeysControl.cpp" FORMNAME="" UNITNAME="KeysControl" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Matrix.cpp" FORMNAME="" UNITNAME="Matrix" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Main.cpp" FORMNAME="MainForm" UNITNAME="Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="InfoUnit.cpp" FORMNAME="InfoForm" UNITNAME="InfoUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SurfaceUnit.cpp" FORMNAME="SurfaceForm" UNITNAME="SurfaceUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dissolution.cpp" FORMNAME="" UNITNAME="Dissolution" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="MaskUnit.cpp" FORMNAME="MaskForm" UNITNAME="MaskUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PictUnit.cpp" FORMNAME="PictuteForm" UNITNAME="PictUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertyUnit.cpp" FORMNAME="PropertyForm" UNITNAME="PropertyUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ProbalityUnit.cpp" FORMNAME="ProbalityForm" UNITNAME="ProbalityUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ScreenCopyUnit.cpp" FORMNAME="ScreenCopyForm" UNITNAME="ScreenCopyUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DFT.cpp" FORMNAME="" UNITNAME="DFT" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="MillersUnit.cpp" FORMNAME="MillersForm" UNITNAME="MillersUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="QuantityByGroupeUnit.cpp" FORMNAME="QuantityByGroupeForm" UNITNAME="QuantityByGroupeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="BaseProbSetUnit.cpp" FORMNAME="" UNITNAME="BaseProbSetUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Almas1ProbSetUnit.cpp" FORMNAME="" UNITNAME="Almas1ProbSetUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ProbPoviderUnit.cpp" FORMNAME="" UNITNAME="ProbPoviderUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ProbSetModelUnit.cpp" FORMNAME="ProbSetModelForm" UNITNAME="ProbSetModelUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1049
+CodePage=1251
+
+[Version Info Keys]
+FileVersion=1.0.0.0
+
+[Excluded Packages]
+c:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
+
+[HistoryLists\hlIncludePath]
+Count=3
+Item0=$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl
+Item1=C:\Nscom\C++Projects\Almas;$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl
+Item2=C:\Nscom\C++Projects\Almas;.;.\back;$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=3
+Item0=$(BCB)\projects;$(BCB)\lib\obj;$(BCB)\lib
+Item1=C:\Nscom\C++Projects\Almas;$(BCB)\projects;$(BCB)\lib\obj;$(BCB)\lib
+Item2=C:\Nscom\C++Projects\Almas;.;.\back;$(BCB)\projects;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlConditionals]
+Count=3
+Item0=Almas100
+Item1=Almas111
+Item2=Almas110
+
+[HistoryLists\hlUnitAliases]
+Count=1
+Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE
+
+[Debugging]
+DebugSourceDirs=
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=1
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>

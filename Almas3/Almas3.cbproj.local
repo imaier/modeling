@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012.07.26 10:18:48.868.cpp,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\QuantityByGroupeUnit.cpp=</Transaction>
+    <Transaction>2012.07.26 10:18:48.868.dfm,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\QuantityByGroupeUnit.dfm=</Transaction>
+    <Transaction>2013.01.14 09:12:41.457.cpp,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.cpp=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\DefectUnit.cpp</Transaction>
+    <Transaction>2013.01.14 09:12:41.457.h,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.h=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\DefectUnit.h</Transaction>
+    <Transaction>2013.01.14 09:12:41.457.dfm,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.dfm=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\DefectUnit.dfm</Transaction>
+    <Transaction>2013.01.14 09:37:00.748.cpp,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.cpp=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\DefectEditUnit.cpp</Transaction>
+    <Transaction>2013.01.14 09:37:00.748.h,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.h=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\DefectEditUnit.h</Transaction>
+    <Transaction>2013.01.14 09:37:00.748.dfm,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.dfm=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\DefectEditUnit.dfm</Transaction>
+    <Transaction>2013.02.01 12:21:19.939.cpp,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.cpp=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\MaskEditUnit.cpp</Transaction>
+    <Transaction>2013.02.01 12:21:19.954.h,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.h=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\MaskEditUnit.h</Transaction>
+    <Transaction>2013.02.01 12:21:19.954.dfm,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.dfm=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\MaskEditUnit.dfm</Transaction>
+    <Transaction>2013.02.13 18:08:12.796.cpp,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.cpp=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\ProgressUnit.cpp</Transaction>
+    <Transaction>2013.02.13 18:08:12.811.h,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.h=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\ProgressUnit.h</Transaction>
+    <Transaction>2013.02.13 18:08:12.811.dfm,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.dfm=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\ProgressUnit.dfm</Transaction>
+  </Transactions>
+</BorlandProject>
