@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+
+# C++ Builder files
+*.tvsconfig
+ModelSupport_*
+*.local

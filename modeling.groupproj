@@ -1,0 +1,60 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{6165D738-5C72-4779-83A8-C69A6ABBBA2A}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Almas3\Almas3.cbproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Grapher3d\Grapher3d.cbproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="SampleGenerator\SampleGenerator.cbproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="Almas3">
+			<MSBuild Projects="Almas3\Almas3.cbproj"/>
+		</Target>
+		<Target Name="Almas3:Clean">
+			<MSBuild Targets="Clean" Projects="Almas3\Almas3.cbproj"/>
+		</Target>
+		<Target Name="Almas3:Make">
+			<MSBuild Targets="Make" Projects="Almas3\Almas3.cbproj"/>
+		</Target>
+		<Target Name="Grapher3d">
+			<MSBuild Projects="Grapher3d\Grapher3d.cbproj"/>
+		</Target>
+		<Target Name="Grapher3d:Clean">
+			<MSBuild Targets="Clean" Projects="Grapher3d\Grapher3d.cbproj"/>
+		</Target>
+		<Target Name="Grapher3d:Make">
+			<MSBuild Targets="Make" Projects="Grapher3d\Grapher3d.cbproj"/>
+		</Target>
+		<Target Name="SampleGenerator">
+			<MSBuild Projects="SampleGenerator\SampleGenerator.cbproj"/>
+		</Target>
+		<Target Name="SampleGenerator:Clean">
+			<MSBuild Targets="Clean" Projects="SampleGenerator\SampleGenerator.cbproj"/>
+		</Target>
+		<Target Name="SampleGenerator:Make">
+			<MSBuild Targets="Make" Projects="SampleGenerator\SampleGenerator.cbproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="Almas3;Grapher3d;SampleGenerator"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="Almas3:Clean;Grapher3d:Clean;SampleGenerator:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="Almas3:Make;Grapher3d:Make;SampleGenerator:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>
