@@ -32,12 +32,13 @@ bool TProgressRec::operator==(const TProgressRec& r) const
 	return bRet;
 }
 //---------------------------------------------------------------------------
-bool TProgressRec::operator=(const TProgressRec& r)
+TProgressRec&  TProgressRec::operator=(const TProgressRec& r)
 {
 	m_strOperation = r.m_strOperation;
 	m_strState = r.m_strState;
 	m_nMax = r.m_nMax;
 	m_nCurr = r.m_nCurr;
+	return *this;
 }
 //---------------------------------------------------------------------------
 __fastcall TProgressForm::TProgressForm(TComponent* Owner)
@@ -85,9 +86,9 @@ void TProgressProvider::FinishProgress()
 {
 	if(m_pForm != NULL)
 	{
-		pForm->Close();
-		delete pForm;
-		pForm = NULL;
+		m_pForm->Close();
+		delete m_pForm;
+		m_pForm = NULL;
 	}
 
 	m_bStopped = false;

@@ -16,7 +16,7 @@ public:
 	TProgressRec();
 	void Init();
 	bool operator==(const TProgressRec& r) const;
-	bool operator=(const TProgressRec& r);
+	TProgressRec& operator=(const TProgressRec& r);
 	AnsiString m_strOperation;
 	AnsiString m_strState;
 	int m_nMax;
@@ -25,8 +25,7 @@ public:
 
 class TProgressObserver
 {
-}
-
+};
 
 class TProgressActon
 {

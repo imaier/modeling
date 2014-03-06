@@ -17,7 +17,7 @@ object ProgressForm: TProgressForm
   object OperationLabel: TLabel
     Left = 8
     Top = 8
-    Width = 269
+    Width = 50
     Height = 13
     Caption = #1054#1087#1077#1088#1072#1094#1080#1103
   end
