@@ -17,3 +17,7 @@
 *.tvsconfig
 ModelSupport_*
 *.local
+*.map
+*.tds
+Release_Build
+__history
