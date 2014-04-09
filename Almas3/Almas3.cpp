@@ -2,23 +2,23 @@
 #include <vcl\vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
-USEFORM("ProbalityUnit.cpp", ProbalityForm);
-USEFORM("PropertyUnit.cpp", PropertyForm);
-USEFORM("ProbSetModelUnit.cpp", ProbSetModelForm);
-USEFORM("MillersUnit.cpp", MillersForm);
-USEFORM("PictUnit.cpp", PictuteForm);
-USEFORM("Monitoring.cpp", MonitoringForm);
-USEFORM("DefectUnit.cpp", DefectForm);
-USEFORM("MaskEditUnit.cpp", MaskEditForm);
-USEFORM("DefectEditUnit.cpp", DefectEditForm);
-USEFORM("SurfaceUnit.cpp", SurfaceForm);
-USEFORM("ScreenCopyUnit.cpp", ScreenCopyForm);
 USEFORM("Main.cpp", MainForm);
-USEFORM("MaskUnit.cpp", MaskForm);
-USEFORM("InfoUnit.cpp", InfoForm);
-USEFORM("QuantityByGroupeUnit.cpp", QuantityByGroupeForm);
-USEFORM("DistributionUnit.cpp", DistributionForm);
 USEFORM("ProgressUnit.cpp", ProgressForm);
+USEFORM("DistributionUnit.cpp", DistributionForm);
+USEFORM("QuantityByGroupeUnit.cpp", QuantityByGroupeForm);
+USEFORM("InfoUnit.cpp", InfoForm);
+USEFORM("MaskUnit.cpp", MaskForm);
+USEFORM("PictUnit.cpp", PictuteForm);
+USEFORM("MillersUnit.cpp", MillersForm);
+USEFORM("Monitoring.cpp", MonitoringForm);
+USEFORM("ProbalityUnit.cpp", ProbalityForm);
+USEFORM("ProbSetModelUnit.cpp", ProbSetModelForm);
+USEFORM("PropertyUnit.cpp", PropertyForm);
+USEFORM("ScreenCopyUnit.cpp", ScreenCopyForm);
+USEFORM("SurfaceUnit.cpp", SurfaceForm);
+USEFORM("DefectUnit.cpp", DefectForm);
+USEFORM("DefectEditUnit.cpp", DefectEditForm);
+USEFORM("MaskEditUnit.cpp", MaskEditForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {

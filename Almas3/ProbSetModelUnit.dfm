@@ -3,7 +3,7 @@ object ProbSetModelForm: TProbSetModelForm
   Top = 304
   BorderIcons = [biSystemMenu]
   Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099
-  ClientHeight = 213
+  ClientHeight = 250
   ClientWidth = 425
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,14 +17,13 @@ object ProbSetModelForm: TProbSetModelForm
   TextHeight = 13
   object ButtonsPanel: TPanel
     Left = 0
-    Top = 182
+    Top = 219
     Width = 425
     Height = 31
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 162
-    ExplicitWidth = 327
+    ExplicitTop = 182
     object OkPanel: TPanel
       Left = 292
       Top = 0
@@ -33,7 +32,6 @@ object ProbSetModelForm: TProbSetModelForm
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 194
       object OkButton: TButton
         Left = 2
         Top = 5
@@ -54,7 +52,6 @@ object ProbSetModelForm: TProbSetModelForm
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 262
       object CancelButton: TButton
         Left = 2
         Top = 5
@@ -71,17 +68,16 @@ object ProbSetModelForm: TProbSetModelForm
     Left = 0
     Top = 0
     Width = 425
-    Height = 182
+    Height = 219
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 5
     Caption = 'ClientPanel'
     TabOrder = 1
-    ExplicitWidth = 327
-    ExplicitHeight = 162
+    ExplicitHeight = 182
     object Splitter1: TSplitter
       Left = 5
-      Top = 113
+      Top = 155
       Width = 415
       Height = 3
       Cursor = crVSplit
@@ -94,30 +90,29 @@ object ProbSetModelForm: TProbSetModelForm
       Left = 5
       Top = 5
       Width = 415
-      Height = 108
+      Height = 150
       Align = alTop
       Caption = ' '#1052#1086#1076#1077#1083#1100' '#1087#1086#1074#1077#1088#1093#1085#1086#1089#1090#1080' '
       TabOrder = 0
       TabStop = True
       OnClick = SufModelRadioGroupClick
-      ExplicitWidth = 317
     end
     object InfoPanel: TPanel
       Left = 5
-      Top = 116
+      Top = 158
       Width = 415
-      Height = 61
+      Height = 56
       Align = alClient
       BevelOuter = bvNone
       BorderWidth = 5
       TabOrder = 1
-      ExplicitWidth = 317
-      ExplicitHeight = 41
+      ExplicitTop = 116
+      ExplicitHeight = 61
       object InfoLabel: TLabel
         Left = 5
         Top = 5
         Width = 405
-        Height = 51
+        Height = 46
         Align = alClient
         Caption = #1054#1087#1080#1089#1072#1085#1080#1077
         WordWrap = True

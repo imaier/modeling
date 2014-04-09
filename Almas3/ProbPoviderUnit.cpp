@@ -7,6 +7,7 @@
 #include "Almas4ProbSetUnit.h"
 #include "Almas5ProbSetUnit.h"
 #include "Almas6ProbSetUnit.h"
+#include "Almas7ProbSetUnit.h"
 #include <winbase.h>
 #include "GlobalUnit.h"
 
@@ -23,6 +24,7 @@ TProbPoviderGlobal::TProbPoviderGlobal()
 	pBaseProbSetCreator = new TAlmas4ProbSetCreator();	m_vProbSetCreator.push_back(pBaseProbSetCreator);
 	pBaseProbSetCreator = new TAlmas5ProbSetCreator();	m_vProbSetCreator.push_back(pBaseProbSetCreator);
 	pBaseProbSetCreator = new TAlmas6ProbSetCreator();	m_vProbSetCreator.push_back(pBaseProbSetCreator);
+	pBaseProbSetCreator = new TAlmas7ProbSetCreator();	m_vProbSetCreator.push_back(pBaseProbSetCreator);
 }
 //---------------------------------------------------------------------------
 TProbPoviderGlobal::~TProbPoviderGlobal()
@@ -122,7 +124,7 @@ bool TProbPovider::LoadFromFile(HANDLE hFile, int *pSeek)
     int nLen = 0;
 
     DWORD nNumberOfBytesToRead = sizeof(nLen);
-    DWORD nNumberOfBytesRead = 0;
+	DWORD nNumberOfBytesRead = 0;
     BOOL nRet = ReadFile(
      hFile,	                // handle of file to read
      &nLen,	                // address of buffer that receives data

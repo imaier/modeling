@@ -15,5 +15,7 @@
     <Transaction>2013.02.13 18:08:12.796.cpp,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.cpp=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\ProgressUnit.cpp</Transaction>
     <Transaction>2013.02.13 18:08:12.811.h,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.h=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\ProgressUnit.h</Transaction>
     <Transaction>2013.02.13 18:08:12.811.dfm,D:\my\work\my\2009\ПРОЕКТЫ\Almas3\Unit1.dfm=D:\my\work\my\2009\ПРОЕКТЫ\Almas3\ProgressUnit.dfm</Transaction>
+    <Transaction>2014.04.09 09:01:31.882.cpp,D:\my\work\my\2009\modeling\Almas3\Unit1.cpp=D:\my\work\my\2009\modeling\Almas3\Almas7ProbSetUnit.cpp</Transaction>
+    <Transaction>2014.04.09 09:01:31.882.h,D:\my\work\my\2009\modeling\Almas3\Unit1.h=D:\my\work\my\2009\modeling\Almas3\Almas7ProbSetUnit.h</Transaction>
   </Transactions>
 </BorlandProject>
