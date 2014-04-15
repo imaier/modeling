@@ -10,7 +10,9 @@
 #include <ComCtrls.hpp>
 //---------------------------------------------------------------------------
 #include "Almas4ProbSetKeyUnit.h"
+#include "Almas7ProbSetKeyUnit.h"
 //---------------------------------------------------------------------------
+
 class TAtomCrd
 {
 public:
@@ -39,8 +41,11 @@ private:	// User declarations
 	AnsiString __fastcall GenFileName(int nPosition);
 	void __fastcall GenerateAlmas2(void);
 	void __fastcall GenerateAlmas4(void);
+	void __fastcall GenerateAlmas7(void);
 	void __fastcall GenFile2(TProbKey nKey, bool bSplit, bool bCube, AnsiString &strFileName);
+	void __fastcall GenFile3(TProbKey nKey, bool bSplit, bool bCube, AnsiString &strFileName);
 
+	AnsiString __fastcall GenerateCube(void);
 
 	bool m_bStop;
 public:		// User declarations

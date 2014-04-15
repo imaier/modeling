@@ -73,13 +73,6 @@
 			<BCC_InlineFunctionExpansion>true</BCC_InlineFunctionExpansion>
 		</PropertyGroup>
 		<ItemGroup>
-			<ResFiles Include="SampleGenerator.res">
-				<BuildOrder>2</BuildOrder>
-			</ResFiles>
-			<CppCompile Include="Almas4ProbSetKeyUnit.cpp">
-				<DependentOn>Almas4ProbSetKeyUnit.h</DependentOn>
-				<BuildOrder>3</BuildOrder>
-			</CppCompile>
 			<CppCompile Include="MaimUnit.cpp">
 				<BuildOrder>8</BuildOrder>
 				<Form>MaimForm</Form>
@@ -89,6 +82,17 @@
 			<CppCompile Include="SampleGenerator.cpp">
 				<BuildOrder>5</BuildOrder>
 				<BuildOrder>1</BuildOrder>
+			</CppCompile>
+			<ResFiles Include="SampleGenerator.res">
+				<BuildOrder>2</BuildOrder>
+			</ResFiles>
+			<CppCompile Include="Almas4ProbSetKeyUnit.cpp">
+				<DependentOn>Almas4ProbSetKeyUnit.h</DependentOn>
+				<BuildOrder>3</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas7ProbSetKeyUnit.cpp">
+				<DependentOn>Almas7ProbSetKeyUnit.h</DependentOn>
+				<BuildOrder>4</BuildOrder>
 			</CppCompile>
 			<FormResources Include="MaimUnit.dfm"/>
 			<BuildConfiguration Include="Base">
