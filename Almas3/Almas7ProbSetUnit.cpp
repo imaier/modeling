@@ -8,6 +8,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "GlobalUnit.h"
+#include "ProgressUnit.h"
 //---------------------------------------------------------------------------
 #define INTERFACE_ID          "Almas7ProbSet"
 #define INTERFACE_NAME        "Первые и вторые прямые, вторые непрямые соседи"
@@ -357,30 +358,6 @@ void TAlmas7ProbSetGlobal::Init(void)
 		 //
 		 Screen->Cursor = crHourGlass;
 
-/*
-		 TAlmas7ProbSetKey k1,k2;
-		 k1.fill(14);//22. (s1, v0; s0, v0)x1 - 189012
-
-		 k2.Adg1 = 1;
-		 k2.Adg2_i0_j0 = 3;
-		 k2.Adg2_i0_j1 = 3;
-		 k2.Adg2_i0_j2 = 3;
-		 k2.Adg2_i1_j0 = 3;
-		 k2.Adg2_i1_j1 = 3;
-		 k2.Adg2_i1_j2 = 3;
-		 k2.Adg2_i2_j0 = NoAdg2Val;
-		 k2.Adg2_i2_j1 = NoAdg2Val;
-		 k2.Adg2_i2_j2 = 2;
-		 k2.Adg2_i3_j0 = NoAdg2Val;
-		 k2.Adg2_i3_j1 = NoAdg2Val;
-		 k2.Adg2_i3_j2 = 2;
-
-		 k2.unfill();
-
-		 k1.fill(k2.Key);
-
-		 //bool bck = ChekKey2(k2.Key);
-*/
 		 AnsiString strAll, str1;
 		 AnsiString szFilename;
 		 szFilename = GetProgramPath()+INTERFACE_ID;
@@ -441,6 +418,11 @@ void TAlmas7ProbSetGlobal::Init(void)
 		 {//если конфигурации нет то считаем заново
 		  m_Key2ToKeyMap.clear();
 		  TProbKey nMaxKey = Adg2Base(Adg1State-1,Adg2Num-1)*Adg2State;
+
+		  TProgressRec pr;
+		  pr.m_strOperation = "Генерирование набора вероятностей";
+		  pr.m_strState = "Отсеивание дублирующих конфигураций";
+		  pr.m_nMax = nMaxKey;
 		  for(nKey = 0; nKey < nMaxKey; nKey++)
 		  {
 		   if(ChekKey2(nKey))
@@ -455,7 +437,22 @@ void TAlmas7ProbSetGlobal::Init(void)
 			 }
 			}
 		   }
+		   if((nKey % 1000) == 0)
+		   {
+			if(TProgressProvider::GetInstanse().IsStopped())
+			{
+			 TProgressProvider::GetInstanse().FinishProgress();
+			 throw Exception("Процесс остановлен.");
+			}
+			pr.m_nCurr = nKey;
+			pr.m_strState = "Отсеивание дублирующих конфигураций";
+			TProgressProvider::GetInstanse().PostProgress(pr);
+		   }
 		  }
+		  pr.m_strState = "Сохранение конфигурации";
+		  pr.m_nCurr = pr.m_nMax;
+		  TProgressProvider::GetInstanse().PostProgress(pr);
+
 		  //сохранить конфигурацию в файл
 		  FILE *pFile = fopen(_c_str(szFilename),"w+");
 		  if(pFile != NULL)
@@ -467,6 +464,7 @@ void TAlmas7ProbSetGlobal::Init(void)
 		   }
 		   fclose(pFile);
 		  }
+		  TProgressProvider::GetInstanse().FinishProgress();
 		 }
 
 		 TKey2ToKeyMap::iterator itr;

@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
+#include <math.h>
 TProgressForm *ProgressForm;
 //---------------------------------------------------------------------------
 TProgressRec::TProgressRec()
@@ -62,7 +63,8 @@ TProgressProvider::~TProgressProvider()
 //---------------------------------------------------------------------------
 TProgressProvider& TProgressProvider::GetInstanse()
 {
-	return TProgressProvider::m_Instanse;
+	static TProgressProvider Instanse;
+	return Instanse;
 }
 //---------------------------------------------------------------------------
 void TProgressProvider::PostProgress(const TProgressRec& r)
@@ -104,3 +106,62 @@ void TProgressProvider::SetStopped()
 	m_bStopped = true;
 }
 //---------------------------------------------------------------------------
+void TProgressForm::PostProgress(const TProgressRec& r)
+{
+	bool bUpdated = false;
+	if (r.m_strOperation != OperationLabel->Caption)
+	{
+	 OperationLabel->Caption = r.m_strOperation;
+	 //OperationLabel->Repaint();
+	 bUpdated = true;
+	}
+	if (r.m_strState != StateLabel->Caption)
+	{
+	 StateLabel->Caption = r.m_strState;
+	 bUpdated = true;
+	 //StateLabel->Repaint();
+	}
+	int pos = ceil((double)r.m_nCurr/(double)r.m_nMax*100.0+0.5);
+
+	if(OperationProgressBar->Position != pos)
+	{
+	 OperationProgressBar->Position = pos;
+	 bUpdated = true;
+	 //OperationProgressBar->Repaint();
+	}
+
+	if(bUpdated == true)
+	{
+	 MSG msg;
+	 BOOL bRet = TRUE;
+	 int i = 1000;
+
+
+	 //while( (bRet = GetMessage( &msg, NULL, 0, 0 )) != 0)
+	 while( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE) != 0)
+	 {
+		i--;
+		if(i==0)
+		{
+		// break;
+		}
+
+		if (bRet == -1)
+		{
+			 // обработка ошибки и возможный выход из программы
+		}
+		 else
+		 {
+			 TranslateMessage(&msg);
+			 DispatchMessage(&msg);
+		}
+	 }
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TProgressForm::CancelBitBtnClick(TObject *Sender)
+{
+	TProgressProvider::GetInstanse().SetStopped();
+}
+//---------------------------------------------------------------------------
+

@@ -43,6 +43,7 @@ __published:	// IDE-managed Components
 	TLabel *StateNameLabel;
 	TBitBtn *CancelBitBtn;
 	TLabel *StateLabel;
+	void __fastcall CancelBitBtnClick(TObject *Sender);
 private:	// User declarations
 
 	TProgressRec m_ProgressRec;
@@ -68,7 +69,6 @@ public:
 	bool IsStopped();
 	void SetStopped();
 private:
-	static TProgressProvider m_Instanse;
 
 	TProgressForm *m_pForm;
 	bool m_bStopped;

@@ -52,5 +52,6 @@ object ProgressForm: TProgressForm
     DoubleBuffered = True
     ParentDoubleBuffered = False
     TabOrder = 1
+    OnClick = CancelBitBtnClick
   end
 end
