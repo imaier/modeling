@@ -110,7 +110,7 @@ void __fastcall TAlmas5ProbSetKey::fill2(TProbKey nKey)
 //---------------------------------------------------------------------------
 void __fastcall TAlmas5ProbSetKey::GetProbNameFromKey2(AnsiString &_strName)
 {
-	_strName.sprintf("%04d (s%d, v%d; s%d, ns%d)x%d - %d", Key2, n1s, n1v, n2s, n2v, nns, Adg1+1, Key);
+	_strName.sprintf("%04d (s%d, v%d; s%d, ns%d)x%d - %d", Key2, n1s, n1v, n2v, nns, Adg1+1, Key);
 }
 //---------------------------------------------------------------------------
 AnsiString __fastcall TAlmas5ProbSetKey::GetProbSetId()
