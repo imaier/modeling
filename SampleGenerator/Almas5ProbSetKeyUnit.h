@@ -1,26 +1,26 @@
 //---------------------------------------------------------------------------
 
-#ifndef Almas7ProbSetKeyUnitH
-#define Almas7ProbSetKeyUnitH
+#ifndef Almas5ProbSetKeyUnitH
+#define Almas5ProbSetKeyUnitH
 //---------------------------------------------------------------------------
 #include "BaseProbSetUnit.h"
 //---------------------------------------------------------------------------
-class TAlmas7ProbSetKey : public TBaseProbSetKey
+class TAlmas5ProbSetKey : public TBaseProbSetKey
 {
 public:
-	TAlmas7ProbSetKey();
+	TAlmas5ProbSetKey();
 
-	//характеристика вероятности
-	int F;  // F – общее число первых соседей
-	int dS; // dS – число вторых прямых соседей
-	int nS; // nS – число вторых непрямых соседей
+	int n1s;
+	int n1v;
+	int n2s;
+	int n2v;
+	int nns;
 
-	void __fastcall fill2(TProbKey nKey);//посчитать только характеристику вероятности
+	void __fastcall fill2(TProbKey nKey);//только n1 n2 посчитать
 
 	void __fastcall GetProbNameFromKey2(AnsiString &_strName);
 
 	virtual AnsiString __fastcall GetProbSetId();
-
 };
 //---------------------------------------------------------------------------
 #endif

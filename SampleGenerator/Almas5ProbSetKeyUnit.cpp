@@ -1,15 +1,16 @@
 //---------------------------------------------------------------------------
-
-
 #pragma hdrstop
 
-#include "Almas4ProbSetKeyUnit.h"
+#include "Almas5ProbSetKeyUnit.h"
+
 #include <math.h>
+//#include <stdio.h>
 //---------------------------------------------------------------------------
-#define INTERFACE_ID          "Almas4ProbSet"
-#define INTERFACE_NAME        "Объемно-поверхностные (прямые и не прямые)"
-#define INTERFACE_DISCRIPTION "Учитываются как прямые так и не прямые объемные и поверхностнве атомы первых и вторых соседей"
+#define INTERFACE_ID          "Almas5ProbSet"
+#define INTERFACE_NAME        "Объемно-поверхностные (без объемных вторых сосседей)"
+#define INTERFACE_DISCRIPTION "Учитываются прямые и не прямые поверхностнве атомы первых и вторых соседей и объемные атомы перых соседей"
 //---------------------------------------------------------------------------
+
 //новый способ с делениями
 #define Adg1Base 1
 //количество первых соседей
@@ -24,39 +25,19 @@
 #define Adg3State(i) IntPow(IntPow(Adg2State,Adg2Num), i)
 //база
 #define Adg2Base_(i, j) (Adg1State*Adg3State(i)*IntPow(Adg2State,j))
-#define Adg2Base(i, j) Adg2Base_4(i, j)
+#define Adg2Base(i, j) Adg2Base_5(i, j)
 
 #define divGetAdg1(Key) (Key%Adg1State)
 #define divSetAdg1(Key, Data) Key = (Key + ((Data%Adg1State) - divGetAdg1(Key))*Adg1Base)
 #define divGetAdg2(Key, i, j) ((Key/Adg2Base(i,j))%Adg2State)
 #define divSetAdg2(Key, Data, i, j) Key = (Key + ((Data%Adg2State) - divGetAdg2(Key,i,j))*Adg2Base(i,j))
 
-#define SetKey2(Key, n1s, n1v, n2s, n2v, nns)   Key = (nns%10 + 10*(n2v%10) + 100*(n2s%10) + 1000*(n1v%10) + 10000*(n1s%10))
-#define GetKey2(Key, n1s, n1v, n2s, n2v, nns)  nns = ((Key/1)%10); n2v = ((Key/10)%10); n2s = ((Key/100)%10); n1v = ((Key/1000)%10); n1s = ((Key/10000)%10);
+#define SetKey2(Key, n1s, n1v, n2s, nns)   Key = (nns%10 + 10*(n2s%10) + 100*(n1v%10) + 1000*(n1s%10))
+#define GetKey2(Key, n1s, n1v, n2s, nns)  nns = ((Key/1)%10); n2s = ((Key/10)%10); n1v = ((Key/100)%10); n1s = ((Key/1000)%10);
 //---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-int __fastcall IntPow(int x, int p)
-{
-	int y=1;
-	for(int i = 0; i < p; i++)
-	{
-	 y*=x;
-	}
-	return y;
-}
-//---------------------------------------------------------------------------
-TProbKey Adg2Base_4(int i, int j)
-{
-static TProbKey cvAdg2Base[4][3] = { {Adg2Base_(0,0),Adg2Base_(0,1),Adg2Base_(0,2)},
-									 {Adg2Base_(1,0),Adg2Base_(1,1),Adg2Base_(1,2)},
-									 {Adg2Base_(2,0),Adg2Base_(2,1),Adg2Base_(2,2)},
-									 {Adg2Base_(3,0),Adg2Base_(3,1),Adg2Base_(3,2)}
-								   };
-	return cvAdg2Base[i][j];
-}
 //---------------------------------------------------------------------------
 
-TAlmas4ProbSetKey::TAlmas4ProbSetKey()
+TAlmas5ProbSetKey::TAlmas5ProbSetKey()
 :TBaseProbSetKey()
 {
 	n1s = 0;
@@ -66,7 +47,7 @@ TAlmas4ProbSetKey::TAlmas4ProbSetKey()
 	nns = 0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TAlmas4ProbSetKey::fill2(TProbKey nKey)
+void __fastcall TAlmas5ProbSetKey::fill2(TProbKey nKey)
 {
 	int i,j;
 	int nAdjTtpeI;
@@ -123,18 +104,18 @@ void __fastcall TAlmas4ProbSetKey::fill2(TProbKey nKey)
 	 }
 	}
 
-	SetKey2(Key2, n1s, n1v, n2s, n2v, nns);
+	SetKey2(Key2, n1s, n1v, n2s, nns);
 }
+
 //---------------------------------------------------------------------------
-void __fastcall TAlmas4ProbSetKey::GetProbNameFromKey2(AnsiString &_strName)
+void __fastcall TAlmas5ProbSetKey::GetProbNameFromKey2(AnsiString &_strName)
 {
 	_strName.sprintf("%05d (s%d, v%d; s%d, v%d, ns%d)x%d - %d", Key2, n1s, n1v, n2s, n2v, nns, Adg1+1, Key);
 }
 //---------------------------------------------------------------------------
-AnsiString __fastcall TAlmas4ProbSetKey::GetProbSetId()
+AnsiString __fastcall TAlmas5ProbSetKey::GetProbSetId()
 {
 	return AnsiString(INTERFACE_ID);
 }
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-

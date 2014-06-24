@@ -1,14 +1,14 @@
 //---------------------------------------------------------------------------
 
-#ifndef Almas4ProbSetKeyUnitH
-#define Almas4ProbSetKeyUnitH
+#ifndef Almas6ProbSetKeyUnitH
+#define Almas6ProbSetKeyUnitH
 //---------------------------------------------------------------------------
 #include "BaseProbSetUnit.h"
 //---------------------------------------------------------------------------
-class TAlmas4ProbSetKey : public TBaseProbSetKey
+class TAlmas6ProbSetKey : public TBaseProbSetKey
 {
 public:
-	TAlmas4ProbSetKey();
+	TAlmas6ProbSetKey();
 
 	int n1s;
 	int n1v;
@@ -21,5 +21,4 @@ public:
 
 	virtual AnsiString __fastcall GetProbSetId();
 };
-//---------------------------------------------------------------------------
 #endif

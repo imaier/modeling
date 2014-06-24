@@ -1,14 +1,13 @@
 //---------------------------------------------------------------------------
-
-
 #pragma hdrstop
 
-#include "Almas4ProbSetKeyUnit.h"
+#include "Almas6ProbSetKeyUnit.h"
+
 #include <math.h>
 //---------------------------------------------------------------------------
-#define INTERFACE_ID          "Almas4ProbSet"
-#define INTERFACE_NAME        "Объемно-поверхностные (прямые и не прямые)"
-#define INTERFACE_DISCRIPTION "Учитываются как прямые так и не прямые объемные и поверхностнве атомы первых и вторых соседей"
+#define INTERFACE_ID          "Almas6ProbSet"
+#define INTERFACE_NAME        "Объемно-поверхностные (без прямых поверхностных вторых сосседей)"
+#define INTERFACE_DISCRIPTION "Учитываются поверхностные и объемные атомы первых соседей, прямые объемные и не прямые поверхностные атомы вторых соседей"
 //---------------------------------------------------------------------------
 //новый способ с делениями
 #define Adg1Base 1
@@ -24,28 +23,18 @@
 #define Adg3State(i) IntPow(IntPow(Adg2State,Adg2Num), i)
 //база
 #define Adg2Base_(i, j) (Adg1State*Adg3State(i)*IntPow(Adg2State,j))
-#define Adg2Base(i, j) Adg2Base_4(i, j)
+#define Adg2Base(i, j) Adg2Base_5(i, j)
 
 #define divGetAdg1(Key) (Key%Adg1State)
 #define divSetAdg1(Key, Data) Key = (Key + ((Data%Adg1State) - divGetAdg1(Key))*Adg1Base)
 #define divGetAdg2(Key, i, j) ((Key/Adg2Base(i,j))%Adg2State)
 #define divSetAdg2(Key, Data, i, j) Key = (Key + ((Data%Adg2State) - divGetAdg2(Key,i,j))*Adg2Base(i,j))
 
-#define SetKey2(Key, n1s, n1v, n2s, n2v, nns)   Key = (nns%10 + 10*(n2v%10) + 100*(n2s%10) + 1000*(n1v%10) + 10000*(n1s%10))
-#define GetKey2(Key, n1s, n1v, n2s, n2v, nns)  nns = ((Key/1)%10); n2v = ((Key/10)%10); n2s = ((Key/100)%10); n1v = ((Key/1000)%10); n1s = ((Key/10000)%10);
+#define SetKey2(Key, n1s, n1v, n2v, nns)   Key = (nns%10 + 10*(n2v%10) + 100*(n1v%10) + 1000*(n1s%10))
+#define GetKey2(Key, n1s, n1v, n2v, nns)  nns = ((Key/1)%10); n2v = ((Key/10)%10); n1v = ((Key/100)%10); n1s = ((Key/1000)%10);
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
-int __fastcall IntPow(int x, int p)
-{
-	int y=1;
-	for(int i = 0; i < p; i++)
-	{
-	 y*=x;
-	}
-	return y;
-}
-//---------------------------------------------------------------------------
-TProbKey Adg2Base_4(int i, int j)
+TProbKey Adg2Base_5(int i, int j)
 {
 static TProbKey cvAdg2Base[4][3] = { {Adg2Base_(0,0),Adg2Base_(0,1),Adg2Base_(0,2)},
 									 {Adg2Base_(1,0),Adg2Base_(1,1),Adg2Base_(1,2)},
@@ -54,9 +43,7 @@ static TProbKey cvAdg2Base[4][3] = { {Adg2Base_(0,0),Adg2Base_(0,1),Adg2Base_(0,
 								   };
 	return cvAdg2Base[i][j];
 }
-//---------------------------------------------------------------------------
-
-TAlmas4ProbSetKey::TAlmas4ProbSetKey()
+TAlmas6ProbSetKey::TAlmas6ProbSetKey()
 :TBaseProbSetKey()
 {
 	n1s = 0;
@@ -66,7 +53,7 @@ TAlmas4ProbSetKey::TAlmas4ProbSetKey()
 	nns = 0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TAlmas4ProbSetKey::fill2(TProbKey nKey)
+void __fastcall TAlmas6ProbSetKey::fill2(TProbKey nKey)
 {
 	int i,j;
 	int nAdjTtpeI;
@@ -123,18 +110,28 @@ void __fastcall TAlmas4ProbSetKey::fill2(TProbKey nKey)
 	 }
 	}
 
-	SetKey2(Key2, n1s, n1v, n2s, n2v, nns);
+	SetKey2(Key2, n1s, n1v, n2v, nns);
 }
 //---------------------------------------------------------------------------
-void __fastcall TAlmas4ProbSetKey::GetProbNameFromKey2(AnsiString &_strName)
+void __fastcall TAlmas6ProbSetKey::GetProbNameFromKey2(AnsiString &_strName)
 {
-	_strName.sprintf("%05d (s%d, v%d; s%d, v%d, ns%d)x%d - %d", Key2, n1s, n1v, n2s, n2v, nns, Adg1+1, Key);
+	_strName.sprintf("%04d (s%d, v%d; v%d, ns%d)x%d - %d", Key2, n1s, n1v, n2v, nns, Adg1+1, Key);
 }
 //---------------------------------------------------------------------------
-AnsiString __fastcall TAlmas4ProbSetKey::GetProbSetId()
+/*
+void __fastcall TAlmas6ProbSetGlobal::GetProbNameFromKey2(TProbKey nKey, int &nType, int &nNumber, AnsiString& strName)
+{
+	TAlmas6ProbSetKey psk;
+	psk.fill2(nKey);
+	nType = GetTypeFromKey2(nKey);
+
+	strName.sprintf("%02d. (s%d, v%d; v%d, ns%d)x%d - %d", nNumber+1, psk.n1s, psk.n1v, psk.n2v, psk.nns, nType, nKey);
+} */
+//---------------------------------------------------------------------------
+AnsiString __fastcall TAlmas6ProbSetKey::GetProbSetId()
 {
 	return AnsiString(INTERFACE_ID);
 }
 //---------------------------------------------------------------------------
-#pragma package(smart_init)
 
+#pragma package(smart_init)

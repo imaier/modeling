@@ -36,7 +36,7 @@ TAtomCrd TAtomCrd::GetAdj(int i)
          dy = +1;
          dz = +1;
         break;
-        case 2:
+		case 2:
          dx = +1;
          dy = -1;
          dz = +1;
@@ -139,86 +139,6 @@ int GetOneCount(int n)
 		nRet += (n>>i)&0x01;
 	}
 	return nRet;
-}
-//---------------------------------------------------------------------------
-void __fastcall TMaimForm::GenerateAlmas4(void)
-{
-	m_bStop = false;
-	StatusProgressBar->Min = 0;
-	StatusProgressBar->Max = 100;
-	StatusProgressBar->Position = 0;
-	bool bSplit = SplitCheckBox->Checked;
-	bool bCube = CubeCheckBox->Checked;
-
-		 AnsiString strAll, str1;
-		 AnsiString szFilename;
-		 szFilename = "Almas4ProbSet";
-		 szFilename += ".cfg";
-
-		 TProbKeyVec vPK;
-
-		 TProbKey nKey, nKey2;
-
-		 //int i=0;
-		 if(FileExists(szFilename) == true)
-		 {
-		  FILE *pFile = fopen(szFilename.c_str(),"r");
-		  if(pFile != NULL)
-		  {
-		   char szVal[256];
-		   int Key;
-		   while(fgets(szVal, sizeof(szVal), pFile))
-		   {
-			str1 = szVal;
-			str1 = str1.Trim();
-			Key = StrToInt(str1);
-			nKey = Key;
-			vPK.push_back(nKey);
-		   }
-		   fclose(pFile);
-		  }
-		 }
-		 else
-		 {
-		  AnsiString strErr;
-		  strErr = "Не удалось открыть файл \"" + szFilename + "\"";
-		  MessageBoxA(this->Handle,strErr.c_str(),("Внимание"),MB_OK | MB_ICONERROR);
-		  return;
-		 }
-
-		 AnsiString strFileName;
-		 int nPkSize = vPK.size();
-		 int i;
-		 for(i=0; i < nPkSize; i++)
-		 {
-		  nKey = vPK[i];
-		  GenFile2(nKey, bSplit, bCube, strFileName);
-
-		  if(i%5==0)
-		  {
-		   StatusLabel->Caption = strFileName;
-		   StatusProgressBar->Position = (i+1)*100/nPkSize;
-		  }
-
-		//обработать очередь собщений
-		Application->ProcessMessages();
-
-		if(m_bStop == true)
-		{
-			StatusProgressBar->Position = 0;
-			StatusLabel->Caption = "";
-			break;
-		}
-
-
-		 }
-
-
-
-
-
-
-	StatusProgressBar->Position = 100;
 }
 //---------------------------------------------------------------------------
 void __fastcall TMaimForm::GenerateAlmas2(void)
@@ -496,115 +416,7 @@ void __fastcall TMaimForm::StopButtonClick(TObject *Sender)
 void __fastcall TMaimForm::GenerateButtonClick(TObject *Sender)
 {
 	//GenerateAlmas2();
-	GenerateAlmas7();
-}
-//---------------------------------------------------------------------------
-void __fastcall TMaimForm::GenFile2(TProbKey nKey, bool bSplit, bool bCube, AnsiString &strFileName)
-{
-	TAlmas4ProbSetKey k;
-	k.fill(nKey);
-
-	if(k.Key2 == 20302)
-	{
-	 k.Key2 = k.Key2;
-	}
-
-	strFileName = k.strName + ".txt";
-	AnsiString strContent;
-	AnsiString strSpheras;
-	AnsiString strLines;
-	bool bDrowFourLinks = true;
-
-	TAtomCrd MainAtom, AdjAtom, AdjAtom2, AdjAtom3, AdjAtom4;
-	int ObjectNum = 100;//номер объекта сферы
-	int ObjectLNum = 1000;//номер объекта линии
-	int TmpObjectNum,TmpObjectNum2, TmpObjectNum3, MainObjectNum ;
-	MainAtom.nV = k.Adg1+1;
-	strSpheras += AddSphera(ObjectNum, MainAtom);
-	MainObjectNum = ObjectNum++;
-	//int nV;
-	for(int i = 0; i < 4; i++)
-	{
-		AdjAtom = MainAtom.GetAdj(i);
-		AdjAtom.nV = k.GetAdjType(i);
-		//nV = AdjAtom.nV;
-		strSpheras += AddSphera(ObjectNum, AdjAtom);
-		TmpObjectNum = ObjectNum++;
-		strLines += AddLine(ObjectLNum++, MainObjectNum, TmpObjectNum, MainAtom.GetLinkColor(AdjAtom));
-
-		for(int j = 0; j < 4; j++)
-		{
-		 if(i != j)
-		 {
-		  AdjAtom2 = AdjAtom.GetAdj(j);
-		  AdjAtom2.nV = k.GetAdj2Type(i, (j>i)? (j-1):(j));
-		  strSpheras += AddSphera(ObjectNum, AdjAtom2);
-		  TmpObjectNum2 = ObjectNum++;
-		  if(AdjAtom.nV > 0 || AdjAtom2.nV > 0)
-			strLines += AddLine(ObjectLNum++, TmpObjectNum, TmpObjectNum2, AdjAtom.GetLinkColor(AdjAtom2));
-
-
-		  if(bDrowFourLinks == true && AdjAtom2.nV > 0)
-		  {
-		   for(int k = 0; k < 4; k++)
-		   {
-			if(k != j)
-			{
-			 AdjAtom3 = AdjAtom2.GetAdj(k);
-			 AdjAtom3.nV = 0;//чтобы атом не рисовался
-			 if((AdjAtom2.nV-((AdjAtom.nV==0)?0:1)) > ((k>j)? (k-1):(k)))
-			 {
-			  AdjAtom3.nV = 4;//
-			 }
-			 strSpheras += AddSphera(ObjectNum, AdjAtom3/*, true*/);
-			 TmpObjectNum3 = ObjectNum++;
-			 //AdjAtom3.nV = 4;//а цвет связей как у четырёхсвязного
-			 if(AdjAtom2.nV > 0)
-			  strLines += AddLine(ObjectLNum++, TmpObjectNum2, TmpObjectNum3, AdjAtom2.GetLinkColor(AdjAtom3));
-			}
-		   }
-		  }
-
-		 }
-		}
-
-	}
-	strContent = strSpheras + strLines;
-
-	if(bCube)
-	{
-		strContent+= GenerateCube();
-	}
-
-
-
-	//запись в файл
-	if(strContent!= "")
-	{
-		AnsiString strDir = GetCurrentDir();
-		strDir += "\\Samples\\Almas4ProbSet";
-		if(bSplit == true)
-		{
-			int nLnk = k.Adg1+1;
-			AnsiString strAddDir;
-			strDir+="\\" + IntToStr(nLnk);
-			if(strAddDir != "")
-			{
-				strDir+="\\" + strAddDir;
-			}
-		}
-		if(DirectoryExists(strDir) == false)
-		{
-		 ForceDirectories(strDir);
-		}
-
-		int hFile = FileCreate(strDir + "\\" + strFileName);
-		if(hFile != -1)
-		{
-			FileWrite(hFile, strContent.c_str(), strContent.Length());
-			FileClose(hFile);
-		}
-	}
+	GenerateProbSet3thGeneratiom();
 }
 //---------------------------------------------------------------------------
 AnsiString __fastcall TMaimForm::GenerateCube(void)
@@ -1181,7 +993,7 @@ l: 01919178,	0191917,	0191918,	1,	0x00FFFF\r\n\
 		";
 }
 //---------------------------------------------------------------------------
-void __fastcall TMaimForm::GenerateAlmas7(void)
+void __fastcall TMaimForm::GenerateProbSet3thGeneratiom(void)
 {
 	m_bStop = false;
 	StatusProgressBar->Min = 0;
@@ -1190,9 +1002,41 @@ void __fastcall TMaimForm::GenerateAlmas7(void)
 	bool bSplit = SplitCheckBox->Checked;
 	bool bCube = CubeCheckBox->Checked;
 
+	int ProbSetIndex = ProbSetRadioGroup->ItemIndex;
+
+	TBaseProbSetKey * ProbSet = NULL;
+
+	TAlmas4ProbSetKey ProbSet4;
+	TAlmas5ProbSetKey ProbSet5;
+	TAlmas6ProbSetKey ProbSet6;
+	TAlmas7ProbSetKey ProbSet7;
+	switch(ProbSetIndex)
+	{
+		case 0:
+			ProbSet = &ProbSet4;
+		break;
+		case 1:
+			ProbSet = &ProbSet5;
+		break;
+		case 2:
+			ProbSet = &ProbSet6;
+		break;
+		case 3:
+			ProbSet = &ProbSet7;
+		break;
+	}
+
+	if (ProbSet == NULL)
+	{
+		AnsiString strErr;
+		strErr = "Не выбран набор вероятностей для генерации.";
+		MessageBoxA(this->Handle,strErr.c_str(),("Внимание"),MB_OK | MB_ICONERROR);
+		return;
+	}
+
 		 AnsiString strAll, str1;
 		 AnsiString szFilename;
-		 szFilename = "Almas7ProbSet";
+		 szFilename = ProbSet->GetProbSetId();
 		 szFilename += ".cfg";
 
 		 TProbKeyVec vPK;
@@ -1232,7 +1076,9 @@ void __fastcall TMaimForm::GenerateAlmas7(void)
 		 for(i=0; i < nPkSize; i++)
 		 {
 		  nKey = vPK[i];
-		  GenFile3(nKey, bSplit, bCube, strFileName);
+		  //ProbSet->Key = nKey;
+		  ProbSet->fill(nKey);
+		  GenFile(ProbSet, bSplit, bCube, strFileName);
 
 		  if(i%5==0)
 		  {
@@ -1255,12 +1101,9 @@ void __fastcall TMaimForm::GenerateAlmas7(void)
 	StatusProgressBar->Position = 100;
 }
 //---------------------------------------------------------------------------
-void __fastcall TMaimForm::GenFile3(TProbKey nKey, bool bSplit, bool bCube, AnsiString &strFileName)
+void __fastcall TMaimForm::GenFile(TBaseProbSetKey * ProbSet, bool bSplit, bool bCube, AnsiString &strFileName)
 {
-	TAlmas7ProbSetKey k;
-	k.fill(nKey);
-
-	strFileName = k.strName + ".txt";
+	strFileName = ProbSet->strName + ".txt";
 	AnsiString strContent;
 	AnsiString strSpheras;
 	AnsiString strLines;
@@ -1270,14 +1113,14 @@ void __fastcall TMaimForm::GenFile3(TProbKey nKey, bool bSplit, bool bCube, Ansi
 	int ObjectNum = 100;//номер объекта сферы
 	int ObjectLNum = 1000;//номер объекта линии
 	int TmpObjectNum,TmpObjectNum2, TmpObjectNum3, MainObjectNum ;
-	MainAtom.nV = k.Adg1+1;
+	MainAtom.nV = ProbSet->Adg1+1;
 	strSpheras += AddSphera(ObjectNum, MainAtom);
 	MainObjectNum = ObjectNum++;
 	//int nV;
 	for(int i = 0; i < 4; i++)
 	{
 		AdjAtom = MainAtom.GetAdj(i);
-		AdjAtom.nV = k.GetAdjType(i);
+		AdjAtom.nV = ProbSet->GetAdjType(i);
 		//nV = AdjAtom.nV;
 		strSpheras += AddSphera(ObjectNum, AdjAtom);
 		TmpObjectNum = ObjectNum++;
@@ -1288,7 +1131,7 @@ void __fastcall TMaimForm::GenFile3(TProbKey nKey, bool bSplit, bool bCube, Ansi
 		 if(i != j)
 		 {
 		  AdjAtom2 = AdjAtom.GetAdj(j);
-		  AdjAtom2.nV = k.GetAdj2Type(i, (j>i)? (j-1):(j));
+		  AdjAtom2.nV = ProbSet->GetAdj2Type(i, (j>i)? (j-1):(j));
 		  strSpheras += AddSphera(ObjectNum, AdjAtom2);
 		  TmpObjectNum2 = ObjectNum++;
 		  if(AdjAtom.nV > 0 || AdjAtom2.nV > 0)
@@ -1331,10 +1174,10 @@ void __fastcall TMaimForm::GenFile3(TProbKey nKey, bool bSplit, bool bCube, Ansi
 	if(strContent!= "")
 	{
 		AnsiString strDir = GetCurrentDir();
-		strDir += "\\Samples\\Almas7ProbSet";
+		strDir += "\\Samples\\" + ProbSet->GetProbSetId();
 		if(bSplit == true)
 		{
-			int nLnk = k.Adg1+1;
+			int nLnk = ProbSet->Adg1+1;
 			AnsiString strAddDir;
 			strDir+="\\" + IntToStr(nLnk);
 			if(strAddDir != "")

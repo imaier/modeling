@@ -4,6 +4,11 @@
 #pragma hdrstop
 
 #include "Almas7ProbSetKeyUnit.h"
+//---------------------------------------------------------------------------
+#define INTERFACE_ID          "Almas7ProbSet"
+#define INTERFACE_NAME        "Первые и вторые прямые, вторые непрямые соседи"
+#define INTERFACE_DISCRIPTION "Учитывается общее число первых соседей, число вторых прямых и число вторых непрямых соседей"
+//---------------------------------------------------------------------------
 //новый способ с делениями
 #define Adg1Base 1
 //количество первых соседей
@@ -53,75 +58,11 @@ static TProbKey cvAdg2Base[4][3] = { {Adg2Base_(0,0),Adg2Base_(0,1),Adg2Base_(0,
 }
 //---------------------------------------------------------------------------
 TAlmas7ProbSetKey::TAlmas7ProbSetKey()
+:TBaseProbSetKey()
 {
-	Adg1 = 0;
-	Adg2_i0_j0 = 0;
-	Adg2_i1_j0 = 0;
-	Adg2_i2_j0 = 0;
-	Adg2_i3_j0 = 0;
-	Adg2_i0_j1 = 0;
-	Adg2_i1_j1 = 0;
-	Adg2_i2_j1 = 0;
-	Adg2_i3_j1 = 0;
-	Adg2_i0_j2 = 0;
-	Adg2_i1_j2 = 0;
-	Adg2_i2_j2 = 0;
-	Adg2_i3_j2 = 0;
-
 	F = 0;
 	dS = 0;
 	nS = 0;
-
-	Key2 = 0;
-}
-//---------------------------------------------------------------------------
-void __fastcall TAlmas7ProbSetKey::fill(TProbKey nKey)
-{
-	Key = nKey;
-
-	Adg1 = divGetAdg1(nKey);
-	Adg2_i0_j0 = divGetAdg2(nKey, 0, 0);
-	Adg2_i1_j0 = divGetAdg2(nKey, 1, 0);
-	Adg2_i2_j0 = divGetAdg2(nKey, 2, 0);
-	Adg2_i3_j0 = divGetAdg2(nKey, 3, 0);
-	Adg2_i0_j1 = divGetAdg2(nKey, 0, 1);
-	Adg2_i1_j1 = divGetAdg2(nKey, 1, 1);
-	Adg2_i2_j1 = divGetAdg2(nKey, 2, 1);
-	Adg2_i3_j1 = divGetAdg2(nKey, 3, 1);
-	Adg2_i0_j2 = divGetAdg2(nKey, 0, 2);
-	Adg2_i1_j2 = divGetAdg2(nKey, 1, 2);
-	Adg2_i2_j2 = divGetAdg2(nKey, 2, 2);
-	Adg2_i3_j2 = divGetAdg2(nKey, 3, 2);
-
-	fill2(nKey);
-
-	GetProbNameFromKey2(strName);
-}
-//---------------------------------------------------------------------------
-TProbKey __fastcall TAlmas7ProbSetKey::unfill()
-{
-	TProbKey nKey = 0;
-
-	divSetAdg1(nKey,Adg1);
-	divSetAdg2(nKey, Adg2_i0_j0, 0, 0);
-	divSetAdg2(nKey, Adg2_i0_j1, 0, 1);
-	divSetAdg2(nKey, Adg2_i0_j2, 0, 2);
-	divSetAdg2(nKey, Adg2_i1_j0, 1, 0);
-	divSetAdg2(nKey, Adg2_i1_j1, 1, 1);
-	divSetAdg2(nKey, Adg2_i1_j2, 1, 2);
-	divSetAdg2(nKey, Adg2_i2_j0, 2, 0);
-	divSetAdg2(nKey, Adg2_i2_j1, 2, 1);
-	divSetAdg2(nKey, Adg2_i2_j2, 2, 2);
-	divSetAdg2(nKey, Adg2_i3_j0, 3, 0);
-	divSetAdg2(nKey, Adg2_i3_j1, 3, 1);
-	divSetAdg2(nKey, Adg2_i3_j2, 3, 2);
-
-	Key = nKey;
-
-	TAlmas7ProbSetKey k1;
-	k1.fill(Key);
-
-	return nKey;
 }
 //---------------------------------------------------------------------------
 void __fastcall TAlmas7ProbSetKey::fill2(TProbKey nKey)
@@ -196,44 +137,15 @@ void __fastcall TAlmas7ProbSetKey::fill2(TProbKey nKey)
 	SetKey2(Key2, F, dS, nS);
 }
 //---------------------------------------------------------------------------
-int __fastcall TAlmas7ProbSetKey::GetAdjType(int i)
-{
-	int j;
-	int Type = 0;
-	int Adg2;
-
-	if(Adg1 >= i)
-	{
-	 Type++;
-	 for(j = 0; j < Adg2Num; j++)
-	 {
-	  Adg2 = divGetAdg2(Key, i, j);
-	  if(Adg2 != (Adg2State-1))
-	  {
-	   Type++;
-	  }
-	 }
-	}
-
-	return Type;
-}
-//---------------------------------------------------------------------------
-int __fastcall TAlmas7ProbSetKey::GetAdj2Type(int i,int j)
-{
-	int Type = 0;
-	int Adg2;
-	Adg2 = divGetAdg2(Key, i, j);
-	if(Adg2 != (Adg2State-1))
-	{
-	 Type = Adg2+1;
-	}
-	return Type;
-}
-//---------------------------------------------------------------------------
 void __fastcall TAlmas7ProbSetKey::GetProbNameFromKey2(AnsiString &_strName)
 {
 	int nType = Adg1+1;
 	strName.sprintf("%03d (F%d, dS%d, nS%d)x%d - %d", Key2, F, dS, nS, nType, Key);
+}
+//---------------------------------------------------------------------------
+AnsiString __fastcall TAlmas7ProbSetKey::GetProbSetId()
+{
+	return AnsiString(INTERFACE_ID);
 }
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

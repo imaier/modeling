@@ -10,7 +10,10 @@
 #include <ComCtrls.hpp>
 //---------------------------------------------------------------------------
 #include "Almas4ProbSetKeyUnit.h"
+#include "Almas5ProbSetKeyUnit.h"
+#include "Almas6ProbSetKeyUnit.h"
 #include "Almas7ProbSetKeyUnit.h"
+#include <ExtCtrls.hpp>
 //---------------------------------------------------------------------------
 
 class TAtomCrd
@@ -34,16 +37,16 @@ __published:	// IDE-managed Components
     TLabel *StatusLabel;
     TCheckBox *SplitCheckBox;
     TCheckBox *CubeCheckBox;
+	TRadioGroup *ProbSetRadioGroup;
     void __fastcall StopButtonClick(TObject *Sender);
 	void __fastcall GenerateButtonClick(TObject *Sender);
 private:	// User declarations
     void __fastcall GenFile(int nPosition, bool bSplit, bool bCube);
 	AnsiString __fastcall GenFileName(int nPosition);
 	void __fastcall GenerateAlmas2(void);
-	void __fastcall GenerateAlmas4(void);
-	void __fastcall GenerateAlmas7(void);
-	void __fastcall GenFile2(TProbKey nKey, bool bSplit, bool bCube, AnsiString &strFileName);
-	void __fastcall GenFile3(TProbKey nKey, bool bSplit, bool bCube, AnsiString &strFileName);
+	void __fastcall GenerateProbSet3thGeneratiom(void);
+
+	void __fastcall GenFile(TBaseProbSetKey *ProbSet, bool bSplit, bool bCube, AnsiString &strFileName);
 
 	AnsiString __fastcall GenerateCube(void);
 
