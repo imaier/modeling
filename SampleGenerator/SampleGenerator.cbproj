@@ -3,7 +3,7 @@
 			<ProjectGuid>{79DAAD76-BF42-4474-898E-82F0EF2D2F3E}</ProjectGuid>
 			<ProjectType>CppVCLApplication</ProjectType>
 			<MainSource>SampleGenerator.cpp</MainSource>
-			<Config Condition="'$(Config)'==''">Release</Config>
+			<Config Condition="'$(Config)'==''">Debug</Config>
 			<ProjectVersion>12.0</ProjectVersion>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -105,6 +105,10 @@
 			<CppCompile Include="Almas6ProbSetKeyUnit.cpp">
 				<DependentOn>Almas6ProbSetKeyUnit.h</DependentOn>
 				<BuildOrder>7</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas3ProbSetKeyUnit.cpp">
+				<DependentOn>Almas3ProbSetKeyUnit.h</DependentOn>
+				<BuildOrder>8</BuildOrder>
 			</CppCompile>
 			<FormResources Include="MaimUnit.dfm"/>
 			<BuildConfiguration Include="Base">

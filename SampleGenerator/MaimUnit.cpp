@@ -7,6 +7,12 @@
 //#include <windef.h>
 //#include <algorithm>
 #include <stdio.h>
+#include "Almas3ProbSetKeyUnit.h"
+#include "Almas4ProbSetKeyUnit.h"
+#include "Almas5ProbSetKeyUnit.h"
+#include "Almas6ProbSetKeyUnit.h"
+#include "Almas7ProbSetKeyUnit.h"
+
 
 #define min(a, b)  (((a) < (b)) ? (a) : (b))
 #define max(a, b)  (((a) > (b)) ? (a) : (b))
@@ -1006,6 +1012,7 @@ void __fastcall TMaimForm::GenerateProbSet3thGeneratiom(void)
 
 	TBaseProbSetKey * ProbSet = NULL;
 
+	TAlmas3ProbSetKey ProbSet3;
 	TAlmas4ProbSetKey ProbSet4;
 	TAlmas5ProbSetKey ProbSet5;
 	TAlmas6ProbSetKey ProbSet6;
@@ -1013,15 +1020,21 @@ void __fastcall TMaimForm::GenerateProbSet3thGeneratiom(void)
 	switch(ProbSetIndex)
 	{
 		case 0:
-			ProbSet = &ProbSet4;
-		break;
+			GenerateAlmas2();
+			return;
 		case 1:
-			ProbSet = &ProbSet5;
+			ProbSet = &ProbSet3;
 		break;
 		case 2:
-			ProbSet = &ProbSet6;
+			ProbSet = &ProbSet4;
 		break;
 		case 3:
+			ProbSet = &ProbSet5;
+		break;
+		case 4:
+			ProbSet = &ProbSet6;
+		break;
+		case 5:
 			ProbSet = &ProbSet7;
 		break;
 	}

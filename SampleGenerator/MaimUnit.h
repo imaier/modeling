@@ -9,11 +9,9 @@
 #include <Forms.hpp>
 #include <ComCtrls.hpp>
 //---------------------------------------------------------------------------
-#include "Almas4ProbSetKeyUnit.h"
-#include "Almas5ProbSetKeyUnit.h"
-#include "Almas6ProbSetKeyUnit.h"
-#include "Almas7ProbSetKeyUnit.h"
 #include <ExtCtrls.hpp>
+//---------------------------------------------------------------------------
+#include "BaseProbSetUnit.h"
 //---------------------------------------------------------------------------
 
 class TAtomCrd

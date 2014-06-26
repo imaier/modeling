@@ -45,8 +45,8 @@ public:
 
 	virtual TProbKey __fastcall unfill();
 
-	int __fastcall GetAdjType(int i);
-	int __fastcall GetAdj2Type(int i,int j);
+	virtual int __fastcall GetAdjType(int i);
+	virtual int __fastcall GetAdj2Type(int i,int j);
 };
 //---------------------------------------------------------------------------
 #endif
