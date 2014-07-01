@@ -763,6 +763,27 @@ TProbIndex TAlmas4ProbSetGlobal::GetProbIndexFromAtomShema(TAtomShema &as)
 	return nPI;
 }
 //---------------------------------------------------------------------------
+int TAlmas4ProbSetGlobal::GetMainAtomTypeForProb(int Index)
+{//получение типа главного атома для данной вероятности
+	int nType = -1;
+
+	if (Index >=0 && Index<m_nAllNumProbality && m_bInit)
+	{
+		TKey2ToKeyMap::iterator itr = m_Key2ToKeyMap.begin();
+		for(int i = 0; i < Index; i++)
+		{
+		 itr++;
+		}
+		if(itr != m_Key2ToKeyMap.end())
+		{
+		 int nKey = itr->second;
+		 nType =  divGetAdg1(nKey)+1;
+		}
+	}
+
+	return nType;
+}
+//---------------------------------------------------------------------------
 TAlmas4ProbSetCreator::TAlmas4ProbSetCreator()
 :IBaseProbSetCreator(TAlmas4ProbSetGlobal::Get())
 {

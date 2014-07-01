@@ -54,18 +54,18 @@ struct BigArrayCoord
 //Структура ячейки в таблице связей атомов
 struct TCC // CC - Cell Config
 {
-    int  N;
-    int di;
-    int dj;
-    int dk;
-    TCC(int Na, int i, int j, int k);
+	int  N;
+	int di;
+	int dj;
+	int dk;
+	TCC(int Na, int i, int j, int k);
 };
 //---------------------------------------------------------------------------
 //Структура ячейки в таблице связей атомов
 struct TCr //Cr - Coordinaty
 {
-    int dx;
-    int dy;
+	int dx;
+	int dy;
 	int dz;
 	int SubLayer;
 	TCr(int x, int y, int z, int _SubLayer);
@@ -82,6 +82,8 @@ public:
 	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
 
 	bool InitFomProb(TProbPovider &SP);
+
+	int __fastcall GetMainAtomType(TProbIndex Index);//получение типа главного атома для данной вероятности
 };
 //---------------------------------------------------------------------------
 class TUndoDissolutionThread
@@ -147,15 +149,19 @@ public:
     TSurfVal& GetVal(int i, int j);
     TPoint3d iOrt;//координаты базисного вектора оси X в глобальных координатах
     TPoint3d jOrt;//координаты базисного вектора оси Y в глобальных координатах
-    TPoint3d kOrt;//координаты базисного вектора оси Z в глобальных координатах
+	TPoint3d kOrt;//координаты базисного вектора оси Z в глобальных координатах
 
     TMatrix FromBaseToOrtho;//матрица преобразования из базисной системы координат в глобальную
     TMatrix FromOrthoToBase;//обратно
 
     bool FromCoordToIndex(TPoint3d Coord, int &i, int &j, TSurfVal &z);//из своей ситемы координат (базисной) в свои индексы мвссива и значение
-    //расстояние между точкой и плоскостью
-    TSurfVal Distance(TPoint3d APoint, TPoint3d NormVector, TSurfVal D);
+	//расстояние между точкой и плоскостью
+	TSurfVal Distance(TPoint3d APoint, TPoint3d NormVector, TSurfVal D);
 };
+//---------------------------------------------------------------------------
+//тип главного атома каждой вероятности
+typedef unsigned char TTypeAtom;
+typedef std::vector<TTypeAtom> TTypeAtomVec;
 //---------------------------------------------------------------------------
 class TDissolutionThread : public TThread
 {
@@ -166,13 +172,20 @@ private:
 
 	TProbPovider SPn;//нормирванная вероятность
 
-    int SizeX, SizeY; //размер поверхности
-    int NumAtomsInLayer;
-    int CopacityMemoryForLayer;
-    int OneX, OneY, OneN;
-    int SizeDtType, SizeDtIndex, SizeBothDtTypeDtIndex;
+	//вектор типов главного атома для каждой вероятности
+	TTypeAtomVec MainAtomTypeVec;//тип главного атома каждой вероятности
+	AnsiString MainAtomTypeVecProbIdString;//идентификатор набора вероятностей
+	unsigned int _N1, _N2, _N3;
+	int CurrDeleted;
+
+
+	int SizeX, SizeY; //размер поверхности
+	int NumAtomsInLayer;
+	int CopacityMemoryForLayer;
+	int OneX, OneY, OneN;
+	int SizeDtType, SizeDtIndex, SizeBothDtTypeDtIndex;
 	unsigned int iDeletedAtom;
-    DtType SecondTypeAtom[4];//тип атома до второго колена
+	DtType SecondTypeAtom[4];//тип атома до второго колена
 	int iSecondTypeAtom;
 	BigArrayCoord m_vTreeNeib[40];//координаты третих сосеей
 
@@ -205,6 +218,7 @@ private:
 	unsigned int GetN1(void);
 	unsigned int GetN2(void);
 	unsigned int GetN3(void);
+	bool __fastcall CalcN1N2N3(void);
 	unsigned int GetDeletingLayers(void);
 	unsigned int GetDeletedLayers(void);
 	unsigned int GetNumAtomsInLayer(int Index);
@@ -246,7 +260,7 @@ public:
 	bool MaskAll;//маскировать все сортовые атомы под маской, иначе только первый слой вдоль оси Z
 	unsigned int Plane;
 	//TExperimentProperty *ExpPrprt;
-
+	//статистика
 	TDateTime StartTime, FinishTime;
 	__property int Height = {read = SizeY};
 	__property int Width = {read = SizeX};

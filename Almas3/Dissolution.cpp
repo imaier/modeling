@@ -1452,34 +1452,93 @@ void TDissolutionThread::RenderingNewMask(TMaskVec &vMask)
     }
 }
 //---------------------------------------------------------------------------
+bool __fastcall TDissolutionThread::CalcN1N2N3(void)
+{
+	int i;
+	AnsiString ProbSetIdString = SP.GetInterface()->GetGlobalData().GetProbSetIdString();
+
+	if(ProbSetIdString != MainAtomTypeVecProbIdString)
+	{
+	 MainAtomTypeVec.clear();
+	 _N1 = -1;
+	 _N2 = -1;
+	 _N3 = -1;
+	 CurrDeleted = -1;
+	 IBaseProbSetGlobalData &pPSGD = SP.GetInterface()->GetGlobalData();
+
+	 int n = pPSGD.GetAllNumProbality();
+
+	 MainAtomTypeVec.resize(n, 0);
+
+
+	 for (i = 0; i < n; i++)
+	 {
+	  MainAtomTypeVec[i] = pPSGD.GetMainAtomTypeForProb(i);
+	 }
+
+	 MainAtomTypeVecProbIdString = ProbSetIdString;
+	}
+
+	if(CurrDeleted != DeletedAtom)
+	{
+	 _N1 = 0;
+	 _N2 = 0;
+	 _N3 = 0;
+	 UINT n = MainAtomTypeVec.size();
+
+	 if (n != KindAtoms.size())
+	 {
+	  return false;
+	 }
+	 int cnt;
+	 for (i = 0; i < n; i++)
+	 {
+	  switch(MainAtomTypeVec[i])
+	  {
+		case 1:
+		 _N1 += KindAtoms[i].size();
+		break;
+		case 2:
+		 _N2 += KindAtoms[i].size();
+		break;
+		case 3:
+		 _N3 += KindAtoms[i].size();
+		break;
+	  }
+	 }
+	}
+
+	return true;
+}
+//---------------------------------------------------------------------------
 unsigned int TDissolutionThread::GetN1(void)
 {
-	unsigned int nRet =0;
-	if(KindAtoms.size() == 3)
+	if(CalcN1N2N3() == false)
 	{
-		nRet = (unsigned int)KindAtoms[0].size();
+	 return 0;
 	}
-	return nRet;
+
+	return _N1;
 }
 //---------------------------------------------------------------------------
 unsigned int TDissolutionThread::GetN2(void)
 {
-	unsigned int nRet =0;
-	if(KindAtoms.size() == 3)
+	if(CalcN1N2N3() == false)
 	{
-		nRet = (unsigned int)KindAtoms[1].size();
+	 return 0;
 	}
-	return nRet;
+
+	return _N2;
 }
 //---------------------------------------------------------------------------
 unsigned int TDissolutionThread::GetN3(void)
 {
-	unsigned int nRet =0;
-	if(KindAtoms.size() == 3)
+	if(CalcN1N2N3() == false)
 	{
-		nRet = (unsigned int)KindAtoms[2].size();
+	 return 0;
 	}
-	return nRet;
+
+	return _N3;
 }
 //---------------------------------------------------------------------------
 bool __fastcall TDissolutionThread::DeleteAtom(void)

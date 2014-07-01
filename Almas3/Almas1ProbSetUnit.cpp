@@ -75,6 +75,18 @@ TProbIndex TAlmas1ProbSetGlobal::GetProbIndexFromAtomShema(TAtomShema &as)
 	return nPI;
 }
 //---------------------------------------------------------------------------
+int TAlmas1ProbSetGlobal::GetMainAtomTypeForProb(int Index)
+{//получение типа главного атома для данной вероятности
+	int nType = -1;
+
+	if (Index >=0 && Index<m_nAllNumProbality && m_bInit)
+	{
+		nType = Index+1;
+	}
+
+	return nType;
+}
+//---------------------------------------------------------------------------
 TAlmas1ProbSetCreator::TAlmas1ProbSetCreator()
 :IBaseProbSetCreator(TAlmas1ProbSetGlobal::Get())
 {
