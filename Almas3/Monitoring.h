@@ -8,6 +8,7 @@
 #include <vcl\Forms.hpp>
 #include <vcl\ExtCtrls.hpp>
 #include <vcl\ComCtrls.hpp>
+#include <Buttons.hpp>
 //---------------------------------------------------------------------------
 class TMonitoringForm : public TForm
 {
@@ -74,9 +75,11 @@ __published:	// IDE-managed Components
 	TLabel *FluidSpeedTextLabel;
 	TPanel *EnablePanel;
 	TCheckBox *EnableCheckBox;
+	TSpeedButton *StatisticSpeedButton;
 	void __fastcall MonitoringTimerTimer(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormHide(TObject *Sender);
+	void __fastcall StatisticSpeedButtonClick(TObject *Sender);
 	
 	
 private:	// User declarations

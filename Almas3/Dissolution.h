@@ -132,9 +132,9 @@ class TPoint3d
 class TSurface
 {
 public:
-    void SetSize(int X, int Y);
+	void SetSize(int X, int Y);
 	int SizeX;
-    int SizeY;
+	int SizeY;
 
     typedef std::vector<TSurfVal> TValVector;
     std::vector<TValVector> Array2D;
@@ -163,6 +163,39 @@ public:
 typedef unsigned char TTypeAtom;
 typedef std::vector<TTypeAtom> TTypeAtomVec;
 //---------------------------------------------------------------------------
+struct TStaticticData
+{
+public:
+	TStaticticData();
+	TStaticticData(const TStaticticData& r);
+
+	void operator=(const TStaticticData& r);
+	void Init(void);
+
+	float N1;
+	float N2;
+	float N3;
+	int Deleted;
+};
+typedef std::vector<TStaticticData> TStaticticDataVec;
+//---------------------------------------------------------------------------
+class TStaticticParam
+{
+	TStaticticDataVec m_vStatictic;//не усредненная
+	TStaticticDataVec m_vAveragedStatictic;//усредненная статисктика
+
+	void AverageData(void);
+public:
+	TStaticticParam();
+
+	void Init(void);
+
+	int m_PeriodOfAverage; //количество удаленных атомов через которые усреднять, если 0 то статиститка не собирается
+
+	void AddStaticticData(TStaticticData &data);
+	const TStaticticDataVec& GetStatictic(void);
+};
+//---------------------------------------------------------------------------
 class TDissolutionThread : public TThread
 {
 private:
@@ -176,7 +209,7 @@ private:
 	TTypeAtomVec MainAtomTypeVec;//тип главного атома каждой вероятности
 	AnsiString MainAtomTypeVecProbIdString;//идентификатор набора вероятностей
 	unsigned int _N1, _N2, _N3;
-	int CurrDeleted;
+	unsigned int CurrDeleted;
 
 
 	int SizeX, SizeY; //размер поверхности
@@ -188,6 +221,8 @@ private:
 	DtType SecondTypeAtom[4];//тип атома до второго колена
 	int iSecondTypeAtom;
 	BigArrayCoord m_vTreeNeib[40];//координаты третих сосеей
+
+	TStaticticParam m_StaticticParam;//статитстика
 
 	void __fastcall AddLayers(unsigned int Indx);
 	void __fastcall DecTypeAtom(BigArrayCoord* BAC);
@@ -306,9 +341,13 @@ public:
 
 	void InitRNG(void);
 
-
+	//критческая секция для много поточного взаимодествия
 	void EnterCS(void);
 	void LeaveCS(void);
+
+
+	void SetStaticticPeriod(int PeriodOfAverage);//включить сбор статистики с периодом усреднения
+	const TStaticticDataVec& GetStatictic(void);//получить вектор накопленной статистки
 };
 //---------------------------------------------------------------------------
 #endif

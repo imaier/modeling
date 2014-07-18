@@ -126,54 +126,53 @@
 				<DependentOn>Monitoring.h</DependentOn>
 				<BuildOrder>13</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="DefectEditUnit.cpp">
-				<Form>DefectEditForm</Form>
-				<DependentOn>DefectEditUnit.h</DependentOn>
-				<BuildOrder>33</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="DefectUnit.cpp">
-				<Form>DefectForm</Form>
-				<DependentOn>DefectUnit.h</DependentOn>
-				<BuildOrder>32</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="Almas7ProbSetUnit.cpp">
-				<DependentOn>Almas7ProbSetUnit.h</DependentOn>
-				<BuildOrder>36</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="MaskEditUnit.cpp">
-				<Form>MaskEditForm</Form>
-				<DependentOn>MaskEditUnit.h</DependentOn>
-				<BuildOrder>34</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="Almas6ProbSetUnit.cpp">
-				<DependentOn>Almas6ProbSetUnit.h</DependentOn>
-				<BuildOrder>31</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="Matrix.cpp">
-				<BuildOrder>17</BuildOrder>
-				<BuildOrder>16</BuildOrder>
-			</CppCompile>
 			<CppCompile Include="ScreenCopyUnit.cpp">
 				<BuildOrder>44</BuildOrder>
 				<Form>ScreenCopyForm</Form>
 				<DependentOn>ScreenCopyUnit.h</DependentOn>
 				<BuildOrder>0</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="SurfaceUnit.cpp">
-				<BuildOrder>26</BuildOrder>
-				<Form>SurfaceForm</Form>
-				<DependentOn>SurfaceUnit.h</DependentOn>
-				<BuildOrder>19</BuildOrder>
+			<CppCompile Include="MaskEditUnit.cpp">
+				<Form>MaskEditForm</Form>
+				<DependentOn>MaskEditUnit.h</DependentOn>
+				<BuildOrder>34</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="DefectEditUnit.cpp">
+				<Form>DefectEditForm</Form>
+				<DependentOn>DefectEditUnit.h</DependentOn>
+				<BuildOrder>33</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="N1N2N3QuantityDiagramUnit.cpp">
+				<Form>N1N2N3QuantityDiagramForm</Form>
+				<DependentOn>N1N2N3QuantityDiagramUnit.h</DependentOn>
+				<BuildOrder>37</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas7ProbSetUnit.cpp">
+				<DependentOn>Almas7ProbSetUnit.h</DependentOn>
+				<BuildOrder>36</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="DefectUnit.cpp">
+				<Form>DefectForm</Form>
+				<DependentOn>DefectUnit.h</DependentOn>
+				<BuildOrder>32</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="Almas5ProbSetUnit.cpp">
 				<DependentOn>Almas5ProbSetUnit.h</DependentOn>
 				<BuildOrder>27</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="PictUnit.cpp">
-				<BuildOrder>35</BuildOrder>
-				<Form>PictuteForm</Form>
-				<DependentOn>PictUnit.h</DependentOn>
-				<BuildOrder>3</BuildOrder>
+			<CppCompile Include="Matrix.cpp">
+				<BuildOrder>17</BuildOrder>
+				<BuildOrder>16</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Almas6ProbSetUnit.cpp">
+				<DependentOn>Almas6ProbSetUnit.h</DependentOn>
+				<BuildOrder>31</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="SurfaceUnit.cpp">
+				<BuildOrder>26</BuildOrder>
+				<Form>SurfaceForm</Form>
+				<DependentOn>SurfaceUnit.h</DependentOn>
+				<BuildOrder>19</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="Almas2ProbSetUnit.cpp">
 				<DependentOn>Almas2ProbSetUnit.h</DependentOn>
@@ -214,20 +213,10 @@
 				<DependentOn>GLDrow.h</DependentOn>
 				<BuildOrder>11</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="Almas4ProbSetUnit.cpp">
-				<DependentOn>Almas4ProbSetUnit.h</DependentOn>
-				<BuildOrder>26</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="Dissolution.cpp">
-				<BuildOrder>29</BuildOrder>
-				<DependentOn>Dissolution.h</DependentOn>
-				<BuildOrder>17</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="MaskUnit.cpp">
-				<BuildOrder>32</BuildOrder>
-				<Form>MaskForm</Form>
-				<DependentOn>MaskUnit.h</DependentOn>
-				<BuildOrder>18</BuildOrder>
+			<CppCompile Include="BaseProbSetUnit.cpp">
+				<BuildOrder>56</BuildOrder>
+				<DependentOn>BaseProbSetUnit.h</DependentOn>
+				<BuildOrder>10</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="InfoUnit.cpp">
 				<BuildOrder>23</BuildOrder>
@@ -235,46 +224,63 @@
 				<DependentOn>InfoUnit.h</DependentOn>
 				<BuildOrder>21</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="QuantityByGroupeUnit.cpp">
-				<Form>QuantityByGroupeForm</Form>
-				<DependentOn>QuantityByGroupeUnit.h</DependentOn>
-				<BuildOrder>30</BuildOrder>
+			<CppCompile Include="Almas4ProbSetUnit.cpp">
+				<DependentOn>Almas4ProbSetUnit.h</DependentOn>
+				<BuildOrder>26</BuildOrder>
 			</CppCompile>
-			<None Include="pch1.h">
-				<BuildOrder>30</BuildOrder>
-			</None>
-			<CppCompile Include="BaseProbSetUnit.cpp">
-				<BuildOrder>56</BuildOrder>
-				<DependentOn>BaseProbSetUnit.h</DependentOn>
-				<BuildOrder>10</BuildOrder>
+			<CppCompile Include="PictUnit.cpp">
+				<BuildOrder>35</BuildOrder>
+				<Form>PictuteForm</Form>
+				<DependentOn>PictUnit.h</DependentOn>
+				<BuildOrder>3</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="DistributionUnit.cpp">
-				<Form>DistributionForm</Form>
-				<DependentOn>DistributionUnit.h</DependentOn>
-				<BuildOrder>28</BuildOrder>
+			<CppCompile Include="MaskUnit.cpp">
+				<BuildOrder>32</BuildOrder>
+				<Form>MaskForm</Form>
+				<DependentOn>MaskUnit.h</DependentOn>
+				<BuildOrder>18</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Dissolution.cpp">
+				<BuildOrder>29</BuildOrder>
+				<DependentOn>Dissolution.h</DependentOn>
+				<BuildOrder>17</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="ProgressUnit.cpp">
 				<Form>ProgressForm</Form>
 				<DependentOn>ProgressUnit.h</DependentOn>
 				<BuildOrder>35</BuildOrder>
 			</CppCompile>
+			<None Include="pch1.h">
+				<BuildOrder>30</BuildOrder>
+			</None>
+			<CppCompile Include="QuantityByGroupeUnit.cpp">
+				<Form>QuantityByGroupeForm</Form>
+				<DependentOn>QuantityByGroupeUnit.h</DependentOn>
+				<BuildOrder>30</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="DistributionUnit.cpp">
+				<Form>DistributionForm</Form>
+				<DependentOn>DistributionUnit.h</DependentOn>
+				<BuildOrder>28</BuildOrder>
+			</CppCompile>
 			<FormResources Include="ProbSetModelUnit.dfm"/>
 			<FormResources Include="PropertyUnit.dfm"/>
 			<FormResources Include="ProbalityUnit.dfm"/>
 			<FormResources Include="MillersUnit.dfm"/>
 			<FormResources Include="Monitoring.dfm"/>
-			<FormResources Include="DefectEditUnit.dfm"/>
-			<FormResources Include="DefectUnit.dfm"/>
-			<FormResources Include="MaskEditUnit.dfm"/>
 			<FormResources Include="ScreenCopyUnit.dfm"/>
+			<FormResources Include="MaskEditUnit.dfm"/>
+			<FormResources Include="DefectEditUnit.dfm"/>
+			<FormResources Include="N1N2N3QuantityDiagramUnit.dfm"/>
+			<FormResources Include="DefectUnit.dfm"/>
 			<FormResources Include="SurfaceUnit.dfm"/>
-			<FormResources Include="PictUnit.dfm"/>
 			<FormResources Include="Main.dfm"/>
-			<FormResources Include="MaskUnit.dfm"/>
 			<FormResources Include="InfoUnit.dfm"/>
+			<FormResources Include="PictUnit.dfm"/>
+			<FormResources Include="MaskUnit.dfm"/>
+			<FormResources Include="ProgressUnit.dfm"/>
 			<FormResources Include="QuantityByGroupeUnit.dfm"/>
 			<FormResources Include="DistributionUnit.dfm"/>
-			<FormResources Include="ProgressUnit.dfm"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

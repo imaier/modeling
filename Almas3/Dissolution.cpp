@@ -1454,7 +1454,7 @@ void TDissolutionThread::RenderingNewMask(TMaskVec &vMask)
 //---------------------------------------------------------------------------
 bool __fastcall TDissolutionThread::CalcN1N2N3(void)
 {
-	int i;
+	UINT i;
 	AnsiString ProbSetIdString = SP.GetInterface()->GetGlobalData().GetProbSetIdString();
 
 	if(ProbSetIdString != MainAtomTypeVecProbIdString)
@@ -1466,7 +1466,7 @@ bool __fastcall TDissolutionThread::CalcN1N2N3(void)
 	 CurrDeleted = -1;
 	 IBaseProbSetGlobalData &pPSGD = SP.GetInterface()->GetGlobalData();
 
-	 int n = pPSGD.GetAllNumProbality();
+	 UINT n = pPSGD.GetAllNumProbality();
 
 	 MainAtomTypeVec.resize(n, 0);
 
@@ -1549,6 +1549,7 @@ bool __fastcall TDissolutionThread::DeleteAtom(void)
 	{
 	  InitRNG();
 	}
+
 	switch(m_Algoritm.m_nAlgoritmKind)
 	{
 	 case ALG_MONTECARLO:
@@ -1559,11 +1560,21 @@ bool __fastcall TDissolutionThread::DeleteAtom(void)
 	 break;
 	 case ALG_POROG_DOLA:
 	  bRet = AlgPorogDolaDeleteAtom();
-     break;
-     case ALG_DOLA_PROB:
-      bRet = AlgDolaProbDeleteAtom();
-     break;
-    }
+	 break;
+	 case ALG_DOLA_PROB:
+	  bRet = AlgDolaProbDeleteAtom();
+	 break;
+	}
+	if (m_StaticticParam.m_PeriodOfAverage > 0)
+	{
+	 TStaticticData sd;
+	 sd.N1 = GetN1();
+	 sd.N2 = GetN2();
+	 sd.N3 = GetN3();
+	 sd.Deleted = iDeletedAtom;
+	 m_StaticticParam.AddStaticticData(sd);
+	}
+
     LeaveCS();
 	return bRet;
 }
@@ -4049,5 +4060,117 @@ void TDissolutionThread::InitSurface(TDissolutionParametries &DP)
 	Finish = false;
 }
 //---------------------------------------------------------------------------
+TStaticticData::TStaticticData()
+{
+	Init();
+}
+//---------------------------------------------------------------------------
+TStaticticData::TStaticticData(const TStaticticData& r)
+{
+	*this = r;
+}
+//---------------------------------------------------------------------------
+void TStaticticData::operator=(const TStaticticData& r)
+{
+	N1 = r.N1;
+	N2 = r.N2;
+	N3 = r.N3;
+	Deleted = r.Deleted;
+}
+//---------------------------------------------------------------------------
+void TStaticticData::Init(void)
+{
+	N1 = 0;
+	N2 = 0;
+	N3 = 0;
+	Deleted = 0;
+}
+//---------------------------------------------------------------------------
+TStaticticParam::TStaticticParam()
+{
+	Init();
+}
+//---------------------------------------------------------------------------
+void TStaticticParam::Init()
+{
+	m_PeriodOfAverage = 0;
+	m_vStatictic.clear();//не усредненная
+	m_vAveragedStatictic.clear();//усредненная статисктика
+}
+//---------------------------------------------------------------------------
+void TStaticticParam::AddStaticticData(TStaticticData &data)
+{
+	if (m_PeriodOfAverage > 0)
+	{
+	 if(m_vAveragedStatictic.size() ==0)
+	 {
+	  m_vAveragedStatictic.push_back(data);
+	  return;
+	 }
+	 m_vStatictic.push_back(data);
+	 AverageData();
+	}
+}
+//---------------------------------------------------------------------------
+void TStaticticParam::AverageData(void)
+{
+	if(m_vStatictic.size() == 0)
+	{
+	 return;
+	}
+	int LastAverageDeleted = 0;
+	int cnt = m_vStatictic.size();
+	int LastDeleted = m_vStatictic[cnt-1].Deleted;
 
+	if(m_vAveragedStatictic.size() > 0)
+	{
+	 LastAverageDeleted = m_vAveragedStatictic[m_vAveragedStatictic.size()-1].Deleted;
+	}
+
+	if((LastDeleted - LastAverageDeleted) => m_PeriodOfAverage)
+	{
+	 TStaticticData AvData;
+	 int i = 0;
+
+	 for(i=0; i < cnt; i++)
+	 {
+	  TStaticticData& Data = m_vStatictic[i];
+	  AvData.N1 += Data.N1;
+	  AvData.N2 += Data.N2;
+	  AvData.N3 += Data.N3;
+	 }
+	 AvData.N1 /= cnt;
+	 AvData.N2 /= cnt;
+	 AvData.N3 /= cnt;
+	 AvData.Deleted = LastDeleted;
+	 m_vAveragedStatictic.push_back(AvData);
+	}
+}
+//---------------------------------------------------------------------------
+const TStaticticDataVec& TStaticticParam::GetStatictic(void)
+{
+	return m_vAveragedStatictic;
+}
+//---------------------------------------------------------------------------
+void TDissolutionThread::SetStaticticPeriod(int PeriodOfAverage)
+{//включить сбор статистики с периодом усреднения
+	if(m_StaticticParam.m_PeriodOfAverage != PeriodOfAverage)
+	{
+	 m_StaticticParam.Init();
+	 m_StaticticParam.m_PeriodOfAverage = PeriodOfAverage;
+
+	 TStaticticData sd;
+	 sd.N1 = GetN1();
+	 sd.N2 = GetN2();
+	 sd.N3 = GetN3();
+	 sd.Deleted = iDeletedAtom;
+	 m_StaticticParam.AddStaticticData(sd);
+	}
+}
+//---------------------------------------------------------------------------
+const TStaticticDataVec& TDissolutionThread::GetStatictic(void)
+{//получить вектор накопленной статистки
+	return m_StaticticParam.GetStatictic();
+}
+//---------------------------------------------------------------------------
 

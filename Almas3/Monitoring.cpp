@@ -6,6 +6,7 @@
 #include "Monitoring.h"
 #include "Main.h"
 #include "Dissolution.h"
+#include "N1N2N3QuantityDiagramUnit.h"
 //---------------------------------------------------------------------------
 #pragma resource "*.dfm"
 TMonitoringForm *MonitoringForm;
@@ -30,7 +31,7 @@ __fastcall TMonitoringForm::TMonitoringForm(TComponent* Owner)
     StatisticsGroupBox->Caption = "Время";
      StartTimeTextLabel->Caption = "Время запуска:";
      DissolutionTimeTextLabel->Caption = "Прошло:";
-     RemainedTimeTextLabel->Caption = "Осталось:";
+	 RemainedTimeTextLabel->Caption = "Осталось:";
      CompleteTimeTextLabel->Caption = "Время завершения:";
      //SpeedTextLabel->Caption = "Скорость процесса [атом/сек]:";
      AverageSpeedTextLabel->Caption = "Средняя скорость процесса [атом/сек]:";
@@ -50,25 +51,27 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
 
 
 	if(DissolutionThread != NULL)
-    {
-     int Plane = DissolutionThread->Plane;
-     //DissolutionThread->Plane
+	{
+	 int Plane = DissolutionThread->Plane;
+	 //DissolutionThread->Plane
 	 PlaneNumLabel->Caption = AnsiString(Plane);
-     //N1ProbabilityNumLabel->Caption = AnsiString(DissolutionThread->W1);
-     //N2ProbabilityNumLabel->Caption = AnsiString(DissolutionThread->W2);
-     //N3ProbabilityNumLabel->Caption = AnsiString(DissolutionThread->W3);
-     N1ProbabilityNumLabel->Caption = "Не известно";
-     N2ProbabilityNumLabel->Caption = "Не известно";
-     N3ProbabilityNumLabel->Caption = "Не известно";
+	 //N1ProbabilityNumLabel->Caption = AnsiString(DissolutionThread->W1);
+	 //N2ProbabilityNumLabel->Caption = AnsiString(DissolutionThread->W2);
+	 //N3ProbabilityNumLabel->Caption = AnsiString(DissolutionThread->W3);
+	 N1ProbabilityNumLabel->Caption = "Не известно";
+	 N2ProbabilityNumLabel->Caption = "Не известно";
+	 N3ProbabilityNumLabel->Caption = "Не известно";
 
-     int DeletedAtom = DissolutionThread->DeletedAtom;
-     if(!DissolutionThread->Suspended) StateNumLabel->Caption = "Выполныется";
-     else
-     {
-      StateNumLabel->Caption = "Остановлен";
-      StateThread = " процесс приостановлен";
-     }
-     DeletedAtomNumLabel->Caption = AnsiString(DeletedAtom) + StateThread;
+	 int DeletedAtom = DissolutionThread->DeletedAtom;
+	 if(!DissolutionThread->Suspended) StateNumLabel->Caption = "Выполныется";
+	 else
+	 {
+	  StateNumLabel->Caption = "Остановлен";
+	  StateThread = " процесс приостановлен";
+	 }
+	 DeletedAtomNumLabel->Caption = AnsiString(DeletedAtom) + StateThread;
+
+	 DissolutionThread->SetStaticticPeriod(1);
 
 	 int DeletingLayers, DeletedLayers;
      DeletingLayers = (int)DissolutionThread->DeletingLayers;
@@ -92,7 +95,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
       for(int i=0; i< DeletingLayers+DeletedLayers; i++)
       {
        if(i < NumOfAtomsInLayerListBox->Items->Count)
-        NumOfAtomsInLayerListBox->Items->Strings[i] = IntToStr(i+1) + ((i==1)?"-ой" :((i==2)?"-ий" : "-ый"))
+		NumOfAtomsInLayerListBox->Items->Strings[i] = IntToStr(i+1) + ((i==1)?"-ой" :((i==2)?"-ий" : "-ый"))
        									   + " слой содержит "
                                             + IntToStr((int)DissolutionThread->NumOfAtomsInLayer[i])
                                             + " атомов" + StateThread;
@@ -104,7 +107,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
      }
      //}
      StartTimeNumLabel->Caption = DissolutionThread->StartTime.TimeString();
-     TDateTime NadoTime,Proshlo = (MainForm->DissolutionTime);
+	 TDateTime NadoTime,Proshlo = (MainForm->DissolutionTime);
      DissolutionTimeNumLabel->Caption = Proshlo.TimeString();
      //if(!DissolutionThread->Suspended)
      //{
@@ -130,7 +133,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
         NadoTime = TDateTime((double)(Plane-DeletedAtom)/dFlSpeed);
         RemainedTimeNumLabel->Caption = NadoTime.TimeString();
         CompleteTimeNumLabel->Caption = (NadoTime.CurrentDateTime() + NadoTime).FormatString("dd.mm.yyyy в hh:nn:ss");
-       }
+	   }
        else
        {
         if(!DissolutionThread->Suspended)
@@ -142,7 +145,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
         {
          RemainedTimeNumLabel->Caption = StateThread;
      	 CompleteTimeNumLabel->Caption = StateThread;
-        }
+		}
        }
       }
       else
@@ -168,7 +171,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
      }
      //else
      //{
-     // ProgressBar->Position = (TProgressRange)(0);
+	 // ProgressBar->Position = (TProgressRange)(0);
      // ProgressBar->Hint  = "Не задано сколько удалить атомов.";
      //}
      //if(ProgressBar->Max != Plane) ProgressBar->Max = (TProgressRange)Plane;
@@ -206,7 +209,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
      }
     }
 /*    AnsiString StateThread;
-    if(DissolutionThread != NULL)
+	if(DissolutionThread != NULL)
     {
      int Plane = DissolutionThread->Sample->Plane;
      //DissolutionThread->Sample->Plane
@@ -218,7 +221,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
      int DeletedAtom = DissolutionThread->Sample->DeletedAtom;
      if(!DissolutionThread->Suspended) StateNumLabel->Caption = "Выполныется";
      else
-     {
+	 {
       StateNumLabel->Caption = "Остановлен";
       StateThread = " процесс приостановлен";
      }
@@ -244,7 +247,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
                                            + " атомов" + StateThread;
       else NumOfAtomsInLayerListBox->Items->Add(IntToStr(i+1) + ((i==2)?"-ой" :(i==3)?"-ий" : "-ый")
       									   +" слой содержит "
-                                           + IntToStr((int)DissolutionThread->Sample->NumOfAtomsInLayer[i])
+										   + IntToStr((int)DissolutionThread->Sample->NumOfAtomsInLayer[i])
                                            + " атомов" + StateThread);
      }
      //}
@@ -256,7 +259,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
       if( (double)Proshlo != 0)
       {
        double dSpeed;
-       dSpeed = (double)DeletedAtom/((double)Proshlo);
+	   dSpeed = (double)DeletedAtom/((double)Proshlo);
        SpeedNumLabel->Caption = AnsiString(dSpeed/86400.0);//24*60*60
        if(dSpeed != 0)
        {
@@ -282,7 +285,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
       ProgressBar->Position = (TProgressRange)(100*DeletedAtom/Plane);
       ProgressBar->Hint  = IntToStr(ProgressBar->Position) + " %";
      }
-     //if(ProgressBar->Max != Plane) ProgressBar->Max = (TProgressRange)Plane;
+	 //if(ProgressBar->Max != Plane) ProgressBar->Max = (TProgressRange)Plane;
     }
     else
     {
@@ -290,11 +293,11 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
 	 PlaneNumLabel->Caption = StateThread;
      N1ProbabilityNumLabel->Caption = StateThread;
      N2ProbabilityNumLabel->Caption = StateThread;
-     N3ProbabilityNumLabel->Caption = StateThread;
+	 N3ProbabilityNumLabel->Caption = StateThread;
 
      StateNumLabel->Caption = "Процесс не создан или удалён";
 
-     DeletedAtomNumLabel->Caption = StateThread;
+	 DeletedAtomNumLabel->Caption = StateThread;
      DeletingLayersNumLabel->Caption = StateThread;
      DeletedLayersNumLabel->Caption = StateThread;
      N1NumLabel->Caption = StateThread;
@@ -329,3 +332,16 @@ void __fastcall TMonitoringForm::FormHide(TObject *Sender)
 	MonitoringTimer->Enabled = false;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TMonitoringForm::StatisticSpeedButtonClick(TObject *Sender)
+{
+	if(DissolutionThread != NULL)
+	{
+	 DissolutionThread->EnterCS();
+	 N1N2N3QuantityDiagramForm->SetDataAndShow(DissolutionThread->GetStatictic());
+	 DissolutionThread->LeaveCS();
+	}
+
+}
+//---------------------------------------------------------------------------
+
