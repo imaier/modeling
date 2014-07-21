@@ -4127,7 +4127,7 @@ void TStaticticParam::AverageData(void)
 	 LastAverageDeleted = m_vAveragedStatictic[m_vAveragedStatictic.size()-1].Deleted;
 	}
 
-	if((LastDeleted - LastAverageDeleted) => m_PeriodOfAverage)
+	if((LastDeleted - LastAverageDeleted) >= m_PeriodOfAverage)
 	{
 	 TStaticticData AvData;
 	 int i = 0;
@@ -4144,6 +4144,7 @@ void TStaticticParam::AverageData(void)
 	 AvData.N3 /= cnt;
 	 AvData.Deleted = LastDeleted;
 	 m_vAveragedStatictic.push_back(AvData);
+	 m_vStatictic.clear();
 	}
 }
 //---------------------------------------------------------------------------
