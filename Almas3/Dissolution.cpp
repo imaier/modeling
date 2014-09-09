@@ -13,6 +13,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <algorithm>
+#include "GlobalUnit.h"
 //---------------------------------------------------------------------------
 const CnstDtType = 4;
 const CnstDtIndex = -1;
@@ -34,6 +35,10 @@ const int Num1AtomLayerInCell = 6; //количествоб одноатомных подслоев в ячейке
 #endif
 
 #define STOP_BAC BigArrayCoord(0,4,10,2)
+
+int _random(int Max);
+void _randomize();
+
 //---------------------------------------------------------------------------
 //TATOM::TATOM()
 //{
@@ -621,6 +626,7 @@ __fastcall TDissolutionThread::TDissolutionThread(bool CreateSuspended)
 	KindAtoms.clear();
 	setmem(&m_CS, 0 ,sizeof(m_CS));
 	InitializeCriticalSection(&m_CS);
+	m_InitRng = false;
 }
 //---------------------------------------------------------------------------
 __fastcall TDissolutionThread::~TDissolutionThread()
@@ -1035,6 +1041,23 @@ void TDissolutionThread::InitIdealSmoothSurface(int NewX,int NewY)
 	}
 	iDeletedAtom = 0;
 	Finish = false;
+
+	//Определение наиболее популярного типа атома на гладкой поверхности (для статистики)
+	int nMaxCountIndex = -1;
+	int nMaxCount = -1;
+
+	for(int i=0; i < (int)KindAtoms.size(); i++)
+	{
+	 if (nMaxCount < (int)KindAtoms[i].size())
+	 {
+	  nMaxCountIndex = (int)i;
+	  nMaxCount = KindAtoms[i].size();
+	 }
+	}
+	if (nMaxCountIndex != -1)
+	{
+	 m_StaticticParam.m_MostPopularTypeIndex = nMaxCountIndex;
+	}
 }
 //---------------------------------------------------------------------------
 bool TKindAtoms::InitFomProb(TProbPovider &SP)
@@ -1541,14 +1564,20 @@ unsigned int TDissolutionThread::GetN3(void)
 	return _N3;
 }
 //---------------------------------------------------------------------------
+void __fastcall TDissolutionThread::SetAlgoritm(TAlgoritm &newAlgoritm)
+{
+	if(newAlgoritm.m_bInitRNG == true && m_Algoritm.m_bInitRNG == false)
+	{
+	  m_InitRng = true;
+	}
+	m_Algoritm = newAlgoritm;
+}
+//---------------------------------------------------------------------------
 bool __fastcall TDissolutionThread::DeleteAtom(void)
 {
 	EnterCS();
 	bool bRet = false;
-	if(m_Algoritm.m_bInitRNG == true)
-	{
-	  InitRNG();
-	}
+	InitRNG();
 
 	switch(m_Algoritm.m_nAlgoritmKind)
 	{
@@ -1572,6 +1601,7 @@ bool __fastcall TDissolutionThread::DeleteAtom(void)
 	 sd.N2 = GetN2();
 	 sd.N3 = GetN3();
 	 sd.Deleted = iDeletedAtom;
+	 sd.MostPopularTypeCount = GetPopularTypeCount();
 	 m_StaticticParam.AddStaticticData(sd);
 	}
 
@@ -1633,7 +1663,7 @@ bool __fastcall TDissolutionThread::AlgPorogDolaDeleteAtom(void)
 
       for(j=0; j < min(nDola,nCntDel); j++)
       {
-        nRandIndex = random(nCntDel-j);
+		nRandIndex = _random(nCntDel-j);
         CopyBAC1toBAC2(&(pvDelAtoms[j]), &TempAtom);
         CopyBAC1toBAC2(&(pvDelAtoms[nRandIndex+j]), &(pvDelAtoms[j]));
         CopyBAC1toBAC2(&TempAtom, &(pvDelAtoms[nRandIndex+j]));
@@ -1751,7 +1781,7 @@ bool __fastcall TDissolutionThread::AlgDolaProbDeleteAtom(void)
 	   //перемешивание
 	   for(j = 0; j < nCnt; j++)
 	   {
-		nRandIndex = random(nCnt-j);
+		nRandIndex = _random(nCnt-j);
 		nTmp = pnItemIndex[j];
 		pnItemIndex[j] = pnItemIndex[nRandIndex+j];
 		pnItemIndex[nRandIndex+j] = nTmp;
@@ -1901,8 +1931,8 @@ bool __fastcall TDissolutionThread::AlgMonteCarloDeleteAtom(void)
 	}
 
 	//выбор группы
-	RandNumMax = 0x7fffffff;
-	RandNum = random(RandNumMax);
+	RandNumMax = RAND_MAX;
+	RandNum = _random(RandNumMax);
 	RandNumNorm = ((double)RandNum)/((double)RandNumMax);
 
 	P = 0;
@@ -1920,7 +1950,8 @@ bool __fastcall TDissolutionThread::AlgMonteCarloDeleteAtom(void)
 
 	//выбор атома
 	nKindSize = KindAtoms[Kind].size();
-	RandNum = random(nKindSize);
+	RandNum = _random(nKindSize);
+	//RandNum = rand()%nKindSize;
 
 	//удаление атома
 	DeletingAtomBAC = KindAtoms[Kind][RandNum];
@@ -2230,7 +2261,7 @@ unsigned int TDissolutionThread::GetDeletedLayers(void)
 {
 	int iDeletedLayers = 0;
     for(int i=0; i < Watch->Count; i++)
-     if((*(int*)(Watch->Items[i])) == 0) iDeletedLayers++;
+	 if((*(int*)(Watch->Items[i])) == 0) iDeletedLayers++;
 	return iDeletedLayers;
 }
 //---------------------------------------------------------------------------
@@ -2737,7 +2768,7 @@ bool __fastcall TDissolutionThread::SaveToMem(TUndoDissolutionThread *UDT)
      UDT->Items = new char*[UDT->Count];
      for(i = 0; i < UDT->Count; i++)
      {
-      UDT->Watch[i] = (*(int*)(Watch->Items[i]));
+	  UDT->Watch[i] = (*(int*)(Watch->Items[i]));
       if(UDT->Watch[i] != 0)
       {
        UDT->Items[i] = new char[CopacityMemoryForLayer];
@@ -2887,7 +2918,7 @@ void __fastcall TDissolutionThread::SetNoDeleted2TypeAtom(BigArrayCoord* BAC)
 	{
      throw Exception("SetNoDeleted2TypeAtom error. Layer deleted. Access dinieded.");
     }
-    DtType* Type =(DtType*)(((char*)(Items->Items[BAC->Z])) + BAC->Y*OneY + BAC->X*OneX + BAC->N*OneN);
+	DtType* Type =(DtType*)(((char*)(Items->Items[BAC->Z])) + BAC->Y*OneY + BAC->X*OneX + BAC->N*OneN);
     if(*Type == 0)
     {
      throw Exception("SetNoDeleted2TypeAtom error. Atom->Type is zero.");
@@ -3949,9 +3980,35 @@ void TDissolutionThread::RenderingKindAtomByNewAlgoritm(void)//вызывать когда по
 	LeaveCS();
 }
 //---------------------------------------------------------------------------
+#ifndef _DEBUG
+#define DEBUG_MESSAGE //
+#endif
+#ifdef _DEBUG
+#define DEBUG_MESSAGE(msg) OutputDebugString(msg)
+#endif
+
+int _random(int Max)
+{
+	int ret = rand()%Max;
+	//AnsiString msg;
+	//msg.printf("_random(%d)=%d",Max, ret);
+	//DEBUG_MESSAGE(_c_str(msg));
+	return ret;
+}
+
+void _randomize()
+{
+	time_t t;
+	srand((unsigned) time(&t));
+}
+//---------------------------------------------------------------------------
 void TDissolutionThread::InitRNG(void)
 {
-	randomize();
+	if(m_InitRng == true)
+	{
+	 _randomize();
+	 m_InitRng = false;
+	}
 }
 //---------------------------------------------------------------------------
 void TDissolutionThread::InitSurface(TDissolutionParametries &DP)
@@ -4076,6 +4133,7 @@ void TStaticticData::operator=(const TStaticticData& r)
 	N2 = r.N2;
 	N3 = r.N3;
 	Deleted = r.Deleted;
+	MostPopularTypeCount = r.MostPopularTypeCount;
 }
 //---------------------------------------------------------------------------
 void TStaticticData::Init(void)
@@ -4084,6 +4142,7 @@ void TStaticticData::Init(void)
 	N2 = 0;
 	N3 = 0;
 	Deleted = 0;
+	MostPopularTypeCount = 0;
 }
 //---------------------------------------------------------------------------
 TStaticticParam::TStaticticParam()
@@ -4138,10 +4197,12 @@ void TStaticticParam::AverageData(void)
 	  AvData.N1 += Data.N1;
 	  AvData.N2 += Data.N2;
 	  AvData.N3 += Data.N3;
+	  AvData.MostPopularTypeCount += Data.MostPopularTypeCount;
 	 }
 	 AvData.N1 /= cnt;
 	 AvData.N2 /= cnt;
 	 AvData.N3 /= cnt;
+	 AvData.MostPopularTypeCount /= cnt;
 	 AvData.Deleted = LastDeleted;
 	 m_vAveragedStatictic.push_back(AvData);
 	 m_vStatictic.clear();
@@ -4150,6 +4211,7 @@ void TStaticticParam::AverageData(void)
 //---------------------------------------------------------------------------
 const TStaticticDataVec& TStaticticParam::GetStatictic(void)
 {
+	m_vAveragedStatictic.m_MostPopularTypeIndex = m_MostPopularTypeIndex;
 	return m_vAveragedStatictic;
 }
 //---------------------------------------------------------------------------
@@ -4164,6 +4226,8 @@ void TDissolutionThread::SetStaticticPeriod(int PeriodOfAverage)
 	 sd.N1 = GetN1();
 	 sd.N2 = GetN2();
 	 sd.N3 = GetN3();
+	 sd.N3 = GetN3();
+	 sd.MostPopularTypeCount = GetPopularTypeCount();
 	 sd.Deleted = iDeletedAtom;
 	 m_StaticticParam.AddStaticticData(sd);
 	}
@@ -4172,6 +4236,28 @@ void TDissolutionThread::SetStaticticPeriod(int PeriodOfAverage)
 const TStaticticDataVec& TDissolutionThread::GetStatictic(void)
 {//получить вектор накопленной статистки
 	return m_StaticticParam.GetStatictic();
+}
+//---------------------------------------------------------------------------
+int TDissolutionThread::GetPopularTypeCount()
+{
+	int ret=-1;
+	if(m_StaticticParam.m_MostPopularTypeIndex != -1)
+	{
+	 ret = KindAtoms[m_StaticticParam.m_MostPopularTypeIndex].size();
+	}
+	return ret;
+}
+//---------------------------------------------------------------------------
+TStaticticDataVec::TStaticticDataVec()
+:std::vector<TStaticticData>()
+{
+	m_MostPopularTypeIndex = -1;
+}
+//---------------------------------------------------------------------------
+TStaticticDataVec::TStaticticDataVec(const TStaticticDataVec &r)
+:std::vector<TStaticticData>(r)
+{
+	m_MostPopularTypeIndex = r.m_MostPopularTypeIndex;
 }
 //---------------------------------------------------------------------------
 

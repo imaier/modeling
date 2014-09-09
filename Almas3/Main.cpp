@@ -1461,11 +1461,11 @@ void __fastcall TMainForm::SurfaceSpeedButtonClick(TObject *Sender)
 
 
     if(DissolutionThread == NULL)
-    {
-     SurfaceForm->InitForm(ifCube, m_DssParams);
+	{
+	 SurfaceForm->InitForm(ifCube, m_DssParams);
      if(SurfaceForm->ShowModal() == mrOk)
      {
-      SpeedXT = 0;
+	  SpeedXT = 0;
       SpeedYT = 0;
       SpeedZT = 0;
       //SpeedXT = -((double)m_DssParams.X)*2;
@@ -3513,7 +3513,7 @@ void __fastcall TMainForm::StatStopPanelClick(TObject *Sender)
      if(DissolutionThread == NULL)
      {
       //if(m_DssParams == 0) m_DssParams = new TDissolutionParametries;
-      //SurfaceForm->InitForm(ifNew);
+	  //SurfaceForm->InitForm(ifNew);
       //EnabledPaint = false;
       //if(SurfaceForm->ShowModal() == mrOk)
       {
@@ -3523,7 +3523,7 @@ void __fastcall TMainForm::StatStopPanelClick(TObject *Sender)
        if(DsslExpPrprt == NULL) DsslExpPrprt = new TExperimentProperty;
 
 	   DissolutionThread->SP = m_DssParams.SP;
-	   DissolutionThread->m_Algoritm = m_DssParams.m_Algoritm;
+	   DissolutionThread->Algoritm = m_DssParams.m_Algoritm;
 
 	   DissolutionThread->Plane = m_DssParams.Plane;
 	   DsslExpPrprt->SP = DissolutionThread->SP;
@@ -3638,13 +3638,13 @@ void __fastcall TMainForm::ChangeSpeedButtonClick(TObject *Sender)
 	  }
 
 	  //если изменилось поведение нудаляемых атомов, то перерендерить
-	  if(DissolutionThread->m_Algoritm.m_nNoDelAtomsBehaviour != m_DssParams.m_Algoritm.m_nNoDelAtomsBehaviour)
+	  if(DissolutionThread->Algoritm.m_nNoDelAtomsBehaviour != m_DssParams.m_Algoritm.m_nNoDelAtomsBehaviour)
 	  {
 	   bNeedRendering = true;
 	  }
 
 	  DissolutionThread->SP = m_DssParams.SP;
-	  DissolutionThread->m_Algoritm = m_DssParams.m_Algoritm;
+	  DissolutionThread->Algoritm = m_DssParams.m_Algoritm;
 
 	  if(bNeedRendering == true)
 	  {
@@ -4856,7 +4856,7 @@ void __fastcall TMainForm::DelSpeedButtonClick(TObject *Sender)
 	 return;
     }
 	TUndo *Und = new TUndo;
-	//Und->UDT = new TUndoDissolutionThread;
+	//Und->UDT = new TUndoDissolutfionThread;
 	DissolutionThread->SaveToMem(&Und->UDT);
 	Und->i = DelComboBox->Items->Count + HoldComboBox->Items->Count;
 	if(DissolutionThread->DeleteAtom((int)StrToInt(XEdit->Text),

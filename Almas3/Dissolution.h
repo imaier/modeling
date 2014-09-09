@@ -176,8 +176,18 @@ public:
 	float N2;
 	float N3;
 	int Deleted;
+
+	float MostPopularTypeCount;
 };
-typedef std::vector<TStaticticData> TStaticticDataVec;
+
+class  TStaticticDataVec : public std::vector<TStaticticData>
+{
+public:
+	TStaticticDataVec();
+	TStaticticDataVec(const TStaticticDataVec &r);
+	int m_MostPopularTypeIndex;
+};
+//typedef std::vector<TStaticticData> TStaticticDataVec;
 //---------------------------------------------------------------------------
 class TStaticticParam
 {
@@ -191,6 +201,8 @@ public:
 	void Init(void);
 
 	int m_PeriodOfAverage; //количество удаленных атомов через которые усреднять, если 0 то статиститка не собирается
+
+	int m_MostPopularTypeIndex;
 
 	void AddStaticticData(TStaticticData &data);
 	const TStaticticDataVec& GetStatictic(void);
@@ -282,14 +294,20 @@ private:
 
 	int GetSubLayer(int N);//получения индекса атомного подслоя для атома ячейки под номером N
 
+	TAlgoritm m_Algoritm;//алгоритм растворения
+	void __fastcall SetAlgoritm(TAlgoritm &newAlgoritm);
+
+	int GetPopularTypeCount();//количество атомов наиболее популярного типа
+
+	bool m_InitRng;//флаг инициализации ГСЧ (инициализация происходит в потоке растворения)
+
+
 protected:
 	void __fastcall Execute();
 public:
 	TProbPovider SP;  //вероятности удаления
-	TAlgoritm m_Algoritm;//алгоритм растворения
 
 	void RenderingKindAtomByNewAlgoritm(void);//вызывать когда поменялся алгоритм растворения либо набор вероятностей
-
 
 	bool Finish;
 	bool MaskAll;//маскировать все сортовые атомы под маской, иначе только первый слой вдоль оси Z
@@ -306,6 +324,8 @@ public:
 	__property unsigned int DeletedLayers = {read = GetDeletedLayers};
 	__property unsigned int NumOfAtomsInLayer[int Index] = { read=GetNumAtomsInLayer };
 	__property unsigned int DeletedAtom = {read = iDeletedAtom};
+	__property  TAlgoritm Algoritm = {read = m_Algoritm, write = SetAlgoritm};//алгоритм растворения
+
 
 	void InitIdealSmoothSurface(int NewX,int NewY);
 	//void InitIdealMaskedSurface(int NewX,int NewY, TMaskVec &vMask);

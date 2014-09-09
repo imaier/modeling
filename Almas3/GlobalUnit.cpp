@@ -34,8 +34,7 @@ bool GetProbalityValue(AnsiString S, double &dRet, AnsiString &strErr)
 //---------------------------------------------------------------------------
 char* _c_str(AnsiString str)
 {
-	return str. c_str();
-
+	return str.c_str();
 }
 //---------------------------------------------------------------------------
 AnsiString GetProgramPath(void)

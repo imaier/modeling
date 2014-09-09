@@ -71,7 +71,7 @@
 			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
 			<CfgDependentOn>op100.optset</CfgDependentOn>
 		</PropertyGroup>
-		<Import Project="op100.optset" Condition="'$(Cfg_2)'!='' And Exists('op100.optset')"/>
+		<Import Project="op111.optset" Condition="'$(Cfg_2)'!='' And Exists('op111.optset')"/>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
 			<BCC_UserSuppliedOptions> -a4 -Vx -r- -k -Ve -r</BCC_UserSuppliedOptions>
@@ -81,7 +81,7 @@
 			<TASM_Debugging>None</TASM_Debugging>
 			<ILINK_LibraryPath>$(BDS)\lib\release;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<BCC_InlineFunctionExpansion>true</BCC_InlineFunctionExpansion>
-			<CfgDependentOn>op100.optset</CfgDependentOn>
+			<CfgDependentOn>op111.optset</CfgDependentOn>
 		</PropertyGroup>
 		<ItemGroup>
 			<CppCompile Include="ProbSetModelUnit.cpp">
@@ -287,7 +287,7 @@
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
-				<DependentOn>op100.optset</DependentOn>
+				<DependentOn>op111.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>

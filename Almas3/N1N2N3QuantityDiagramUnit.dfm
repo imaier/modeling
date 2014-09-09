@@ -28,8 +28,6 @@ object N1N2N3QuantityDiagramForm: TN1N2N3QuantityDiagramForm
     View3D = False
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 208
-    ExplicitTop = 72
     object OneLinkSeries: TFastLineSeries
       Marks.Arrow.Visible = True
       Marks.Callout.Brush.Color = clBlack
@@ -65,6 +63,20 @@ object N1N2N3QuantityDiagramForm: TN1N2N3QuantityDiagramForm
       SeriesColor = clBlue
       Title = #1058#1088#1077#1093#1089#1074#1103#1079#1085#1099#1077
       LinePen.Color = clBlue
+      LinePen.Width = 2
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Y'
+      YValues.Order = loNone
+    end
+    object PopularTypeSeries: TFastLineSeries
+      Marks.Arrow.Visible = True
+      Marks.Callout.Brush.Color = clBlack
+      Marks.Callout.Arrow.Visible = True
+      Marks.Visible = False
+      SeriesColor = 33023
+      Title = #1055#1086#1087#1091#1083#1103#1088#1085#1099#1081' '#1090#1080#1087
+      LinePen.Color = 33023
       LinePen.Width = 2
       XValues.Name = 'X'
       XValues.Order = loAscending
