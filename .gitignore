@@ -19,6 +19,9 @@ ModelSupport_*
 *.local
 *.map
 *.tds
+*.obj
+*.pch
+*.#00
 Release_Build
 Debug_Build
 __history
