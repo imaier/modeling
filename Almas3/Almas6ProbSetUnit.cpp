@@ -740,6 +740,29 @@ int TAlmas6ProbSetGlobal::GetMainAtomTypeForProb(int Index)
 	return nType;
 }
 //---------------------------------------------------------------------------
+int TAlmas6ProbSetGlobal::Get_nS_CountForProb(int Index)
+{//получение количества непрямых вторых соседей для данной вероятности
+	int nCnt = -1;
+
+	if (Index >=0 && Index<m_nAllNumProbality && m_bInit)
+	{
+		TKey2ToKeyMap::iterator itr = m_Key2ToKeyMap.begin();
+		for(int i = 0; i < Index; i++)
+		{
+		 itr++;
+		}
+		if(itr != m_Key2ToKeyMap.end())
+		{
+		 TProbKey nKey = itr->second;
+		 TAlmas6ProbSetKey ProbSetKey;
+		 ProbSetKey.fill(nKey);
+		 nCnt =  ProbSetKey.nns;
+		}
+	}
+
+	return nCnt;
+}
+//---------------------------------------------------------------------------
 TAlmas6ProbSetCreator::TAlmas6ProbSetCreator()
 :IBaseProbSetCreator(TAlmas6ProbSetGlobal::Get())
 {

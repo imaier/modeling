@@ -91,6 +91,7 @@ public:
 	//virtual int GetNumLayerAtomShema();//получение количества слоёв до которого должна быть описана атомсхема
 	//virtual const AnsiString& GetProbSetIdString();//получение идентификационной строки набора вероятности
 	virtual int GetMainAtomTypeForProb(int Index);//получение типа главного атома для данной вероятности
+	virtual int Get_nS_CountForProb(int Index);//получение количества непрямых вторых соседей для данной вероятности
 };
 //---------------------------------------------------------------------------
 /*

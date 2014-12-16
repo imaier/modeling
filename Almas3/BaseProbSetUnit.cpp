@@ -338,6 +338,11 @@ int IBaseProbSetGlobalData::GetNumLayerAtomShema()
 	return m_nNumLayerAtomShema;
 }
 //---------------------------------------------------------------------------
+int IBaseProbSetGlobalData::Get_nS_CountForProb(int Index)
+{//получение количества непрямых вторых соседей для данной вероятности
+	return -1;
+}
+//---------------------------------------------------------------------------
 IBaseProbSetCreator::IBaseProbSetCreator(IBaseProbSetGlobalData &GlobalData):
 m_GlobalData(GlobalData)
 {

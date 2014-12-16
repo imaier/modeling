@@ -91,6 +91,7 @@ public:
 	virtual int GetMainAtomTypeForProb(int Index) = 0;//получение типа главного атома для данной вероятности
 	virtual TProbIndex GetProbIndexFromAtomShema(TAtomShema &as) = 0;//получение индекса из набора для данного расположения атомов
 	virtual int GetNumLayerAtomShema();//получение количества слоёв до которого должна быть описана атомсхема
+	virtual int Get_nS_CountForProb(int Index);//получение количества непрямых вторых соседей для данной вероятности
 };
 //---------------------------------------------------------------------------
 /*

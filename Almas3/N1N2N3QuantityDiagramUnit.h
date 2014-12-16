@@ -24,6 +24,7 @@ __published:	// IDE-managed Components
 	TFastLineSeries *TwoLinkSeries;
 	TFastLineSeries *ThreeLinkSeries;
 	TFastLineSeries *PopularTypeSeries;
+	TFastLineSeries *nS_Series;
 private:	// User declarations
 	TMyCriticalSection m_cs;
 public:		// User declarations

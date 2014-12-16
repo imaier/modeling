@@ -178,6 +178,7 @@ public:
 	int Deleted;
 
 	float MostPopularTypeCount;
+	float nS_Count;//количество непрямых соседей
 };
 
 class  TStaticticDataVec : public std::vector<TStaticticData>
@@ -202,7 +203,9 @@ public:
 
 	int m_PeriodOfAverage; //количество удаленных атомов через которые усреднять, если 0 то статиститка не собирается
 
-	int m_MostPopularTypeIndex;
+	void SetMostPopularTypeIndex(int nMostPopularTypeIndex);
+	int GetMostPopularTypeIndex();
+
 
 	void AddStaticticData(TStaticticData &data);
 	const TStaticticDataVec& GetStatictic(void);
@@ -235,6 +238,7 @@ private:
 	BigArrayCoord m_vTreeNeib[40];//координаты третих сосеей
 
 	TStaticticParam m_StaticticParam;//статитстика
+	void CollectStatictic();//собрать статиску процесса в данный момент и добавить в вектор статистики
 
 	void __fastcall AddLayers(unsigned int Indx);
 	void __fastcall DecTypeAtom(BigArrayCoord* BAC);
@@ -298,6 +302,7 @@ private:
 	void __fastcall SetAlgoritm(TAlgoritm &newAlgoritm);
 
 	int GetPopularTypeCount();//количество атомов наиболее популярного типа
+	int Get_nS_Count();//общее количество непрявых вторых соседей
 
 	bool m_InitRng;//флаг инициализации ГСЧ (инициализация происходит в потоке растворения)
 

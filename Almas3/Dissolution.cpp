@@ -1056,7 +1056,7 @@ void TDissolutionThread::InitIdealSmoothSurface(int NewX,int NewY)
 	}
 	if (nMaxCountIndex != -1)
 	{
-	 m_StaticticParam.m_MostPopularTypeIndex = nMaxCountIndex;
+	 m_StaticticParam.SetMostPopularTypeIndex(nMaxCountIndex);
 	}
 }
 //---------------------------------------------------------------------------
@@ -1367,7 +1367,7 @@ void TDissolutionThread::RenderingNewMask(TMaskVec &vMask)
           break;
 #endif
 #ifdef Almas110
-          case 1:
+		  case 1:
            BAC.Z++;
            BAC.N = 1;
           break;
@@ -1420,7 +1420,7 @@ void TDissolutionThread::RenderingNewMask(TMaskVec &vMask)
           break;
           case 214:
            BAC.Z++;
-           BAC.N = 9;
+		   BAC.N = 9;
           break;
           case 303:
            BAC.N = 8;
@@ -1596,13 +1596,7 @@ bool __fastcall TDissolutionThread::DeleteAtom(void)
 	}
 	if (m_StaticticParam.m_PeriodOfAverage > 0)
 	{
-	 TStaticticData sd;
-	 sd.N1 = GetN1();
-	 sd.N2 = GetN2();
-	 sd.N3 = GetN3();
-	 sd.Deleted = iDeletedAtom;
-	 sd.MostPopularTypeCount = GetPopularTypeCount();
-	 m_StaticticParam.AddStaticticData(sd);
+	 CollectStatictic();
 	}
 
     LeaveCS();
@@ -4134,6 +4128,7 @@ void TStaticticData::operator=(const TStaticticData& r)
 	N3 = r.N3;
 	Deleted = r.Deleted;
 	MostPopularTypeCount = r.MostPopularTypeCount;
+	nS_Count = r.nS_Count;
 }
 //---------------------------------------------------------------------------
 void TStaticticData::Init(void)
@@ -4143,11 +4138,13 @@ void TStaticticData::Init(void)
 	N3 = 0;
 	Deleted = 0;
 	MostPopularTypeCount = 0;
+	nS_Count = 0;
 }
 //---------------------------------------------------------------------------
 TStaticticParam::TStaticticParam()
 {
 	Init();
+	SetMostPopularTypeIndex(PI_ERROR);
 }
 //---------------------------------------------------------------------------
 void TStaticticParam::Init()
@@ -4155,6 +4152,16 @@ void TStaticticParam::Init()
 	m_PeriodOfAverage = 0;
 	m_vStatictic.clear();//не усредненная
 	m_vAveragedStatictic.clear();//усредненная статисктика
+}
+//---------------------------------------------------------------------------
+void TStaticticParam::SetMostPopularTypeIndex(int nMostPopularTypeIndex)
+{
+	m_vStatictic.m_MostPopularTypeIndex = nMostPopularTypeIndex;
+}
+//---------------------------------------------------------------------------
+int TStaticticParam::GetMostPopularTypeIndex()
+{
+	return m_vStatictic.m_MostPopularTypeIndex;
 }
 //---------------------------------------------------------------------------
 void TStaticticParam::AddStaticticData(TStaticticData &data)
@@ -4198,11 +4205,14 @@ void TStaticticParam::AverageData(void)
 	  AvData.N2 += Data.N2;
 	  AvData.N3 += Data.N3;
 	  AvData.MostPopularTypeCount += Data.MostPopularTypeCount;
+	  AvData.nS_Count += Data.nS_Count;
+
 	 }
 	 AvData.N1 /= cnt;
 	 AvData.N2 /= cnt;
 	 AvData.N3 /= cnt;
 	 AvData.MostPopularTypeCount /= cnt;
+	 AvData.nS_Count /= cnt;
 	 AvData.Deleted = LastDeleted;
 	 m_vAveragedStatictic.push_back(AvData);
 	 m_vStatictic.clear();
@@ -4211,7 +4221,7 @@ void TStaticticParam::AverageData(void)
 //---------------------------------------------------------------------------
 const TStaticticDataVec& TStaticticParam::GetStatictic(void)
 {
-	m_vAveragedStatictic.m_MostPopularTypeIndex = m_MostPopularTypeIndex;
+	m_vAveragedStatictic.m_MostPopularTypeIndex = GetMostPopularTypeIndex();
 	return m_vAveragedStatictic;
 }
 //---------------------------------------------------------------------------
@@ -4222,15 +4232,20 @@ void TDissolutionThread::SetStaticticPeriod(int PeriodOfAverage)
 	 m_StaticticParam.Init();
 	 m_StaticticParam.m_PeriodOfAverage = PeriodOfAverage;
 
+	 CollectStatictic();
+	}
+}
+//---------------------------------------------------------------------------
+void TDissolutionThread::CollectStatictic()
+{
 	 TStaticticData sd;
 	 sd.N1 = GetN1();
 	 sd.N2 = GetN2();
 	 sd.N3 = GetN3();
-	 sd.N3 = GetN3();
-	 sd.MostPopularTypeCount = GetPopularTypeCount();
 	 sd.Deleted = iDeletedAtom;
+	 sd.MostPopularTypeCount = GetPopularTypeCount();
+	 sd.nS_Count = Get_nS_Count();
 	 m_StaticticParam.AddStaticticData(sd);
-	}
 }
 //---------------------------------------------------------------------------
 const TStaticticDataVec& TDissolutionThread::GetStatictic(void)
@@ -4239,19 +4254,43 @@ const TStaticticDataVec& TDissolutionThread::GetStatictic(void)
 }
 //---------------------------------------------------------------------------
 int TDissolutionThread::GetPopularTypeCount()
-{
+{//количество атомов наиболее популярного типа
 	int ret=-1;
-	if(m_StaticticParam.m_MostPopularTypeIndex != -1)
+	if(m_StaticticParam.GetMostPopularTypeIndex() != PI_ERROR)
 	{
-	 ret = KindAtoms[m_StaticticParam.m_MostPopularTypeIndex].size();
+	 ret = KindAtoms[m_StaticticParam.GetMostPopularTypeIndex()].size();
 	}
+	return ret;
+}
+//---------------------------------------------------------------------------
+int TDissolutionThread::Get_nS_Count()
+{//общее количество непрявых вторых соседей
+	int ret=-1;
+
+	IBaseProbSet *pPS = SP.GetInterface();
+	if(pPS != NULL)
+	{
+		ret = 0;
+		int nNumAtoms, nSCnt;
+		int nCnt = pPS->GetGlobalData().GetAllNumProbality();
+		for(int i = 0; i< nCnt; i++ )
+		{
+			int nNumAtoms = KindAtoms[i].size();
+			if(nNumAtoms > 0)
+			{
+				nSCnt = pPS->GetGlobalData().Get_nS_CountForProb(i);
+				ret += nNumAtoms*nSCnt;
+			}
+		}
+	}
+
 	return ret;
 }
 //---------------------------------------------------------------------------
 TStaticticDataVec::TStaticticDataVec()
 :std::vector<TStaticticData>()
 {
-	m_MostPopularTypeIndex = -1;
+	m_MostPopularTypeIndex = PI_ERROR;
 }
 //---------------------------------------------------------------------------
 TStaticticDataVec::TStaticticDataVec(const TStaticticDataVec &r)

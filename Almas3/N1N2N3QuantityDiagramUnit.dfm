@@ -83,5 +83,19 @@ object N1N2N3QuantityDiagramForm: TN1N2N3QuantityDiagramForm
       YValues.Name = 'Y'
       YValues.Order = loNone
     end
+    object nS_Series: TFastLineSeries
+      Marks.Arrow.Visible = True
+      Marks.Callout.Brush.Color = clBlack
+      Marks.Callout.Arrow.Visible = True
+      Marks.Visible = False
+      SeriesColor = clMaroon
+      Title = #1042#1090#1086#1088#1099#1077' '#1085#1077#1087#1088#1103#1084#1099#1077' '
+      LinePen.Color = clMaroon
+      LinePen.Width = 2
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Y'
+      YValues.Order = loNone
+    end
   end
 end

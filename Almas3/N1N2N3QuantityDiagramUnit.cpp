@@ -31,6 +31,8 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStaticticDataVec& vecSD)
 	TwoLinkSeries->Clear();
 	ThreeLinkSeries->Clear();
 	PopularTypeSeries->Clear();
+	nS_Series->Clear();
+
 
 	int nCnt = vecSD.size();
 	AnsiString strName;
@@ -41,7 +43,11 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStaticticDataVec& vecSD)
 	 TwoLinkSeries->AddXY(sd.Deleted, sd.N2, strName, clTeeColor);
 	 ThreeLinkSeries->AddXY(sd.Deleted, sd.N3, strName, clTeeColor);
 	 PopularTypeSeries->AddXY(sd.Deleted, sd.MostPopularTypeCount, strName, clTeeColor);
-
+	 if(sd.nS_Count < 0 && i == 0)
+	 {
+		nS_Series->Visible = false;
+	 }
+	 nS_Series->AddXY(sd.Deleted, sd.nS_Count, strName, clTeeColor);
 	}
 	PopularTypeSeries->Title = "Популярный тип (" + IntToStr(vecSD.m_MostPopularTypeIndex+1) + ")";
 
