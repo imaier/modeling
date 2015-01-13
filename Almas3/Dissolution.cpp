@@ -4256,6 +4256,16 @@ const TStaticticDataVec& TDissolutionThread::GetStatictic(void)
 int TDissolutionThread::GetPopularTypeCount()
 {//количество атомов наиболее популярного типа
 	int ret=-1;
+	if(m_StaticticParam.GetMostPopularTypeIndex() == PI_ERROR)
+	{
+		TDissolutionThread *diss = new TDissolutionThread(true);
+		diss->SP = SP;
+		diss->InitIdealSmoothSurface(5,5);
+		if(diss->m_StaticticParam.GetMostPopularTypeIndex() != PI_ERROR)
+		{
+			m_StaticticParam.SetMostPopularTypeIndex(diss->m_StaticticParam.GetMostPopularTypeIndex());
+		}
+	}
 	if(m_StaticticParam.GetMostPopularTypeIndex() != PI_ERROR)
 	{
 	 ret = KindAtoms[m_StaticticParam.GetMostPopularTypeIndex()].size();
