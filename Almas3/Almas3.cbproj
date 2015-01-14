@@ -71,10 +71,9 @@
 			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
 			<CfgDependentOn>op100.optset</CfgDependentOn>
 		</PropertyGroup>
-		<Import Project="op100.optset" Condition="'$(Cfg_2)'!='' And Exists('op100.optset')"/>
+		<Import Project="op110.optset" Condition="'$(Cfg_2)'!='' And Exists('op110.optset')"/>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<BCC_Defines>Almas100;$(BCC_Defines)</BCC_Defines>
-			<CfgDependentOn>op100.optset</CfgDependentOn>
+			<CfgDependentOn>op110.optset</CfgDependentOn>
 		</PropertyGroup>
 		<ItemGroup>
 			<CppCompile Include="ProbSetModelUnit.cpp">
@@ -290,7 +289,7 @@
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
-				<DependentOn>op100.optset</DependentOn>
+				<DependentOn>op110.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>
