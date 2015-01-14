@@ -7,6 +7,7 @@
 #include "Main.h"
 #include "Dissolution.h"
 #include "N1N2N3QuantityDiagramUnit.h"
+#include "RNGsProbabilityDistributionUnit.h"
 //---------------------------------------------------------------------------
 #pragma resource "*.dfm"
 TMonitoringForm *MonitoringForm;
@@ -342,6 +343,15 @@ void __fastcall TMonitoringForm::StatisticSpeedButtonClick(TObject *Sender)
 	 DissolutionThread->LeaveCS();
 	}
 
+}
+//---------------------------------------------------------------------------
+void __fastcall TMonitoringForm::DistributionSpeedButtonClick(TObject *Sender)
+{
+	if(RNGsProbabilityDistributionForm == NULL)
+	{
+		RNGsProbabilityDistributionForm = new TRNGsProbabilityDistributionForm(this);
+	}
+	RNGsProbabilityDistributionForm->Show();
 }
 //---------------------------------------------------------------------------
 

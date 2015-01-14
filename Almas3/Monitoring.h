@@ -76,10 +76,12 @@ __published:	// IDE-managed Components
 	TPanel *EnablePanel;
 	TCheckBox *EnableCheckBox;
 	TSpeedButton *StatisticSpeedButton;
+	TSpeedButton *DistributionSpeedButton;
 	void __fastcall MonitoringTimerTimer(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormHide(TObject *Sender);
 	void __fastcall StatisticSpeedButtonClick(TObject *Sender);
+	void __fastcall DistributionSpeedButtonClick(TObject *Sender);
 	
 	
 private:	// User declarations

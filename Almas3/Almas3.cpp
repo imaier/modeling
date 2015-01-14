@@ -20,6 +20,7 @@ USEFORM("MaskUnit.cpp", MaskForm);
 USEFORM("ProgressUnit.cpp", ProgressForm);
 USEFORM("QuantityByGroupeUnit.cpp", QuantityByGroupeForm);
 USEFORM("DistributionUnit.cpp", DistributionForm);
+USEFORM("RNGsProbabilityDistributionUnit.cpp", RNGsProbabilityDistributionForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
