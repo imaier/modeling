@@ -21,6 +21,8 @@ object RNGsProbabilityDistributionForm: TRNGsProbabilityDistributionForm
     Width = 909
     Height = 500
     Legend.Visible = False
+    Title.Text.Strings = (
+      'TChart')
     Title.Visible = False
     BottomAxis.Title.Caption = #1063#1080#1089#1083#1086
     LeftAxis.AxisValuesFormat = '#,##0.#####'
@@ -28,7 +30,6 @@ object RNGsProbabilityDistributionForm: TRNGsProbabilityDistributionForm
     View3D = False
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 38
     PrintMargins = (
       15
       24
@@ -63,7 +64,6 @@ object RNGsProbabilityDistributionForm: TRNGsProbabilityDistributionForm
       Marks.Callout.Arrow.Visible = True
       Marks.Visible = False
       DataSource = DistributionSeries
-      SeriesColor = clGreen
       Title = 'AverageSeries'
       Pointer.InflateMargins = True
       Pointer.Style = psRectangle
@@ -109,17 +109,24 @@ object RNGsProbabilityDistributionForm: TRNGsProbabilityDistributionForm
     end
     object GenLabel: TLabel
       Left = 632
-      Top = 14
-      Width = 123
+      Top = 2
+      Width = 120
       Height = 13
       Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1075#1077#1085#1077#1088#1072#1094#1080#1081':'
     end
     object GenCntLabel: TLabel
       Left = 758
-      Top = 14
-      Width = 7
+      Top = 2
+      Width = 4
       Height = 13
       Caption = '-'
+    end
+    object PauseGenLabel: TLabel
+      Left = 632
+      Top = 22
+      Width = 121
+      Height = 13
+      Caption = #1055#1072#1091#1079#1072' '#1085#1072' '#1075#1077#1085#1077#1088#1072#1094#1080#1080' '#8470':'
     end
     object ModEdit: TEdit
       Left = 61
@@ -145,6 +152,14 @@ object RNGsProbabilityDistributionForm: TRNGsProbabilityDistributionForm
       Caption = #1054#1090#1085#1086#1089#1080#1090#1077#1083#1100#1085#1072#1103' '#1096#1082#1072#1083#1072
       TabOrder = 2
       OnClick = RelativeScaleCheckBoxClick
+    end
+    object PauseGenEdit: TEdit
+      Left = 758
+      Top = 17
+      Width = 123
+      Height = 21
+      TabOrder = 3
+      Text = '0'
     end
   end
 end

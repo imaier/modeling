@@ -32,18 +32,20 @@ __published:	// IDE-managed Components
 	TAverageTeeFunction *AverageTeeFunction;
 	TCheckBox *InitRNGCheckBox;
 	TCheckBox *RelativeScaleCheckBox;
+	TEdit *PauseGenEdit;
+	TLabel *PauseGenLabel;
 	void __fastcall StartSpeedButtonClick(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall StopSpeedButtonClick(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall RelativeScaleCheckBoxClick(TObject *Sender);
 private:	// User declarations
-	ProbabilityDistributionThread *pdThread;
-
-	void __fastcall UpdateControls();
 	void  __fastcall InitSeries(int Module);
 public:		// User declarations
+	ProbabilityDistributionThread *pdThread;
+
 	__fastcall TRNGsProbabilityDistributionForm(TComponent* Owner);
+	void __fastcall UpdateControls();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TRNGsProbabilityDistributionForm *RNGsProbabilityDistributionForm;

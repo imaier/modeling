@@ -17,6 +17,7 @@ public:
 	int Module;
 	bool InitRng;
 	int UpdatePeriod;
+	int PauseGenNum;
 	TForm *owner;
 	ProbabilityDistributionCallback CallbackFunc;
 
@@ -30,6 +31,8 @@ class ProbabilityDistributionData
 public:
 	std::vector<int> DistributionVec;
 	UINT RndCnt;
+
+	bool SuspedTread;
 
 	void Init(int Module);
 	ProbabilityDistributionData();

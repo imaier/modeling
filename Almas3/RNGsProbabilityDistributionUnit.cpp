@@ -35,6 +35,7 @@ void __fastcall TRNGsProbabilityDistributionForm::StartSpeedButtonClick(TObject 
 		input.Module = StrToInt(ModEdit->Text);
 		input.InitRng = InitRNGCheckBox->Checked;
 		input.UpdatePeriod = max(5000, input.Module*10);
+		input.PauseGenNum = StrToInt(PauseGenEdit->Text);
 		input.owner = this;
 		input.CallbackFunc = &UpdateCallback;
 
@@ -47,6 +48,7 @@ void __fastcall TRNGsProbabilityDistributionForm::StartSpeedButtonClick(TObject 
 	else
 	{
 		if (pdThread->Suspended) {
+		   pdThread->inputData.PauseGenNum = StrToInt(PauseGenEdit->Text);
 		   pdThread->Suspended = false;
 		}  else {
 		   pdThread->Suspended = true;
@@ -103,6 +105,13 @@ void UpdateCallback(TForm *owner, ProbabilityDistributionData &data)
 	}
 
 	frm->DistributionSeries->EndUpdate();
+
+	if(data.SuspedTread)
+	{
+		frm->pdThread->Suspend()
+		frm->UpdateControls();
+		data.SuspedTread = false;
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TRNGsProbabilityDistributionForm::UpdateControls()
@@ -113,15 +122,18 @@ void __fastcall TRNGsProbabilityDistributionForm::UpdateControls()
 	{
 		StartSpeedButton->Caption = "Начать";
 		//GenCntLabel->Caption = "-";
+		PauseGenEdit->Enabled = true;
 	}
 	else
 	{
 		if (pdThread->Suspended) {
 			StartSpeedButton->Caption = "Продолжить";
+			PauseGenEdit->Enabled = true;
 		}
 		else
 		{
 			StartSpeedButton->Caption = "Приостановить";
+			PauseGenEdit->Enabled = false;
 		}
 	}
 
@@ -129,6 +141,8 @@ void __fastcall TRNGsProbabilityDistributionForm::UpdateControls()
 
 	ModEdit->Enabled = !ThreadCreated;
 	InitRNGCheckBox->Enabled = !ThreadCreated;
+
+
 }
 //---------------------------------------------------------------------------
 void __fastcall TRNGsProbabilityDistributionForm::FormShow(TObject *Sender)

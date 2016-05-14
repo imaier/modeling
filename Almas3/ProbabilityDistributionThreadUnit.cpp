@@ -60,6 +60,13 @@ void __fastcall ProbabilityDistributionThread::Execute()
 		number = random(inputData.Module);
 		data.DistributionVec[number]++;
 		data.RndCnt++;
+
+		if(data.RndCnt == inputData.PauseGenNum)
+		{
+			data.SuspedTread = true;
+			Synchronize(&PerformCallback);
+		}
+
 		if(data.RndCnt%inputData.UpdatePeriod == 0)
 		{
 			Synchronize(&PerformCallback);
@@ -81,6 +88,7 @@ void ProbabilityDistributionData::Init(int Module)
 	DistributionVec.clear();
 	DistributionVec.resize(Module);
 	RndCnt = 0;
+	SuspedTread = false;
 }
 //---------------------------------------------------------------------------
 ProbabilityDistributionData::ProbabilityDistributionData()
@@ -99,6 +107,7 @@ void ProbabilityDistributionInputData::Init()
 	Module = 50 ;
 	InitRng = false;
 	UpdatePeriod = 500;
+	PauseGenNum = 0;
 	owner = NULL;
 	CallbackFunc = NULL;
 }
@@ -113,6 +122,7 @@ ProbabilityDistributionInputData::ProbabilityDistributionInputData(const Probabi
 	Module = r.Module;
 	InitRng = r.InitRng;
 	UpdatePeriod = r.UpdatePeriod;
+	PauseGenNum = r.PauseGenNum;
 	owner = r.owner;
 	CallbackFunc = r.CallbackFunc;
 }
