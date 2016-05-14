@@ -1925,7 +1925,7 @@ bool __fastcall TDissolutionThread::AlgMonteCarloDeleteAtom(void)
 	}
 
 	//выбор группы
-	RandNumMax = RAND_MAX;
+	RandNumMax = LRAND_MAX;
 	RandNum = _random(RandNumMax);
 	RandNumNorm = ((double)RandNum)/((double)RandNumMax);
 
