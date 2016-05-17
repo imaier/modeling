@@ -19,13 +19,15 @@ __fastcall TN1N2N3QuantityDiagramForm::TN1N2N3QuantityDiagramForm(TComponent* Ow
 {
 }
 //---------------------------------------------------------------------------
-void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStaticticDataVec& vecSD)
+void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStatisticsDataVec& vecSD)
 {
 	TAutoLock lock(m_cs);
 
 	TWaitCursor wc;
 
 	Hide();
+
+	//перва€ вкладка
 
 	OneLinkSeries->Clear();
 	TwoLinkSeries->Clear();
@@ -38,7 +40,7 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStaticticDataVec& vecSD)
 	AnsiString strName;
 	for(int i=0; i < nCnt; i++)
 	{
-	 const TStaticticData &sd = vecSD[i];
+	 const TStatisticsData &sd = vecSD[i];
 	 OneLinkSeries->AddXY(sd.Deleted, sd.N1, strName, clTeeColor);
 	 TwoLinkSeries->AddXY(sd.Deleted, sd.N2, strName, clTeeColor);
 	 ThreeLinkSeries->AddXY(sd.Deleted, sd.N3, strName, clTeeColor);
@@ -51,9 +53,35 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStaticticDataVec& vecSD)
 	}
 	PopularTypeSeries->Title = "ѕопул€рный тип (" + IntToStr(vecSD.m_MostPopularTypeIndex+1) + ")";
 
+	//втора€ вкладка
+	QuantityDeletedAtomByAtomTypeSeries->Clear();
+
+	IBaseProbSet *pPS = vecSD.m_DeletedAtomKindsStatistics.GetInterface();
+	if(pPS != NULL)
+	{
+	 int nProbCnt = pPS->GetGlobalData().GetAllNumProbality();
+	 for(int i = 0; i < nProbCnt; i++)
+	 {
+	  double Value = pPS->GetProbValue(i);
+
+	  int Index = QuantityDeletedAtomByAtomTypeSeries->AddXY(i+1, Value, pPS->GetGlobalData().GetProbName(i), clTeeColor);
+	  /*
+	  if(Value > 0)
+	  {
+	   QuantityDeletedAtomByAtomTypeSeries->Marks->Item[Index]->Text->Add(pPS->GetGlobalData().GetProbName(i));
+	  }
+	  else
+	  {
+	   QuantityDeletedAtomByAtomTypeSeries->Marks->Item[Index]->Text->Clear();
+	  }
+	  */
+	 }
+	}
+
 	Show();
 
 	N1N2N3Chart->UndoZoom();
+    QuantityDeletedAtomByAtomTypeChart->UndoZoom();
 }
 //---------------------------------------------------------------------------
 

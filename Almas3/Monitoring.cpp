@@ -72,7 +72,7 @@ void __fastcall TMonitoringForm::MonitoringTimerTimer(TObject *Sender)
 	 }
 	 DeletedAtomNumLabel->Caption = AnsiString(DeletedAtom) + StateThread;
 
-	 DissolutionThread->SetStaticticPeriod(1);
+	 //DissolutionThread->SetStaticticPeriod(1);
 
 	 int DeletingLayers, DeletedLayers;
      DeletingLayers = (int)DissolutionThread->DeletingLayers;
@@ -339,7 +339,7 @@ void __fastcall TMonitoringForm::StatisticSpeedButtonClick(TObject *Sender)
 	if(DissolutionThread != NULL)
 	{
 	 DissolutionThread->EnterCS();
-	 N1N2N3QuantityDiagramForm->SetDataAndShow(DissolutionThread->GetStatictic());
+	 N1N2N3QuantityDiagramForm->SetDataAndShow(DissolutionThread->GetStatistics());
 	 DissolutionThread->LeaveCS();
 	}
 

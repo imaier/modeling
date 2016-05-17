@@ -1056,7 +1056,7 @@ void TDissolutionThread::InitIdealSmoothSurface(int NewX,int NewY)
 	}
 	if (nMaxCountIndex != -1)
 	{
-	 m_StaticticParam.SetMostPopularTypeIndex(nMaxCountIndex);
+	 m_StatisticsParam.SetMostPopularTypeIndex(nMaxCountIndex);
 	}
 }
 //---------------------------------------------------------------------------
@@ -1594,9 +1594,9 @@ bool __fastcall TDissolutionThread::DeleteAtom(void)
 	  bRet = AlgDolaProbDeleteAtom();
 	 break;
 	}
-	if (m_StaticticParam.m_PeriodOfAverage > 0)
+	if (m_StatisticsParam.m_PeriodOfAverage > 0)
 	{
-	 CollectStatictic();
+	 CollectStatistics();
 	}
 
     LeaveCS();
@@ -2017,11 +2017,15 @@ bool __fastcall TDissolutionThread::DelOrHoldAtom(BigArrayCoord* BAC, bool bHold
 
 	//удаление атома из сортового массива
 	if((Kind = GetKindAtom(DeletingAtomBAC))!= PI_ERROR)
+	{
 	 DelLBACFromKindsArrays(Kind,GetIndexAtom(DeletingAtomBAC));
+	 AddToStatisticsOfDeletedAtomKind(Kind);
+	}
 	else
 	{
 	  //Kind = Kind; ///это странно
 	}
+
 
 	k3 = 0;
 	TreeNeibCnt=0;
@@ -4109,19 +4113,21 @@ void TDissolutionThread::InitSurface(TDissolutionParametries &DP)
 	}
 	iDeletedAtom = 0;
 	Finish = false;
+
+	SetStatisticsPeriod(1);
 }
 //---------------------------------------------------------------------------
-TStaticticData::TStaticticData()
+TStatisticsData::TStatisticsData()
 {
 	Init();
 }
 //---------------------------------------------------------------------------
-TStaticticData::TStaticticData(const TStaticticData& r)
+TStatisticsData::TStatisticsData(const TStatisticsData& r)
 {
 	*this = r;
 }
 //---------------------------------------------------------------------------
-void TStaticticData::operator=(const TStaticticData& r)
+void TStatisticsData::operator=(const TStatisticsData& r)
 {
 	N1 = r.N1;
 	N2 = r.N2;
@@ -4131,7 +4137,7 @@ void TStaticticData::operator=(const TStaticticData& r)
 	nS_Count = r.nS_Count;
 }
 //---------------------------------------------------------------------------
-void TStaticticData::Init(void)
+void TStatisticsData::Init(void)
 {
 	N1 = 0;
 	N2 = 0;
@@ -4141,66 +4147,66 @@ void TStaticticData::Init(void)
 	nS_Count = 0;
 }
 //---------------------------------------------------------------------------
-TStaticticParam::TStaticticParam()
+TStatisticsParam::TStatisticsParam()
 {
 	Init();
 	SetMostPopularTypeIndex(PI_ERROR);
 }
 //---------------------------------------------------------------------------
-void TStaticticParam::Init()
+void TStatisticsParam::Init()
 {
 	m_PeriodOfAverage = 0;
-	m_vStatictic.clear();//не усредненная
-	m_vAveragedStatictic.clear();//усредненная статисктика
+	m_vStatistics.clear();//не усредненная
+	m_vAveragedStatistics.clear();//усредненная статисктика
 }
 //---------------------------------------------------------------------------
-void TStaticticParam::SetMostPopularTypeIndex(int nMostPopularTypeIndex)
+void TStatisticsParam::SetMostPopularTypeIndex(int nMostPopularTypeIndex)
 {
-	m_vStatictic.m_MostPopularTypeIndex = nMostPopularTypeIndex;
+	m_vStatistics.m_MostPopularTypeIndex = nMostPopularTypeIndex;
 }
 //---------------------------------------------------------------------------
-int TStaticticParam::GetMostPopularTypeIndex()
+int TStatisticsParam::GetMostPopularTypeIndex()
 {
-	return m_vStatictic.m_MostPopularTypeIndex;
+	return m_vStatistics.m_MostPopularTypeIndex;
 }
 //---------------------------------------------------------------------------
-void TStaticticParam::AddStaticticData(TStaticticData &data)
+void TStatisticsParam::AddStatisticsData(TStatisticsData &data)
 {
 	if (m_PeriodOfAverage > 0)
 	{
-	 if(m_vAveragedStatictic.size() ==0)
+	 if(m_vAveragedStatistics.size() ==0)
 	 {
-	  m_vAveragedStatictic.push_back(data);
+	  m_vAveragedStatistics.push_back(data);
 	  return;
 	 }
-	 m_vStatictic.push_back(data);
+	 m_vStatistics.push_back(data);
 	 AverageData();
 	}
 }
 //---------------------------------------------------------------------------
-void TStaticticParam::AverageData(void)
+void TStatisticsParam::AverageData(void)
 {
-	if(m_vStatictic.size() == 0)
+	if(m_vStatistics.size() == 0)
 	{
 	 return;
 	}
 	int LastAverageDeleted = 0;
-	int cnt = m_vStatictic.size();
-	int LastDeleted = m_vStatictic[cnt-1].Deleted;
+	int cnt = m_vStatistics.size();
+	int LastDeleted = m_vStatistics[cnt-1].Deleted;
 
-	if(m_vAveragedStatictic.size() > 0)
+	if(m_vAveragedStatistics.size() > 0)
 	{
-	 LastAverageDeleted = m_vAveragedStatictic[m_vAveragedStatictic.size()-1].Deleted;
+	 LastAverageDeleted = m_vAveragedStatistics[m_vAveragedStatistics.size()-1].Deleted;
 	}
 
 	if((LastDeleted - LastAverageDeleted) >= m_PeriodOfAverage)
 	{
-	 TStaticticData AvData;
+	 TStatisticsData AvData;
 	 int i = 0;
 
 	 for(i=0; i < cnt; i++)
 	 {
-	  TStaticticData& Data = m_vStatictic[i];
+	  TStatisticsData& Data = m_vStatistics[i];
 	  AvData.N1 += Data.N1;
 	  AvData.N2 += Data.N2;
 	  AvData.N3 += Data.N3;
@@ -4214,67 +4220,67 @@ void TStaticticParam::AverageData(void)
 	 AvData.MostPopularTypeCount /= cnt;
 	 AvData.nS_Count /= cnt;
 	 AvData.Deleted = LastDeleted;
-	 m_vAveragedStatictic.push_back(AvData);
-	 m_vStatictic.clear();
+	 m_vAveragedStatistics.push_back(AvData);
+	 m_vStatistics.clear();
 	}
 }
 //---------------------------------------------------------------------------
-const TStaticticDataVec& TStaticticParam::GetStatictic(void)
+TStatisticsDataVec& TStatisticsParam::GetStatistics(void)
 {
-	m_vAveragedStatictic.m_MostPopularTypeIndex = GetMostPopularTypeIndex();
-	return m_vAveragedStatictic;
+	m_vAveragedStatistics.m_MostPopularTypeIndex = GetMostPopularTypeIndex();
+	return m_vAveragedStatistics;
 }
 //---------------------------------------------------------------------------
-void TDissolutionThread::SetStaticticPeriod(int PeriodOfAverage)
+void TDissolutionThread::SetStatisticsPeriod(int PeriodOfAverage)
 {//включить сбор статистики с периодом усреднения
-	if(m_StaticticParam.m_PeriodOfAverage != PeriodOfAverage)
+	if(m_StatisticsParam.m_PeriodOfAverage != PeriodOfAverage)
 	{
-	 m_StaticticParam.Init();
-	 m_StaticticParam.m_PeriodOfAverage = PeriodOfAverage;
+	 m_StatisticsParam.Init();
+	 m_StatisticsParam.m_PeriodOfAverage = PeriodOfAverage;
 
-	 CollectStatictic();
+	 CollectStatistics();
 	}
 }
 //---------------------------------------------------------------------------
-void TDissolutionThread::CollectStatictic()
+void TDissolutionThread::CollectStatistics()
 {
-	 TStaticticData sd;
+	 TStatisticsData sd;
 	 sd.N1 = GetN1();
 	 sd.N2 = GetN2();
 	 sd.N3 = GetN3();
 	 sd.Deleted = iDeletedAtom;
 	 sd.MostPopularTypeCount = GetPopularTypeCount();
 	 sd.nS_Count = Get_nS_Count();
-	 m_StaticticParam.AddStaticticData(sd);
+	 m_StatisticsParam.AddStatisticsData(sd);
 }
 //---------------------------------------------------------------------------
-const TStaticticDataVec& TDissolutionThread::GetStatictic(void)
+const TStatisticsDataVec& TDissolutionThread::GetStatistics(void)
 {//получить вектор накопленной статистки
-	return m_StaticticParam.GetStatictic();
+	return m_StatisticsParam.GetStatistics();
 }
 //---------------------------------------------------------------------------
 int TDissolutionThread::GetPopularTypeCount()
 {//количество атомов наиболее популярного типа
 	int ret=-1;
-	if(m_StaticticParam.GetMostPopularTypeIndex() == PI_ERROR)
+	if(m_StatisticsParam.GetMostPopularTypeIndex() == PI_ERROR)
 	{
 		TDissolutionThread *diss = new TDissolutionThread(true);
 		diss->SP = SP;
 		diss->InitIdealSmoothSurface(5,5);
-		if(diss->m_StaticticParam.GetMostPopularTypeIndex() != PI_ERROR)
+		if(diss->m_StatisticsParam.GetMostPopularTypeIndex() != PI_ERROR)
 		{
-			m_StaticticParam.SetMostPopularTypeIndex(diss->m_StaticticParam.GetMostPopularTypeIndex());
+			m_StatisticsParam.SetMostPopularTypeIndex(diss->m_StatisticsParam.GetMostPopularTypeIndex());
 		}
 	}
-	if(m_StaticticParam.GetMostPopularTypeIndex() != PI_ERROR)
+	if(m_StatisticsParam.GetMostPopularTypeIndex() != PI_ERROR)
 	{
-	 ret = KindAtoms[m_StaticticParam.GetMostPopularTypeIndex()].size();
+	 ret = KindAtoms[m_StatisticsParam.GetMostPopularTypeIndex()].size();
 	}
 	return ret;
 }
 //---------------------------------------------------------------------------
 int TDissolutionThread::Get_nS_Count()
-{//общее количество непрявых вторых соседей
+{//общее количество непрямых вторых соседей
 	int ret=-1;
 
 	IBaseProbSet *pPS = SP.GetInterface();
@@ -4297,16 +4303,47 @@ int TDissolutionThread::Get_nS_Count()
 	return ret;
 }
 //---------------------------------------------------------------------------
-TStaticticDataVec::TStaticticDataVec()
-:std::vector<TStaticticData>()
-{
-	m_MostPopularTypeIndex = PI_ERROR;
+void TDissolutionThread::AddToStatisticsOfDeletedAtomKind(int AtomKind)
+{//добавить в статистику удаленный атом
+	AnsiString ProbSetIdString = SP.GetInterface()->GetGlobalData().GetProbSetIdString();
+	bool bInitProbset = true;
+
+	IBaseProbSet *pPS = m_StatisticsParam.GetStatistics().m_DeletedAtomKindsStatistics.GetInterface();
+	if(pPS != NULL)
+	{
+	  if(ProbSetIdString == pPS->GetGlobalData().GetProbSetIdString())
+	  {
+		bInitProbset = false;
+	  }
+	}
+
+	if(bInitProbset)
+	{
+		m_StatisticsParam.GetStatistics().m_DeletedAtomKindsStatistics.CreateInterfaceByIdString(ProbSetIdString);
+		//заполнить все нулями
+		pPS = m_StatisticsParam.GetStatistics().m_DeletedAtomKindsStatistics.GetInterface();
+		for(int i = 0; i < pPS->GetGlobalData().GetAllNumProbality(); i++)
+		{
+		  pPS->SetProbValue(i, 0.0);
+		}
+	}
+
+	//собственно инкремент
+	pPS->SetProbValue(AtomKind, pPS->GetProbValue(AtomKind) + 1.0);
 }
 //---------------------------------------------------------------------------
-TStaticticDataVec::TStaticticDataVec(const TStaticticDataVec &r)
-:std::vector<TStaticticData>(r)
+TStatisticsDataVec::TStatisticsDataVec()
+:std::vector<TStatisticsData>()
+{
+	m_MostPopularTypeIndex = PI_ERROR;
+	m_DeletedAtomKindsStatistics.ClearInterface();
+}
+//---------------------------------------------------------------------------
+TStatisticsDataVec::TStatisticsDataVec(const TStatisticsDataVec &r)
+:std::vector<TStatisticsData>(r)
 {
 	m_MostPopularTypeIndex = r.m_MostPopularTypeIndex;
+	m_DeletedAtomKindsStatistics = r.m_DeletedAtomKindsStatistics;
 }
 //---------------------------------------------------------------------------
 

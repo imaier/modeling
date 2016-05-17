@@ -15,22 +15,28 @@
 //---------------------------------------------------------------------------
 #include "DistributionUnit.h"
 #include "Dissolution.h"
+#include <ComCtrls.hpp>
 //---------------------------------------------------------------------------
 class TN1N2N3QuantityDiagramForm : public TForm
 {
 __published:	// IDE-managed Components
+	TPageControl *StatisticPageControl;
+	TTabSheet *AtomQuantityByDeleteAtomQuantityTabSheet;
+	TTabSheet *QuantityDeletedAtomByAtomTypeTabSheet;
 	TChart *N1N2N3Chart;
 	TFastLineSeries *OneLinkSeries;
 	TFastLineSeries *TwoLinkSeries;
 	TFastLineSeries *ThreeLinkSeries;
 	TFastLineSeries *PopularTypeSeries;
 	TFastLineSeries *nS_Series;
+	TChart *QuantityDeletedAtomByAtomTypeChart;
+	TBarSeries *QuantityDeletedAtomByAtomTypeSeries;
 private:	// User declarations
 	TMyCriticalSection m_cs;
 public:		// User declarations
 	__fastcall TN1N2N3QuantityDiagramForm(TComponent* Owner);
 
-	void SetDataAndShow(const TStaticticDataVec& vecSD);
+	void SetDataAndShow(const TStatisticsDataVec& vecSD);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TN1N2N3QuantityDiagramForm *N1N2N3QuantityDiagramForm;

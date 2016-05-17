@@ -163,13 +163,13 @@ public:
 typedef unsigned char TTypeAtom;
 typedef std::vector<TTypeAtom> TTypeAtomVec;
 //---------------------------------------------------------------------------
-struct TStaticticData
+struct TStatisticsData
 {
 public:
-	TStaticticData();
-	TStaticticData(const TStaticticData& r);
+	TStatisticsData();
+	TStatisticsData(const TStatisticsData& r);
 
-	void operator=(const TStaticticData& r);
+	void operator=(const TStatisticsData& r);
 	void Init(void);
 
 	float N1;
@@ -181,23 +181,25 @@ public:
 	float nS_Count;//количество непрямых соседей
 };
 
-class  TStaticticDataVec : public std::vector<TStaticticData>
+class  TStatisticsDataVec : public std::vector<TStatisticsData>
 {
 public:
-	TStaticticDataVec();
-	TStaticticDataVec(const TStaticticDataVec &r);
+	TStatisticsDataVec();
+	TStatisticsDataVec(const TStatisticsDataVec &r);
 	int m_MostPopularTypeIndex;
+
+	TProbPovider m_DeletedAtomKindsStatistics;  //количество удаленных атомов каждого типа
 };
-//typedef std::vector<TStaticticData> TStaticticDataVec;
+//typedef std::vector<TStatisticsData> TStatisticsDataVec;
 //---------------------------------------------------------------------------
-class TStaticticParam
+class TStatisticsParam
 {
-	TStaticticDataVec m_vStatictic;//не усредненная
-	TStaticticDataVec m_vAveragedStatictic;//усредненная статисктика
+	TStatisticsDataVec m_vStatistics;//не усредненная
+	TStatisticsDataVec m_vAveragedStatistics;//усредненная статисктика
 
 	void AverageData(void);
 public:
-	TStaticticParam();
+	TStatisticsParam();
 
 	void Init(void);
 
@@ -206,9 +208,8 @@ public:
 	void SetMostPopularTypeIndex(int nMostPopularTypeIndex);
 	int GetMostPopularTypeIndex();
 
-
-	void AddStaticticData(TStaticticData &data);
-	const TStaticticDataVec& GetStatictic(void);
+	void AddStatisticsData(TStatisticsData &data);
+	TStatisticsDataVec& GetStatistics(void);
 };
 //---------------------------------------------------------------------------
 class TDissolutionThread : public TThread
@@ -237,8 +238,9 @@ private:
 	int iSecondTypeAtom;
 	BigArrayCoord m_vTreeNeib[40];//координаты третих сосеей
 
-	TStaticticParam m_StaticticParam;//статитстика
-	void CollectStatictic();//собрать статиску процесса в данный момент и добавить в вектор статистики
+	TStatisticsParam m_StatisticsParam;//статитстика
+	void CollectStatistics();//собрать статиску процесса в данный момент и добавить в вектор статистики
+	void AddToStatisticsOfDeletedAtomKind(int AtomKind);//добавить в статистику удаленный атом
 
 	void __fastcall AddLayers(unsigned int Indx);
 	void __fastcall DecTypeAtom(BigArrayCoord* BAC);
@@ -371,8 +373,8 @@ public:
 	void LeaveCS(void);
 
 
-	void SetStaticticPeriod(int PeriodOfAverage);//включить сбор статистики с периодом усреднения
-	const TStaticticDataVec& GetStatictic(void);//получить вектор накопленной статистки
+	void SetStatisticsPeriod(int PeriodOfAverage);//включить сбор статистики с периодом усреднения
+	const TStatisticsDataVec& GetStatistics(void);//получить вектор накопленной статистки
 };
 //---------------------------------------------------------------------------
 #endif
