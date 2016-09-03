@@ -86,41 +86,6 @@ public:
 	int __fastcall GetMainAtomType(TProbIndex Index);//получение типа главного атома для данной вероятности
 };
 //---------------------------------------------------------------------------
-class TUndoDissolutionThread
-{
-public:
-	int *Watch;
-	int Count;
-	char **Items;
-
-	//BigArrayCoord **KindAtoms;
-	//int *KindAtomsCount;
-
-	TKindAtoms KindAtoms;
-
-	//int nProbCnt;//количество различных вероятностей (размер KindAtomsCount и KindAtoms)
-
-	int SizeX, SizeY; //размер поверхности
-	int NumAtomsInCell,NumAtomsInLayer;
-	int CopacityMemoryForLayer;
-	int OneX, OneY, OneN;
-	int SizeDtType, SizeDtIndex, SizeBothDtTypeDtIndex;
-	unsigned int iDeletedAtom;
-	//double W1,W2,W3;
-	TProbPovider SP;
-	TAlgoritm m_Algoritm;
-	bool Finish;
-	unsigned int Plane;
-	TDateTime StartTime, FinishTime;
-
-	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
-	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
-
-	TUndoDissolutionThread();
-	~TUndoDissolutionThread();
-	void Clear(void);
-};
-//---------------------------------------------------------------------------
 typedef TComplex::value_type TSurfVal;
 /*
 class TPoint3d
@@ -179,8 +144,11 @@ public:
 
 	float MostPopularTypeCount;
 	float nS_Count;//количество непрямых соседей
-};
 
+	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
+	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
+};
+//---------------------------------------------------------------------------
 class  TStatisticsDataVec : public std::vector<TStatisticsData>
 {
 public:
@@ -189,6 +157,9 @@ public:
 	int m_MostPopularTypeIndex;
 
 	TProbPovider m_DeletedAtomKindsStatistics;  //количество удаленных атомов каждого типа
+
+	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
+	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
 };
 //typedef std::vector<TStatisticsData> TStatisticsDataVec;
 //---------------------------------------------------------------------------
@@ -210,6 +181,46 @@ public:
 
 	void AddStatisticsData(TStatisticsData &data);
 	TStatisticsDataVec& GetStatistics(void);
+
+	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
+	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
+};
+//---------------------------------------------------------------------------
+class TUndoDissolutionThread
+{
+public:
+	int *Watch;
+	int Count;
+	char **Items;
+
+	//BigArrayCoord **KindAtoms;
+	//int *KindAtomsCount;
+
+	TKindAtoms KindAtoms;
+
+	//int nProbCnt;//количество различных вероятностей (размер KindAtomsCount и KindAtoms)
+
+	int SizeX, SizeY; //размер поверхности
+	int NumAtomsInCell,NumAtomsInLayer;
+	int CopacityMemoryForLayer;
+	int OneX, OneY, OneN;
+	int SizeDtType, SizeDtIndex, SizeBothDtTypeDtIndex;
+	unsigned int iDeletedAtom;
+	//double W1,W2,W3;
+	TProbPovider SP;
+	TAlgoritm m_Algoritm;
+	bool Finish;
+	unsigned int Plane;
+	TDateTime StartTime, FinishTime;
+
+	TStatisticsParam m_StatisticsParam;//статитстика
+
+	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
+	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
+
+	TUndoDissolutionThread();
+	~TUndoDissolutionThread();
+	void Clear(void);
 };
 //---------------------------------------------------------------------------
 class TDissolutionThread : public TThread

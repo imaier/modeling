@@ -367,7 +367,7 @@ bool TUndoDissolutionThread::SaveToFile(HANDLE hFile, int *pSeek /*= NULL*/)
 		}
 	   }
 
-	   KindAtoms.SaveToFile(hFile, &nSeek);
+	   bwf &= KindAtoms.SaveToFile(hFile, &nSeek);
 	   /*
 	   NumberOfBytesToWrite = sizeof(nProbCnt);
 	   bwf &= WriteFile(hFile,&(nProbCnt),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
@@ -390,6 +390,7 @@ bool TUndoDissolutionThread::SaveToFile(HANDLE hFile, int *pSeek /*= NULL*/)
 		}
 	   }
 	   */
+	   bwf &= m_StatisticsParam.SaveToFile(hFile, &nSeek);
 
 	if(pSeek != NULL)
 	{
@@ -500,7 +501,7 @@ bool TUndoDissolutionThread::LoadFromFile(HANDLE hFile, int *pSeek /*= NULL*/)
 		 }
 		}
 
-		KindAtoms.LoadFromFile(hFile, &nSeek);
+		bwf &= KindAtoms.LoadFromFile(hFile, &nSeek);
 		/*
 		NumberOfBytesRead = sizeof(nProbCnt);
 		bwf &= ReadFile(hFile,&(nProbCnt),NumberOfBytesRead,&NumberOfBytesReaded,NULL);
@@ -534,6 +535,7 @@ bool TUndoDissolutionThread::LoadFromFile(HANDLE hFile, int *pSeek /*= NULL*/)
 		 KindAtoms = NULL;
 		}
 		*/
+		bwf &= m_StatisticsParam.LoadFromFile(hFile, &nSeek);
 
 	if(pSeek != NULL)
 	{
@@ -1594,12 +1596,8 @@ bool __fastcall TDissolutionThread::DeleteAtom(void)
 	  bRet = AlgDolaProbDeleteAtom();
 	 break;
 	}
-	if (m_StatisticsParam.m_PeriodOfAverage > 0)
-	{
-	 CollectStatistics();
-	}
 
-    LeaveCS();
+	LeaveCS();
 	return bRet;
 }
 //---------------------------------------------------------------------------
@@ -1964,7 +1962,7 @@ bool __fastcall TDissolutionThread::AlgMonteCarloDeleteAtom(void)
 	DeleteAtom(&DeletingAtomBAC);
 
 	clkUdalen+= clock() - clkStart;
-
+	/*
 	if (iDeletedAtom > 300) {
 	 iDeletedAtom = iDeletedAtom;
 	 RandNum = RandNum;
@@ -1972,6 +1970,7 @@ bool __fastcall TDissolutionThread::AlgMonteCarloDeleteAtom(void)
 	 P = P;
 	 nKindSize = nKindSize;
 	}
+	*/
 
 	//return true;
 	return bSucsess;
@@ -1979,7 +1978,14 @@ bool __fastcall TDissolutionThread::AlgMonteCarloDeleteAtom(void)
 //---------------------------------------------------------------------------
 bool __fastcall TDissolutionThread::DeleteAtom(BigArrayCoord* BAC)
 {
-	return DelOrHoldAtom(BAC);
+	bool bRet = DelOrHoldAtom(BAC);
+
+	if (m_StatisticsParam.m_PeriodOfAverage > 0)
+	{
+	 CollectStatistics();
+	}
+
+    return bRet;
 }
 //---------------------------------------------------------------------------
 bool __fastcall TDissolutionThread::DelOrHoldAtom(BigArrayCoord* BAC, bool bHold, bool b5Type)
@@ -2806,8 +2812,8 @@ bool __fastcall TDissolutionThread::SaveToMem(TUndoDissolutionThread *UDT)
 	 UDT->Finish = Finish;
 	 UDT->Plane = Plane;
      UDT->StartTime = StartTime;
-     UDT->FinishTime = FinishTime;
-
+	 UDT->FinishTime = FinishTime;
+	 UDT->m_StatisticsParam = m_StatisticsParam;
 	 return true;
 	}
 }
@@ -2871,7 +2877,9 @@ bool __fastcall TDissolutionThread::LoadFromMem(TUndoDissolutionThread *UDT)
 	 Finish = UDT->Finish;
      Plane = UDT->Plane;
      StartTime = UDT->StartTime;
-     FinishTime = UDT->FinishTime;
+	 FinishTime = UDT->FinishTime;
+
+	 m_StatisticsParam = UDT->m_StatisticsParam;
      return true;
     }
 }
@@ -4148,6 +4156,84 @@ void TStatisticsData::Init(void)
 	nS_Count = 0;
 }
 //---------------------------------------------------------------------------
+bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
+{//сохранить структуру в поток
+	bool bRet = false;
+	int nSeek = 0;
+	DWORD NumberOfBytesToWrite, NumberOfBytesWritten;
+	bool bwf = true;
+
+	   NumberOfBytesToWrite = sizeof(N1);
+	   bwf &= WriteFile(hFile,&(N1),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(N2);
+	   bwf &= WriteFile(hFile,&(N2),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(N3);
+	   bwf &= WriteFile(hFile,&(N3),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(Deleted);
+	   bwf &= WriteFile(hFile,&(Deleted),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(MostPopularTypeCount);
+	   bwf &= WriteFile(hFile,&(MostPopularTypeCount),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(nS_Count);
+	   bwf &= WriteFile(hFile,&(nS_Count),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	if(pSeek != NULL)
+	{
+	 *pSeek += nSeek;
+	}
+	bRet = bwf;
+	return bRet;
+}
+//---------------------------------------------------------------------------
+bool TStatisticsData::LoadFromFile(HANDLE hFile, int *pSeek)
+{//загрузить структуру из потока
+	bool bRet = false;
+	int nSeek = 0;
+	DWORD NumberOfBytesRead,NumberOfBytesReaded;
+	bool bwf = true;
+
+		NumberOfBytesRead = sizeof(N1);
+		bwf &= ReadFile(hFile,&N1,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(N2);
+		bwf &= ReadFile(hFile,&N2,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(N3);
+		bwf &= ReadFile(hFile,&N3,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(Deleted);
+		bwf &= ReadFile(hFile,&Deleted,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(MostPopularTypeCount);
+		bwf &= ReadFile(hFile,&MostPopularTypeCount,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(nS_Count);
+		bwf &= ReadFile(hFile,&nS_Count,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+	if(pSeek != NULL)
+	{
+	 *pSeek += nSeek;
+	}
+	bRet = bwf;
+	return bRet;
+}
+//---------------------------------------------------------------------------
 TStatisticsParam::TStatisticsParam()
 {
 	Init();
@@ -4230,6 +4316,50 @@ TStatisticsDataVec& TStatisticsParam::GetStatistics(void)
 {
 	m_vAveragedStatistics.m_MostPopularTypeIndex = GetMostPopularTypeIndex();
 	return m_vAveragedStatistics;
+}
+//---------------------------------------------------------------------------
+bool TStatisticsParam::SaveToFile(HANDLE hFile, int *pSeek)
+{//сохранить структуру в поток
+	bool bRet = false;
+	int nSeek = 0;
+	DWORD NumberOfBytesToWrite, NumberOfBytesWritten;
+	bool bwf = true;
+
+	   bwf &= m_vStatistics.SaveToFile(hFile, &nSeek);
+	   bwf &= m_vAveragedStatistics.SaveToFile(hFile, &nSeek);
+
+	   NumberOfBytesToWrite = sizeof(m_PeriodOfAverage);
+	   bwf &= WriteFile(hFile,&(m_PeriodOfAverage),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	if(pSeek != NULL)
+	{
+	 *pSeek += nSeek;
+	}
+	bRet = bwf;
+	return bRet;
+}
+//---------------------------------------------------------------------------
+bool TStatisticsParam::LoadFromFile(HANDLE hFile, int *pSeek)
+{//загрузить структуру из потока
+	bool bRet = false;
+	int nSeek = 0;
+	DWORD NumberOfBytesRead,NumberOfBytesReaded;
+	bool bwf = true;
+
+		bwf &= m_vStatistics.LoadFromFile(hFile, &nSeek);
+		bwf &= m_vAveragedStatistics.LoadFromFile(hFile, &nSeek);
+
+		NumberOfBytesRead = sizeof(m_PeriodOfAverage);
+		bwf &= ReadFile(hFile,&m_PeriodOfAverage,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+	if(pSeek != NULL)
+	{
+	 *pSeek += nSeek;
+	}
+	bRet = bwf;
+	return bRet;
 }
 //---------------------------------------------------------------------------
 void TDissolutionThread::SetStatisticsPeriod(int PeriodOfAverage)
@@ -4345,6 +4475,98 @@ TStatisticsDataVec::TStatisticsDataVec(const TStatisticsDataVec &r)
 {
 	m_MostPopularTypeIndex = r.m_MostPopularTypeIndex;
 	m_DeletedAtomKindsStatistics = r.m_DeletedAtomKindsStatistics;
+}
+//---------------------------------------------------------------------------
+bool TStatisticsDataVec::SaveToFile(HANDLE hFile, int *pSeek)
+{//сохранить структуру в поток
+	bool bRet = false;
+	int nSeek = 0;
+	DWORD NumberOfBytesToWrite, NumberOfBytesWritten;
+	bool bwf = true;
+
+	   size_type i;
+	   size_type nCount = size();
+
+	   NumberOfBytesToWrite = sizeof(nCount);
+	   bwf &= WriteFile(hFile,&(nCount),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   for(i = 0; i < nCount; i++)
+	   {
+		bwf &= (*this)[i].SaveToFile(hFile, &nSeek);
+	   }
+
+	   NumberOfBytesToWrite = sizeof(m_MostPopularTypeIndex);
+	   bwf &= WriteFile(hFile,&(m_MostPopularTypeIndex),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   bool HasDeletedAtomKindsStatistics = (m_DeletedAtomKindsStatistics.GetInterface()!= NULL);
+
+	   NumberOfBytesToWrite = sizeof(HasDeletedAtomKindsStatistics);
+	   bwf &= WriteFile(hFile,&(HasDeletedAtomKindsStatistics),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   if(HasDeletedAtomKindsStatistics)
+	   {
+		bwf &= m_DeletedAtomKindsStatistics.SaveToFile(hFile, &nSeek);
+	   }
+
+	if(pSeek != NULL)
+	{
+	 *pSeek += nSeek;
+	}
+	bRet = bwf;
+	return bRet;
+}
+//---------------------------------------------------------------------------
+bool TStatisticsDataVec::LoadFromFile(HANDLE hFile, int *pSeek)
+{//загрузить структуру из потока
+	bool bRet = false;
+	int nSeek = 0;
+	DWORD NumberOfBytesRead,NumberOfBytesReaded;
+	bool bwf = true;
+
+		size_type i;
+		size_type nCount;
+
+		NumberOfBytesRead = sizeof(nCount);
+		bwf &= ReadFile(hFile,&nCount,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		clear();
+		resize(nCount);
+
+		for(i = 0; i < nCount; i++)
+		{
+		 bwf &= (*this)[i].LoadFromFile(hFile, &nSeek);
+		}
+
+		NumberOfBytesRead = sizeof(m_MostPopularTypeIndex);
+		bwf &= ReadFile(hFile,&m_MostPopularTypeIndex,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		bool HasDeletedAtomKindsStatistics = false;
+
+		NumberOfBytesRead = sizeof(HasDeletedAtomKindsStatistics);
+		bwf &= ReadFile(hFile,&HasDeletedAtomKindsStatistics,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		if(HasDeletedAtomKindsStatistics)
+		{
+		 bwf &= m_DeletedAtomKindsStatistics.LoadFromFile(hFile, &nSeek);
+		}
+		else
+		{
+		 m_DeletedAtomKindsStatistics.ClearInterface();
+		}
+
+
+	if(pSeek != NULL)
+	{
+	 *pSeek += nSeek;
+	}
+	bRet = bwf;
+	return bRet;
 }
 //---------------------------------------------------------------------------
 
