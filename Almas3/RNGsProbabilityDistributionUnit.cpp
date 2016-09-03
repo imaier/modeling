@@ -108,7 +108,7 @@ void UpdateCallback(TForm *owner, ProbabilityDistributionData &data)
 
 	if(data.SuspedTread)
 	{
-		frm->pdThread->Suspend()
+		frm->pdThread->Suspend();
 		frm->UpdateControls();
 		data.SuspedTread = false;
 	}
