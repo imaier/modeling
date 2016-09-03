@@ -3987,7 +3987,7 @@ void TDissolutionThread::RenderingKindAtomByNewAlgoritm(void)//вызывать когда по
 
 int _random(int Max)
 {
-	int ret = rand()%Max;
+	int ret = random(Max);
 	//AnsiString msg;
 	//msg.printf("_random(%d)=%d",Max, ret);
 	//DEBUG_MESSAGE(_c_str(msg));
@@ -3996,8 +3996,9 @@ int _random(int Max)
 
 void _randomize()
 {
-	time_t t;
-	srand((unsigned) time(&t));
+	//time_t t;
+	//srand((unsigned) time(&t));
+	randomize();
 }
 //---------------------------------------------------------------------------
 void TDissolutionThread::InitRNG(void)
