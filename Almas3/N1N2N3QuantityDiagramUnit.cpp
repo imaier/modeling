@@ -78,10 +78,22 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStatisticsDataVec& vecSD)
 	 }
 	}
 
+	//третья вкладка
+
+	ParametriсSeries->Clear();
+	//по умолчанию будет зависимость двухсвязных от трехсвязных атомов
+	for(int i=0; i < nCnt; i++)
+	{
+	 const TStatisticsData &sd = vecSD[i];
+	 ParametriсSeries->AddXY(sd.N3, sd.N2, IntToStr(sd.Deleted) /*strName*/, clTeeColor);
+	}
+
+
 	Show();
 
 	N1N2N3Chart->UndoZoom();
-    QuantityDeletedAtomByAtomTypeChart->UndoZoom();
+	QuantityDeletedAtomByAtomTypeChart->UndoZoom();
+	ParametriсChart->UndoZoom();
 }
 //---------------------------------------------------------------------------
 

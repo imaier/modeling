@@ -31,6 +31,9 @@ __published:	// IDE-managed Components
 	TFastLineSeries *nS_Series;
 	TChart *QuantityDeletedAtomByAtomTypeChart;
 	TBarSeries *QuantityDeletedAtomByAtomTypeSeries;
+	TTabSheet *ParametricGraphTabSheet;
+	TChart *ParametriñChart;
+	TFastLineSeries *ParametriñSeries;
 private:	// User declarations
 	TMyCriticalSection m_cs;
 public:		// User declarations
