@@ -9,6 +9,7 @@
 #pragma resource "*.dfm"
 #include <math.h>
 TProgressForm *ProgressForm;
+static TProgressProvider Instanse;
 //---------------------------------------------------------------------------
 TProgressRec::TProgressRec()
 {
@@ -63,7 +64,6 @@ TProgressProvider::~TProgressProvider()
 //---------------------------------------------------------------------------
 TProgressProvider& TProgressProvider::GetInstanse()
 {
-	static TProgressProvider Instanse;
 	return Instanse;
 }
 //---------------------------------------------------------------------------

@@ -57,8 +57,8 @@ public:		// User declarations
 class TProgressProvider
 {
 protected:
-	TProgressProvider();
 public:
+	TProgressProvider();
 	virtual ~TProgressProvider();
 
 	static TProgressProvider& GetInstanse();

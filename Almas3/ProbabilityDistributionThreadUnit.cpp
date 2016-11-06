@@ -61,7 +61,7 @@ void __fastcall ProbabilityDistributionThread::Execute()
 		data.DistributionVec[number]++;
 		data.RndCnt++;
 
-		if(data.RndCnt == inputData.PauseGenNum)
+		if(data.RndCnt == (UINT)inputData.PauseGenNum)
 		{
 			data.SuspedTread = true;
 			Synchronize(&PerformCallback);
