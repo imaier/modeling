@@ -71,9 +71,9 @@
 			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
 			<CfgDependentOn>op100.optset</CfgDependentOn>
 		</PropertyGroup>
-		<Import Project="op110.optset" Condition="'$(Cfg_2)'!='' And Exists('op110.optset')"/>
+		<Import Project="op111.optset" Condition="'$(Cfg_2)'!='' And Exists('op111.optset')"/>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<CfgDependentOn>op110.optset</CfgDependentOn>
+			<CfgDependentOn>op111.optset</CfgDependentOn>
 		</PropertyGroup>
 		<ItemGroup>
 			<ResFiles Include="Almas3.res">
@@ -264,6 +264,11 @@
 				<DependentOn>Almas7ProbSetUnit.h</DependentOn>
 				<BuildOrder>36</BuildOrder>
 			</CppCompile>
+			<CppCompile Include="SelectAtomKindsFormUnit.cpp">
+				<Form>SelectAtomKindsForm</Form>
+				<DependentOn>SelectAtomKindsFormUnit.h</DependentOn>
+				<BuildOrder>40</BuildOrder>
+			</CppCompile>
 			<FormResources Include="InfoUnit.dfm"/>
 			<FormResources Include="Main.dfm"/>
 			<FormResources Include="QuantityByGroupeUnit.dfm"/>
@@ -283,13 +288,14 @@
 			<FormResources Include="MaskEditUnit.dfm"/>
 			<FormResources Include="N1N2N3QuantityDiagramUnit.dfm"/>
 			<FormResources Include="DefectUnit.dfm"/>
+			<FormResources Include="SelectAtomKindsFormUnit.dfm"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
-				<DependentOn>op110.optset</DependentOn>
+				<DependentOn>op111.optset</DependentOn>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_1</Key>

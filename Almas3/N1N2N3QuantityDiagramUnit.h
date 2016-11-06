@@ -12,10 +12,12 @@
 #include "TeEngine.hpp"
 #include "TeeProcs.hpp"
 #include <ExtCtrls.hpp>
+#include <ComCtrls.hpp>
+#include <Buttons.hpp>
 //---------------------------------------------------------------------------
 #include "DistributionUnit.h"
 #include "Dissolution.h"
-#include <ComCtrls.hpp>
+#include "SelectAtomKindsFormUnit.h"
 //---------------------------------------------------------------------------
 class TN1N2N3QuantityDiagramForm : public TForm
 {
@@ -34,8 +36,16 @@ __published:	// IDE-managed Components
 	TTabSheet *ParametricGraphTabSheet;
 	TChart *ParametriñChart;
 	TFastLineSeries *ParametriñSeries;
+	TSpeedButton *SelectAtomKindsSpeedButton;
+	TCheckBox *RemovMarksCheckBox;
+	void __fastcall SelectAtomKindsSpeedButtonClick(TObject *Sender);
+	void __fastcall RemovMarksCheckBoxClick(TObject *Sender);
 private:	// User declarations
 	TMyCriticalSection m_cs;
+	TAtomKindsOnAxes SelectedAxes;
+	TStatisticsDataVec m_vecSD;
+
+	void __fastcall TN1N2N3QuantityDiagramForm::UpdateParametriñSeries(void);
 public:		// User declarations
 	__fastcall TN1N2N3QuantityDiagramForm(TComponent* Owner);
 

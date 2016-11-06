@@ -22,10 +22,10 @@ __fastcall TN1N2N3QuantityDiagramForm::TN1N2N3QuantityDiagramForm(TComponent* Ow
 void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStatisticsDataVec& vecSD)
 {
 	TAutoLock lock(m_cs);
-
 	TWaitCursor wc;
 
 	Hide();
+	m_vecSD = vecSD;
 
 	//первая вкладка
 
@@ -80,20 +80,49 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStatisticsDataVec& vecSD)
 
 	//третья вкладка
 
-	ParametriсSeries->Clear();
-	//по умолчанию будет зависимость двухсвязных от трехсвязных атомов
-	for(int i=0; i < nCnt; i++)
-	{
-	 const TStatisticsData &sd = vecSD[i];
-	 ParametriсSeries->AddXY(sd.N3, sd.N2, IntToStr(sd.Deleted) /*strName*/, clTeeColor);
-	}
-
+	UpdateParametriсSeries();
 
 	Show();
 
 	N1N2N3Chart->UndoZoom();
 	QuantityDeletedAtomByAtomTypeChart->UndoZoom();
 	ParametriсChart->UndoZoom();
+}
+//---------------------------------------------------------------------------
+void __fastcall TN1N2N3QuantityDiagramForm::SelectAtomKindsSpeedButtonClick(TObject *Sender)
+{
+	TSelectAtomKindsForm *Form = new TSelectAtomKindsForm(this);
+	Form->EditData = SelectedAxes;
+	if (Form->ShowModal() == mrOk)
+	{
+		SelectedAxes = Form->EditData;
+		UpdateParametriсSeries();
+	}
+
+	delete Form;
+}
+//---------------------------------------------------------------------------
+void __fastcall TN1N2N3QuantityDiagramForm::UpdateParametriсSeries(void)
+{
+
+	int nCnt = m_vecSD.size();
+	ParametriсSeries->Clear();
+	for(int i=0; i < nCnt; i++)
+	{
+	 const TStatisticsData &sd = m_vecSD[i];
+	 ParametriсSeries->AddXY(SelectedAxes.GetXAxisCount(sd) , SelectedAxes.GetYAxisCount(sd), IntToStr(sd.Deleted) /*strName*/, clTeeColor);
+	}
+
+	ParametriсChart->LeftAxis->Title->Caption = SelectedAxes.GetYAxisDiscription();
+	ParametriсChart->BottomAxis->Title->Caption = SelectedAxes.GetXAxisDiscription();
+
+	//ParametriсChart->UndoZoom();
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TN1N2N3QuantityDiagramForm::RemovMarksCheckBoxClick(TObject *Sender)
+{
+	ParametriсSeries->Marks->Visible = !RemovMarksCheckBox->Checked;
 }
 //---------------------------------------------------------------------------
 

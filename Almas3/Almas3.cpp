@@ -2,25 +2,26 @@
 #include <vcl\vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
-USEFORM("ProbSetModelUnit.cpp", ProbSetModelForm);
-USEFORM("PropertyUnit.cpp", PropertyForm);
-USEFORM("ProbalityUnit.cpp", ProbalityForm);
-USEFORM("MillersUnit.cpp", MillersForm);
-USEFORM("Monitoring.cpp", MonitoringForm);
-USEFORM("ScreenCopyUnit.cpp", ScreenCopyForm);
-USEFORM("MaskEditUnit.cpp", MaskEditForm);
-USEFORM("DefectEditUnit.cpp", DefectEditForm);
-USEFORM("N1N2N3QuantityDiagramUnit.cpp", N1N2N3QuantityDiagramForm);
-USEFORM("DefectUnit.cpp", DefectForm);
-USEFORM("SurfaceUnit.cpp", SurfaceForm);
-USEFORM("Main.cpp", MainForm);
 USEFORM("InfoUnit.cpp", InfoForm);
-USEFORM("PictUnit.cpp", PictuteForm);
-USEFORM("MaskUnit.cpp", MaskForm);
-USEFORM("ProgressUnit.cpp", ProgressForm);
+USEFORM("Main.cpp", MainForm);
 USEFORM("QuantityByGroupeUnit.cpp", QuantityByGroupeForm);
 USEFORM("DistributionUnit.cpp", DistributionForm);
 USEFORM("RNGsProbabilityDistributionUnit.cpp", RNGsProbabilityDistributionForm);
+USEFORM("PictUnit.cpp", PictuteForm);
+USEFORM("MaskUnit.cpp", MaskForm);
+USEFORM("ProgressUnit.cpp", ProgressForm);
+USEFORM("MillersUnit.cpp", MillersForm);
+USEFORM("ScreenCopyUnit.cpp", ScreenCopyForm);
+USEFORM("Monitoring.cpp", MonitoringForm);
+USEFORM("ProbSetModelUnit.cpp", ProbSetModelForm);
+USEFORM("ProbalityUnit.cpp", ProbalityForm);
+USEFORM("PropertyUnit.cpp", PropertyForm);
+USEFORM("SurfaceUnit.cpp", SurfaceForm);
+USEFORM("DefectEditUnit.cpp", DefectEditForm);
+USEFORM("MaskEditUnit.cpp", MaskEditForm);
+USEFORM("N1N2N3QuantityDiagramUnit.cpp", N1N2N3QuantityDiagramForm);
+USEFORM("DefectUnit.cpp", DefectForm);
+USEFORM("SelectAtomKindsFormUnit.cpp", SelectAtomKindsForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
