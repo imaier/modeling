@@ -18,9 +18,11 @@
     Top = 0
     Width = 903
     Height = 541
-    ActivePage = ParametricGraphTabSheet
+    ActivePage = AtomQuantityByDeleteAtomQuantityTabSheet
     Align = alClient
     TabOrder = 0
+    ExplicitTop = 76
+    ExplicitHeight = 465
     object AtomQuantityByDeleteAtomQuantityTabSheet: TTabSheet
       Caption = 
         #1043#1088#1072#1092#1080#1082' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1087#1086#1074#1077#1088#1093#1085#1086#1089#1090#1085#1099#1093' '#1072#1090#1086#1084#1086#1074' '#1086#1090' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072 +
@@ -51,6 +53,14 @@
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        object SaveImageSpeedButton: TSpeedButton
+          Left = 0
+          Top = 0
+          Width = 137
+          Height = 22
+          Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077
+          OnClick = SaveImageSpeedButtonClick
+        end
         object OneLinkSeries: TFastLineSeries
           Marks.Arrow.Visible = True
           Marks.Callout.Brush.Color = clBlack

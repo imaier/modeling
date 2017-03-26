@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "N1N2N3QuantityDiagramUnit.h"
+#include "SaveChartImageFormUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "Chart"
@@ -123,6 +124,20 @@ void __fastcall TN1N2N3QuantityDiagramForm::UpdateParametriñSeries(void)
 void __fastcall TN1N2N3QuantityDiagramForm::RemovMarksCheckBoxClick(TObject *Sender)
 {
 	ParametriñSeries->Marks->Visible = !RemovMarksCheckBox->Checked;
+}
+//---------------------------------------------------------------------------
+void __fastcall TN1N2N3QuantityDiagramForm::SaveImageSpeedButtonClick(TObject *Sender)
+{
+	//StatisticPageControl;;;
+	TStringList *ChartList = new TStringList();
+	ChartList->AddObject(AtomQuantityByDeleteAtomQuantityTabSheet->Caption, N1N2N3Chart);
+	ChartList->AddObject(QuantityDeletedAtomByAtomTypeTabSheet->Caption, QuantityDeletedAtomByAtomTypeChart);
+	ChartList->AddObject(ParametricGraphTabSheet->Caption, ParametriñChart);
+
+	TSaveChartImageForm *SaveForm = new TSaveChartImageForm(this);
+	SaveForm->InitAndShowDialog(ChartList);
+    delete SaveForm;
+	delete ChartList;
 }
 //---------------------------------------------------------------------------
 

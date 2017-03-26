@@ -38,8 +38,10 @@ __published:	// IDE-managed Components
 	TFastLineSeries *ParametriñSeries;
 	TSpeedButton *SelectAtomKindsSpeedButton;
 	TCheckBox *RemovMarksCheckBox;
+	TSpeedButton *SaveImageSpeedButton;
 	void __fastcall SelectAtomKindsSpeedButtonClick(TObject *Sender);
 	void __fastcall RemovMarksCheckBoxClick(TObject *Sender);
+	void __fastcall SaveImageSpeedButtonClick(TObject *Sender);
 private:	// User declarations
 	TMyCriticalSection m_cs;
 	TAtomKindsOnAxes SelectedAxes;
