@@ -39,6 +39,9 @@ __published:	// IDE-managed Components
 	TSpeedButton *SelectAtomKindsSpeedButton;
 	TCheckBox *RemovMarksCheckBox;
 	TSpeedButton *SaveImageSpeedButton;
+	TTabSheet *RoughnessTabSheet;
+	TChart *RoughnessChart;
+	TAreaSeries *RoughnessSeries;
 	void __fastcall SelectAtomKindsSpeedButtonClick(TObject *Sender);
 	void __fastcall RemovMarksCheckBoxClick(TObject *Sender);
 	void __fastcall SaveImageSpeedButtonClick(TObject *Sender);

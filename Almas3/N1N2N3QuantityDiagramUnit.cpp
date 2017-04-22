@@ -83,6 +83,15 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStatisticsDataVec& vecSD)
 
 	UpdateParametriñSeries();
 
+	//÷åòâåðòàÿ âêëàäêà - øåðîõîâàòîñòü
+	RoughnessSeries->Clear();
+
+	for(int i=0; i < nCnt; i++)
+	{
+	 const TStatisticsData &sd = vecSD[i];
+	 RoughnessSeries->AddXY(sd.Deleted, sd.Roughness, strName, clTeeColor);
+	}
+
 	Show();
 
 	N1N2N3Chart->UndoZoom();
@@ -133,6 +142,7 @@ void __fastcall TN1N2N3QuantityDiagramForm::SaveImageSpeedButtonClick(TObject *S
 	ChartList->AddObject(AtomQuantityByDeleteAtomQuantityTabSheet->Caption, N1N2N3Chart);
 	ChartList->AddObject(QuantityDeletedAtomByAtomTypeTabSheet->Caption, QuantityDeletedAtomByAtomTypeChart);
 	ChartList->AddObject(ParametricGraphTabSheet->Caption, ParametriñChart);
+	ChartList->AddObject(RoughnessTabSheet->Caption, RoughnessChart);
 
 	TSaveChartImageForm *SaveForm = new TSaveChartImageForm(this);
 	SaveForm->InitAndShowDialog(ChartList);

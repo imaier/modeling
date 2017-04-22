@@ -18,19 +18,13 @@
     Top = 0
     Width = 903
     Height = 541
-    ActivePage = AtomQuantityByDeleteAtomQuantityTabSheet
+    ActivePage = RoughnessTabSheet
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 76
-    ExplicitHeight = 465
     object AtomQuantityByDeleteAtomQuantityTabSheet: TTabSheet
       Caption = 
         #1043#1088#1072#1092#1080#1082' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1087#1086#1074#1077#1088#1093#1085#1086#1089#1090#1085#1099#1093' '#1072#1090#1086#1084#1086#1074' '#1086#1090' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072 +
         #1090#1086#1084#1086#1074
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object N1N2N3Chart: TChart
         Left = 0
         Top = 0
@@ -135,10 +129,6 @@
     object QuantityDeletedAtomByAtomTypeTabSheet: TTabSheet
       Caption = #1043#1088#1072#1092#1080#1082' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074' '#1086#1090' '#1090#1080#1087#1072' '#1072#1090#1086#1084#1072
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object QuantityDeletedAtomByAtomTypeChart: TChart
         Left = 0
         Top = 0
@@ -193,10 +183,6 @@
     object ParametricGraphTabSheet: TTabSheet
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080#1095#1077#1089#1082#1080#1081' '#1075#1088#1072#1092#1080#1082
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ParametriсChart: TChart
         Left = 0
         Top = 0
@@ -276,6 +262,50 @@
           Title = #1055#1072#1088#1072#1084#1077#1090#1088#1080#1095#1077#1089#1082#1072#1103' '#1079#1072#1074#1080#1089#1080#1084#1086#1089#1090#1100
           LinePen.Color = 8421631
           LinePen.Width = 2
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+      end
+    end
+    object RoughnessTabSheet: TTabSheet
+      Caption = #1064#1077#1088#1086#1093#1086#1074#1072#1090#1086#1089#1090#1100' '#1087#1086#1074#1077#1088#1093#1085#1086#1089#1090#1080
+      ImageIndex = 3
+      object RoughnessChart: TChart
+        Left = 0
+        Top = 0
+        Width = 895
+        Height = 513
+        Gradient.EndColor = 13556735
+        Gradient.MidColor = 14739177
+        Gradient.StartColor = 16774122
+        Legend.Visible = False
+        MarginBottom = 3
+        MarginLeft = 1
+        MarginRight = 4
+        MarginTop = 3
+        Title.Text.Strings = (
+          #1043#1088#1072#1092#1080#1082' '#1096#1077#1088#1086#1093#1086#1074#1072#1090#1086#1089#1090#1080' '#1087#1086#1074#1077#1088#1093#1085#1086#1089#1090#1080' '#1086#1090' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074)
+        BottomAxis.Title.Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074
+        LeftAxis.Title.Caption = #1064#1077#1088#1086#1093#1086#1074#1072#1090#1086#1089#1090#1100
+        View3D = False
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        object RoughnessSeries: TAreaSeries
+          Marks.Arrow.Visible = True
+          Marks.Callout.Brush.Color = clBlack
+          Marks.Callout.Arrow.Visible = True
+          Marks.Visible = False
+          SeriesColor = clRed
+          AreaLinesPen.Visible = False
+          Dark3D = False
+          DrawArea = True
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          Transparency = 30
           XValues.Name = 'X'
           XValues.Order = loAscending
           YValues.Name = 'Y'

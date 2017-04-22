@@ -2,27 +2,27 @@
 #include <vcl\vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
-USEFORM("ProbSetModelUnit.cpp", ProbSetModelForm);
-USEFORM("ProbalityUnit.cpp", ProbalityForm);
-USEFORM("PropertyUnit.cpp", PropertyForm);
-USEFORM("ScreenCopyUnit.cpp", ScreenCopyForm);
-USEFORM("Monitoring.cpp", MonitoringForm);
-USEFORM("DefectUnit.cpp", DefectForm);
-USEFORM("N1N2N3QuantityDiagramUnit.cpp", N1N2N3QuantityDiagramForm);
-USEFORM("SaveChartImageFormUnit.cpp", SaveChartImageForm);
-USEFORM("SelectAtomKindsFormUnit.cpp", SelectAtomKindsForm);
-USEFORM("SurfaceUnit.cpp", SurfaceForm);
-USEFORM("MaskEditUnit.cpp", MaskEditForm);
-USEFORM("DefectEditUnit.cpp", DefectEditForm);
-USEFORM("Main.cpp", MainForm);
 USEFORM("InfoUnit.cpp", InfoForm);
+USEFORM("Main.cpp", MainForm);
 USEFORM("QuantityByGroupeUnit.cpp", QuantityByGroupeForm);
+USEFORM("DistributionUnit.cpp", DistributionForm);
+USEFORM("RNGsProbabilityDistributionUnit.cpp", RNGsProbabilityDistributionForm);
+USEFORM("PictUnit.cpp", PictuteForm);
 USEFORM("MaskUnit.cpp", MaskForm);
 USEFORM("ProgressUnit.cpp", ProgressForm);
 USEFORM("MillersUnit.cpp", MillersForm);
-USEFORM("DistributionUnit.cpp", DistributionForm);
-USEFORM("PictUnit.cpp", PictuteForm);
-USEFORM("RNGsProbabilityDistributionUnit.cpp", RNGsProbabilityDistributionForm);
+USEFORM("ScreenCopyUnit.cpp", ScreenCopyForm);
+USEFORM("Monitoring.cpp", MonitoringForm);
+USEFORM("ProbSetModelUnit.cpp", ProbSetModelForm);
+USEFORM("ProbalityUnit.cpp", ProbalityForm);
+USEFORM("PropertyUnit.cpp", PropertyForm);
+USEFORM("SurfaceUnit.cpp", SurfaceForm);
+USEFORM("DefectEditUnit.cpp", DefectEditForm);
+USEFORM("MaskEditUnit.cpp", MaskEditForm);
+USEFORM("N1N2N3QuantityDiagramUnit.cpp", N1N2N3QuantityDiagramForm);
+USEFORM("DefectUnit.cpp", DefectForm);
+USEFORM("SelectAtomKindsFormUnit.cpp", SelectAtomKindsForm);
+USEFORM("SaveChartImageFormUnit.cpp", SaveChartImageForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {

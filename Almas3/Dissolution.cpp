@@ -2402,12 +2402,13 @@ int __fastcall TDissolutionThread::GetSortByKind(TProbIndex nKind)
 //---------------------------------------------------------------------------
 void __fastcall TDissolutionThread::GetTAtom3dFromBAC(TAtom3d* A3d,BigArrayCoord* BAC)
 {
-    int dx,dy,dz;
-	GetCoordAtomInCell(BAC->N, dx, dy, dz);
-    A3d->Coord[0] = BAC->X*Mtr2[0][0] + BAC->Y*Mtr2[1][0] + BAC->Z*Mtr2[2][0] + dx;
-    A3d->Coord[1] = BAC->X*Mtr2[0][1] + BAC->Y*Mtr2[1][1] + BAC->Z*Mtr2[2][1] + dy;
-    A3d->Coord[2] = BAC->X*Mtr2[0][2] + BAC->Y*Mtr2[1][2] + BAC->Z*Mtr2[2][2] + dz;
-    A3d->Type = GetTypeAtom(BAC);
+	int x,y,z;
+	ConFromBakToXyz(*BAC, x,y,z);
+	A3d->Coord[0] = x;
+	A3d->Coord[1] = y;
+	A3d->Coord[2] = z;
+
+	A3d->Type = GetTypeAtom(BAC);
 	//A3d->ProbIndex = GetAdjTypeAtom(BAC);
 	A3d->ProbIndex = GetKindAtom(BAC);
 }
@@ -2659,6 +2660,32 @@ bool __fastcall TDissolutionThread::DeleteAtom(int x,int y,int z)
     }
     return true;
     */
+}
+//---------------------------------------------------------------------------
+double __fastcall TDissolutionThread::DepthsOfAtom(int x,int y,int z)
+{//расстояние точки от начальной плоскости растворения
+	// плоскость расствоерня это у нас ось Z в Mtr2
+	double A, B, C, D;
+	A = Mtr2[2][0];
+	B = Mtr2[2][1];
+	C = Mtr2[2][2];
+	D = 0;
+
+	//формула
+	double NormVectorModule = sqrt(pow(A,2) + pow(B,2) +pow(C,2));
+	double Scalar = A*x + B*y + C*z + D;
+	double Depths = Scalar/NormVectorModule;
+
+	return Depths;
+}
+//---------------------------------------------------------------------------
+void __fastcall TDissolutionThread::ConFromBakToXyz(BigArrayCoord &BAC, int &x,int &y,int &z)
+{
+	int dx,dy,dz;
+	GetCoordAtomInCell(BAC.N, dx, dy, dz);
+	x = BAC.X*Mtr2[0][0] + BAC.Y*Mtr2[1][0] + BAC.Z*Mtr2[2][0] + dx;
+	y = BAC.X*Mtr2[0][1] + BAC.Y*Mtr2[1][1] + BAC.Z*Mtr2[2][1] + dy;
+	z = BAC.X*Mtr2[0][2] + BAC.Y*Mtr2[1][2] + BAC.Z*Mtr2[2][2] + dz;
 }
 //---------------------------------------------------------------------------
 void __fastcall TDissolutionThread::ConFromXyzToBak(int x,int y,int z,BigArrayCoord &BAC)
@@ -3133,7 +3160,7 @@ int TDissolutionThread::Get4LnksAtoms(TAtom3d** A3d)
             if(i!=0)
             {
   	         GetCoordAtomInCell(BAC.N, dx, dy, dz);
-             ((TAtom3d*)(*A3d+Number-1))->Coord[0] = BAC.X*Mtr2[0][0] + BAC.Y*Mtr2[1][0] + BAC.Z*Mtr2[2][0] + dx;
+			 ((TAtom3d*)(*A3d+Number-1))->Coord[0] = BAC.X*Mtr2[0][0] + BAC.Y*Mtr2[1][0] + BAC.Z*Mtr2[2][0] + dx;
              ((TAtom3d*)(*A3d+Number-1))->Coord[1] = BAC.X*Mtr2[0][1] + BAC.Y*Mtr2[1][1] + BAC.Z*Mtr2[2][1] + dy;
              ((TAtom3d*)(*A3d+Number-1))->Coord[2] = BAC.X*Mtr2[0][2] + BAC.Y*Mtr2[1][2] + BAC.Z*Mtr2[2][2] + dz;
              ((TAtom3d*)(*A3d+Number-1))->Type = GetTypeAtom(&BAC);// его тип
@@ -4144,6 +4171,7 @@ void TStatisticsData::operator=(const TStatisticsData& r)
 	Deleted = r.Deleted;
 	MostPopularTypeCount = r.MostPopularTypeCount;
 	nS_Count = r.nS_Count;
+	Roughness = r.Roughness;
 }
 //---------------------------------------------------------------------------
 void TStatisticsData::Init(void)
@@ -4154,6 +4182,7 @@ void TStatisticsData::Init(void)
 	Deleted = 0;
 	MostPopularTypeCount = 0;
 	nS_Count = 0;
+	Roughness = 0;
 }
 //---------------------------------------------------------------------------
 bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
@@ -4185,6 +4214,10 @@ bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
 
 	   NumberOfBytesToWrite = sizeof(nS_Count);
 	   bwf &= WriteFile(hFile,&(nS_Count),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(Roughness);
+	   bwf &= WriteFile(hFile,&(Roughness),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
 	   nSeek+= (bwf)?NumberOfBytesWritten:0;
 
 	if(pSeek != NULL)
@@ -4224,6 +4257,10 @@ bool TStatisticsData::LoadFromFile(HANDLE hFile, int *pSeek)
 
 		NumberOfBytesRead = sizeof(nS_Count);
 		bwf &= ReadFile(hFile,&nS_Count,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(Roughness);
+		bwf &= ReadFile(hFile,&Roughness,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
 		nSeek += (bwf)?NumberOfBytesReaded:0;
 
 	if(pSeek != NULL)
@@ -4299,6 +4336,7 @@ void TStatisticsParam::AverageData(void)
 	  AvData.N3 += Data.N3;
 	  AvData.MostPopularTypeCount += Data.MostPopularTypeCount;
 	  AvData.nS_Count += Data.nS_Count;
+	  AvData.Roughness += Data.Roughness;
 
 	 }
 	 AvData.N1 /= cnt;
@@ -4306,6 +4344,7 @@ void TStatisticsParam::AverageData(void)
 	 AvData.N3 /= cnt;
 	 AvData.MostPopularTypeCount /= cnt;
 	 AvData.nS_Count /= cnt;
+	 AvData.Roughness /= cnt;
 	 AvData.Deleted = LastDeleted;
 	 m_vAveragedStatistics.push_back(AvData);
 	 m_vStatistics.clear();
@@ -4382,6 +4421,7 @@ void TDissolutionThread::CollectStatistics()
 	 sd.Deleted = iDeletedAtom;
 	 sd.MostPopularTypeCount = GetPopularTypeCount();
 	 sd.nS_Count = Get_nS_Count();
+	 sd.Roughness = Roughness();
 	 m_StatisticsParam.AddStatisticsData(sd);
 }
 //---------------------------------------------------------------------------
@@ -4432,6 +4472,62 @@ int TDissolutionThread::Get_nS_Count()
 	}
 
 	return ret;
+}
+//---------------------------------------------------------------------------
+float TDissolutionThread::Roughness()
+{//шероховатость поверхности (Среднеквадратичное отклонение от среднего уровня)
+	//узнать глубину каждого поверхностного атома
+	UINT i, j, k;
+	UINT SurfaceAtomsCount = 0;
+	k=0;
+	//общее количество атомов
+	for(i = 0; i < KindAtoms.size(); i++)
+	{
+		SurfaceAtomsCount += KindAtoms[i].size();
+	}
+
+	std::vector<double> vAtomZ;
+	//vAtomZ.reserve(SurfaceAtomsCount);
+	double Depths;
+	double SummOfDepths = 0;
+	BigArrayCoord *BAC;
+	int x,y,z;
+
+	//глубина каждого атома
+	for(i = 0; i < KindAtoms.size(); i++)
+	{
+		for (j = 0; j < KindAtoms[i].size(); j++)
+		{
+			BAC = &(KindAtoms[i][j]);
+			ConFromBakToXyz(*BAC, x,y,z);
+			Depths = DepthsOfAtom(x,y,z);
+			vAtomZ.push_back(Depths);
+			SummOfDepths += Depths;
+		}
+	}
+
+	//проверка
+	UINT AllAtomsCount =vAtomZ.size();
+
+	if(AllAtomsCount == 0)
+	{
+		return 0;
+	}
+
+	//посчитать среднний уровень
+	float AverageOfDepths = SummOfDepths/AllAtomsCount;
+
+	//посчитать среднеквадратичное отклонение
+	double Deviation;
+	double SummOfDeviation = 0;
+	for (i = 0; i < vAtomZ.size(); i++)
+	{
+		Deviation = vAtomZ[i] - AverageOfDepths;
+		SummOfDeviation += pow(Deviation,2);
+	}
+	double SKO = sqrt(SummOfDeviation/AllAtomsCount);
+
+	return (float)SKO;
 }
 //---------------------------------------------------------------------------
 void TDissolutionThread::AddToStatisticsOfDeletedAtomKind(int AtomKind)

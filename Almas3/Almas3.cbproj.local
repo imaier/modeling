@@ -28,5 +28,8 @@
     <Transaction>2016.10.29 20:43:12.506.cpp,D:\my\2009\modeling\Almas3\Unit1.cpp=D:\my\2009\modeling\Almas3\SelectAtomKindsFormUnit.cpp</Transaction>
     <Transaction>2016.10.29 20:43:12.506.h,D:\my\2009\modeling\Almas3\Unit1.h=D:\my\2009\modeling\Almas3\SelectAtomKindsFormUnit.h</Transaction>
     <Transaction>2016.10.29 20:43:12.506.dfm,D:\my\2009\modeling\Almas3\Unit1.dfm=D:\my\2009\modeling\Almas3\SelectAtomKindsFormUnit.dfm</Transaction>
+    <Transaction>2017.02.26 19:48:29.198.cpp,D:\my\2009\modeling\Almas3\Unit1.cpp=D:\my\2009\modeling\Almas3\SaveChartImageFormUnit.cpp</Transaction>
+    <Transaction>2017.02.26 19:48:29.198.h,D:\my\2009\modeling\Almas3\Unit1.h=D:\my\2009\modeling\Almas3\SaveChartImageFormUnit.h</Transaction>
+    <Transaction>2017.02.26 19:48:29.198.dfm,D:\my\2009\modeling\Almas3\Unit1.dfm=D:\my\2009\modeling\Almas3\SaveChartImageFormUnit.dfm</Transaction>
   </Transactions>
 </BorlandProject>

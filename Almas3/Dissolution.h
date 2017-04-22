@@ -144,6 +144,8 @@ public:
 
 	float MostPopularTypeCount;
 	float nS_Count;//количество непрямых соседей
+	float Roughness;//шероховатость образца
+
 
 	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
 	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
@@ -292,6 +294,8 @@ private:
 	//bool __fastcall IsAtomVisible(int x,int y,int z,TMask *MaskArray, int CntMsk);
 	bool __fastcall IsAtomVisible(BigArrayCoord* BAC,TMaskVec &vMask);
 
+	void __fastcall ConFromBakToXyz(BigArrayCoord &BAC, int &x,int &y,int &z);
+	double __fastcall DepthsOfAtom(int x,int y,int z);//расстояние точки от начальной плоскости растворения
 	void __fastcall ConFromXyzToBak(int x,int y,int z,BigArrayCoord &BAC);
 	void __fastcall SetNoDeleted2TypeAtom(BigArrayCoord* BAC);
 	bool __fastcall DeleteAtom(BigArrayCoord* BAC);
@@ -316,6 +320,7 @@ private:
 
 	int GetPopularTypeCount();//количество атомов наиболее популярного типа
 	int Get_nS_Count();//общее количество непрявых вторых соседей
+	float Roughness();//шероховатость поверхности (Среднеквадратичное отклонение от среднего уровня)
 
 	bool m_InitRng;//флаг инициализации ГСЧ (инициализация происходит в потоке растворения)
 
