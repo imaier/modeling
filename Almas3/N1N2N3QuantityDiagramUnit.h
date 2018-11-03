@@ -18,6 +18,7 @@
 #include "DistributionUnit.h"
 #include "Dissolution.h"
 #include "SelectAtomKindsFormUnit.h"
+#include "TeeFunci.hpp"
 //---------------------------------------------------------------------------
 class TN1N2N3QuantityDiagramForm : public TForm
 {
@@ -42,6 +43,9 @@ __published:	// IDE-managed Components
 	TTabSheet *RoughnessTabSheet;
 	TChart *RoughnessChart;
 	TAreaSeries *RoughnessSeries;
+	TTabSheet *AverageLevelTabSheet;
+	TChart *AverageLevelChart;
+	TAreaSeries *AverageLevelSeries;
 	void __fastcall SelectAtomKindsSpeedButtonClick(TObject *Sender);
 	void __fastcall RemovMarksCheckBoxClick(TObject *Sender);
 	void __fastcall SaveImageSpeedButtonClick(TObject *Sender);

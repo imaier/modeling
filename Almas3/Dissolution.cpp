@@ -4172,6 +4172,7 @@ void TStatisticsData::operator=(const TStatisticsData& r)
 	MostPopularTypeCount = r.MostPopularTypeCount;
 	nS_Count = r.nS_Count;
 	Roughness = r.Roughness;
+	AverageLevel = r.AverageLevel;
 }
 //---------------------------------------------------------------------------
 void TStatisticsData::Init(void)
@@ -4183,6 +4184,7 @@ void TStatisticsData::Init(void)
 	MostPopularTypeCount = 0;
 	nS_Count = 0;
 	Roughness = 0;
+	AverageLevel = 0;
 }
 //---------------------------------------------------------------------------
 bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
@@ -4218,6 +4220,10 @@ bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
 
 	   NumberOfBytesToWrite = sizeof(Roughness);
 	   bwf &= WriteFile(hFile,&(Roughness),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(AverageLevel);
+	   bwf &= WriteFile(hFile,&(AverageLevel),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
 	   nSeek+= (bwf)?NumberOfBytesWritten:0;
 
 	if(pSeek != NULL)
@@ -4261,6 +4267,10 @@ bool TStatisticsData::LoadFromFile(HANDLE hFile, int *pSeek)
 
 		NumberOfBytesRead = sizeof(Roughness);
 		bwf &= ReadFile(hFile,&Roughness,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(AverageLevel);
+		bwf &= ReadFile(hFile,&AverageLevel,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
 		nSeek += (bwf)?NumberOfBytesReaded:0;
 
 	if(pSeek != NULL)
@@ -4337,7 +4347,7 @@ void TStatisticsParam::AverageData(void)
 	  AvData.MostPopularTypeCount += Data.MostPopularTypeCount;
 	  AvData.nS_Count += Data.nS_Count;
 	  AvData.Roughness += Data.Roughness;
-
+	  AvData.AverageLevel += Data.AverageLevel;
 	 }
 	 AvData.N1 /= cnt;
 	 AvData.N2 /= cnt;
@@ -4345,6 +4355,7 @@ void TStatisticsParam::AverageData(void)
 	 AvData.MostPopularTypeCount /= cnt;
 	 AvData.nS_Count /= cnt;
 	 AvData.Roughness /= cnt;
+	 AvData.AverageLevel /= cnt;
 	 AvData.Deleted = LastDeleted;
 	 m_vAveragedStatistics.push_back(AvData);
 	 m_vStatistics.clear();
@@ -4422,6 +4433,7 @@ void TDissolutionThread::CollectStatistics()
 	 sd.MostPopularTypeCount = GetPopularTypeCount();
 	 sd.nS_Count = Get_nS_Count();
 	 sd.Roughness = Roughness();
+	 sd.AverageLevel = AverageLevel();
 	 m_StatisticsParam.AddStatisticsData(sd);
 }
 //---------------------------------------------------------------------------
@@ -4472,6 +4484,51 @@ int TDissolutionThread::Get_nS_Count()
 	}
 
 	return ret;
+}
+//---------------------------------------------------------------------------
+float TDissolutionThread::AverageLevel()
+{
+	//узнать глубину каждого поверхностного атома
+	UINT i, j, k;
+	UINT SurfaceAtomsCount = 0;
+	k=0;
+	//общее количество атомов
+	for(i = 0; i < KindAtoms.size(); i++)
+	{
+		SurfaceAtomsCount += KindAtoms[i].size();
+	}
+
+	std::vector<double> vAtomZ;
+	//vAtomZ.reserve(SurfaceAtomsCount);
+	double Depths;
+	double SummOfDepths = 0;
+	BigArrayCoord *BAC;
+	int x,y,z;
+
+	//глубина каждого атома
+	for(i = 0; i < KindAtoms.size(); i++)
+	{
+		for (j = 0; j < KindAtoms[i].size(); j++)
+		{
+			BAC = &(KindAtoms[i][j]);
+			ConFromBakToXyz(*BAC, x,y,z);
+			Depths = DepthsOfAtom(x,y,z);
+			vAtomZ.push_back(Depths);
+			SummOfDepths += Depths;
+		}
+	}
+
+	//проверка
+	UINT AllAtomsCount =vAtomZ.size();
+
+	if(AllAtomsCount == 0)
+	{
+		return 0;
+	}
+
+	//посчитать среднний уровень
+	float AverageOfDepths = SummOfDepths/AllAtomsCount;
+	return AverageOfDepths;
 }
 //---------------------------------------------------------------------------
 float TDissolutionThread::Roughness()

@@ -1,3 +1,4 @@
+
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
@@ -11,6 +12,7 @@
 #pragma link "Series"
 #pragma link "TeEngine"
 #pragma link "TeeProcs"
+#pragma link "TeeFunci"
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
 TN1N2N3QuantityDiagramForm *N1N2N3QuantityDiagramForm;
@@ -92,6 +94,16 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStatisticsDataVec& vecSD)
 	 RoughnessSeries->AddXY(sd.Deleted, sd.Roughness, strName, clTeeColor);
 	}
 
+	// ïÿòàÿ âêëàäêà - ñðåäíèé óðîâåíü
+	AverageLevelSeries->Clear();
+
+	for(int i=0; i < nCnt; i++)
+	{
+	 const TStatisticsData &sd = vecSD[i];
+	 AverageLevelSeries->AddXY(sd.Deleted, sd.AverageLevel, strName, clTeeColor);
+	}
+
+
 	Show();
 
 	N1N2N3Chart->UndoZoom();
@@ -143,6 +155,7 @@ void __fastcall TN1N2N3QuantityDiagramForm::SaveImageSpeedButtonClick(TObject *S
 	ChartList->AddObject(QuantityDeletedAtomByAtomTypeTabSheet->Caption, QuantityDeletedAtomByAtomTypeChart);
 	ChartList->AddObject(ParametricGraphTabSheet->Caption, ParametriñChart);
 	ChartList->AddObject(RoughnessTabSheet->Caption, RoughnessChart);
+	ChartList->AddObject(AverageLevelTabSheet->Caption, AverageLevelChart);
 
 	TSaveChartImageForm *SaveForm = new TSaveChartImageForm(this);
 	SaveForm->InitAndShowDialog(ChartList);

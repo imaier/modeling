@@ -145,7 +145,7 @@ public:
 	float MostPopularTypeCount;
 	float nS_Count;//количество непрямых соседей
 	float Roughness;//шероховатость образца
-
+	float AverageLevel;//средний уровень
 
 	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
 	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
@@ -321,6 +321,7 @@ private:
 	int GetPopularTypeCount();//количество атомов наиболее популярного типа
 	int Get_nS_Count();//общее количество непрявых вторых соседей
 	float Roughness();//шероховатость поверхности (Среднеквадратичное отклонение от среднего уровня)
+	float AverageLevel();//средний уровень поерхности
 
 	bool m_InitRng;//флаг инициализации ГСЧ (инициализация происходит в потоке растворения)
 

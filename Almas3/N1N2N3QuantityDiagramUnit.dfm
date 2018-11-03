@@ -18,7 +18,7 @@
     Top = 0
     Width = 903
     Height = 541
-    ActivePage = RoughnessTabSheet
+    ActivePage = AverageLevelTabSheet
     Align = alClient
     TabOrder = 0
     object AtomQuantityByDeleteAtomQuantityTabSheet: TTabSheet
@@ -149,8 +149,26 @@
         BottomAxis.MinorTickCount = 0
         BottomAxis.TickOnLabelsOnly = False
         BottomAxis.Title.Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1074#1077#1088#1086#1103#1090#1085#1086#1089#1090#1080
+        DepthAxis.Automatic = False
+        DepthAxis.AutomaticMaximum = False
+        DepthAxis.AutomaticMinimum = False
+        DepthAxis.Maximum = 0.499999999999991400
+        DepthAxis.Minimum = -0.500000000000007300
+        DepthTopAxis.Automatic = False
+        DepthTopAxis.AutomaticMaximum = False
+        DepthTopAxis.AutomaticMinimum = False
+        DepthTopAxis.Maximum = 0.499999999999991400
+        DepthTopAxis.Minimum = -0.500000000000007300
+        LeftAxis.Automatic = False
+        LeftAxis.AutomaticMaximum = False
+        LeftAxis.AutomaticMinimum = False
+        LeftAxis.Maximum = 505.000000000004600000
         LeftAxis.MaximumOffset = 15
+        LeftAxis.Minimum = 0.000000000002920331
         LeftAxis.Title.Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074
+        RightAxis.Automatic = False
+        RightAxis.AutomaticMaximum = False
+        RightAxis.AutomaticMinimum = False
         TopAxis.LabelStyle = talValue
         TopAxis.MinorTickCount = 0
         TopAxis.Title.Caption = #1058#1080#1087' '#1072#1090#1086#1084#1072
@@ -164,6 +182,15 @@
           15
           21)
         object QuantityDeletedAtomByAtomTypeSeries: TBarSeries
+          BarBrush.Color = clWhite
+          BarBrush.Style = bsBDiagonal
+          BarBrush.Image.Data = {
+            07544269746D61707E000000424D7E000000000000003E000000280000001000
+            0000100000000100010000000000400000000000000000000000020000000200
+            000000000000FFFFFF00EEEE0000FFFF0000BBBB0000FFFF0000EEEE0000FFFF
+            0000BBBB0000FFFF0000EEEE0000FFFF0000BBBB0000FFFF0000EEEE0000FFFF
+            0000BBBB0000FFFF0000}
+          BarPen.Width = 2
           HorizAxis = aBothHorizAxis
           Marks.Arrow.Visible = True
           Marks.Callout.Brush.Color = clBlack
@@ -171,8 +198,14 @@
           Marks.Shadow.Color = 8487297
           Marks.Style = smsValue
           Marks.Visible = False
+          SeriesColor = clBlack
           Title = 'DeletedAtomByAtomTypeSeries'
+          Transparency = 2
+          Dark3D = False
           Gradient.Direction = gdTopBottom
+          Shadow.Visible = False
+          TickLines.Width = 2
+          TickLines.EndStyle = esFlat
           XValues.Name = 'X'
           XValues.Order = loAscending
           YValues.Name = 'Bar'
@@ -258,10 +291,11 @@
           Marks.Callout.ArrowHead = ahSolid
           Marks.Callout.Length = 25
           Marks.Visible = True
-          SeriesColor = 8421631
+          SeriesColor = clBlack
           Title = #1055#1072#1088#1072#1084#1077#1090#1088#1080#1095#1077#1089#1082#1072#1103' '#1079#1072#1074#1080#1089#1080#1084#1086#1089#1090#1100
-          LinePen.Color = 8421631
+          IgnoreNulls = False
           LinePen.Width = 2
+          TreatNulls = tnSkip
           XValues.Name = 'X'
           XValues.Order = loAscending
           YValues.Name = 'Y'
@@ -288,7 +322,21 @@
         Title.Text.Strings = (
           #1043#1088#1072#1092#1080#1082' '#1096#1077#1088#1086#1093#1086#1074#1072#1090#1086#1089#1090#1080' '#1087#1086#1074#1077#1088#1093#1085#1086#1089#1090#1080' '#1086#1090' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074)
         BottomAxis.Title.Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074
+        DepthAxis.Automatic = False
+        DepthAxis.AutomaticMaximum = False
+        DepthAxis.AutomaticMinimum = False
+        DepthAxis.Maximum = 0.500000000000000000
+        DepthAxis.Minimum = -0.500000000000000000
+        DepthTopAxis.Automatic = False
+        DepthTopAxis.AutomaticMaximum = False
+        DepthTopAxis.AutomaticMinimum = False
+        DepthTopAxis.Maximum = 0.500000000000000000
+        DepthTopAxis.Minimum = -0.500000000000000000
+        LeftAxis.AxisValuesFormat = '#,##0.#####'
         LeftAxis.Title.Caption = #1064#1077#1088#1086#1093#1086#1074#1072#1090#1086#1089#1090#1100
+        RightAxis.Automatic = False
+        RightAxis.AutomaticMaximum = False
+        RightAxis.AutomaticMinimum = False
         View3D = False
         Align = alClient
         BevelOuter = bvNone
@@ -298,14 +346,81 @@
           Marks.Callout.Brush.Color = clBlack
           Marks.Callout.Arrow.Visible = True
           Marks.Visible = False
-          SeriesColor = clRed
+          SeriesColor = -1
+          AreaBrush = bsClear
+          AreaChartBrush.Color = clWhite
+          AreaChartBrush.Style = bsClear
           AreaLinesPen.Visible = False
           Dark3D = False
           DrawArea = True
+          LinePen.Width = 2
           Pointer.InflateMargins = True
           Pointer.Style = psRectangle
           Pointer.Visible = False
-          Transparency = 30
+          Transparency = 50
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+      end
+    end
+    object AverageLevelTabSheet: TTabSheet
+      Caption = #1057#1088#1077#1076#1085#1080#1081' '#1091#1088#1086#1074#1077#1085#1100
+      ImageIndex = 4
+      object AverageLevelChart: TChart
+        Left = 0
+        Top = 0
+        Width = 895
+        Height = 513
+        Gradient.EndColor = 13556735
+        Gradient.MidColor = 14739177
+        Gradient.StartColor = 16774122
+        Legend.Visible = False
+        MarginBottom = 3
+        MarginLeft = 1
+        MarginRight = 4
+        MarginTop = 3
+        Title.Text.Strings = (
+          #1043#1088#1072#1092#1080#1082' '#1089#1088#1077#1076#1085#1077#1075#1086' '#1091#1088#1086#1074#1085#1103' '#1075#1083#1091#1073#1080#1085#1099' '#1086#1090' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074)
+        BottomAxis.Title.Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1091#1076#1072#1083#1077#1085#1085#1099#1093' '#1072#1090#1086#1084#1086#1074
+        DepthAxis.Automatic = False
+        DepthAxis.AutomaticMaximum = False
+        DepthAxis.AutomaticMinimum = False
+        DepthAxis.Maximum = 0.500000000000000000
+        DepthAxis.Minimum = -0.500000000000000000
+        DepthTopAxis.Automatic = False
+        DepthTopAxis.AutomaticMaximum = False
+        DepthTopAxis.AutomaticMinimum = False
+        DepthTopAxis.Maximum = 0.500000000000000000
+        DepthTopAxis.Minimum = -0.500000000000000000
+        LeftAxis.AxisValuesFormat = '#,##0.#####'
+        LeftAxis.Title.Caption = #1043#1083#1091#1073#1080#1085#1072
+        RightAxis.Automatic = False
+        RightAxis.AutomaticMaximum = False
+        RightAxis.AutomaticMinimum = False
+        View3D = False
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        object AverageLevelSeries: TAreaSeries
+          Marks.Arrow.Visible = True
+          Marks.Callout.Brush.Color = clBlack
+          Marks.Callout.Arrow.Visible = True
+          Marks.Visible = False
+          SeriesColor = -1
+          Title = 'AverageLevelSeries'
+          AreaBrush = bsClear
+          AreaChartBrush.Color = clWhite
+          AreaChartBrush.Style = bsClear
+          AreaLinesPen.Visible = False
+          Dark3D = False
+          DrawArea = True
+          LinePen.Width = 2
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          Transparency = 50
           XValues.Name = 'X'
           XValues.Order = loAscending
           YValues.Name = 'Y'
