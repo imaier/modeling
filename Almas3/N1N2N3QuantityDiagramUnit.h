@@ -46,6 +46,7 @@ __published:	// IDE-managed Components
 	TTabSheet *AverageLevelTabSheet;
 	TChart *AverageLevelChart;
 	TAreaSeries *AverageLevelSeries;
+	TLineSeries *ThicknessSeries;
 	void __fastcall SelectAtomKindsSpeedButtonClick(TObject *Sender);
 	void __fastcall RemovMarksCheckBoxClick(TObject *Sender);
 	void __fastcall SaveImageSpeedButtonClick(TObject *Sender);

@@ -4173,6 +4173,7 @@ void TStatisticsData::operator=(const TStatisticsData& r)
 	nS_Count = r.nS_Count;
 	Roughness = r.Roughness;
 	AverageLevel = r.AverageLevel;
+	Thickness = r.Thickness;
 }
 //---------------------------------------------------------------------------
 void TStatisticsData::Init(void)
@@ -4185,6 +4186,7 @@ void TStatisticsData::Init(void)
 	nS_Count = 0;
 	Roughness = 0;
 	AverageLevel = 0;
+	Thickness = 0;
 }
 //---------------------------------------------------------------------------
 bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
@@ -4224,6 +4226,10 @@ bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
 
 	   NumberOfBytesToWrite = sizeof(AverageLevel);
 	   bwf &= WriteFile(hFile,&(AverageLevel),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(Thickness);
+	   bwf &= WriteFile(hFile,&(Thickness),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
 	   nSeek+= (bwf)?NumberOfBytesWritten:0;
 
 	if(pSeek != NULL)
@@ -4271,6 +4277,10 @@ bool TStatisticsData::LoadFromFile(HANDLE hFile, int *pSeek)
 
 		NumberOfBytesRead = sizeof(AverageLevel);
 		bwf &= ReadFile(hFile,&AverageLevel,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(Thickness);
+		bwf &= ReadFile(hFile,&Thickness,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
 		nSeek += (bwf)?NumberOfBytesReaded:0;
 
 	if(pSeek != NULL)
@@ -4348,6 +4358,7 @@ void TStatisticsParam::AverageData(void)
 	  AvData.nS_Count += Data.nS_Count;
 	  AvData.Roughness += Data.Roughness;
 	  AvData.AverageLevel += Data.AverageLevel;
+	  AvData.Thickness += Data.Thickness;
 	 }
 	 AvData.N1 /= cnt;
 	 AvData.N2 /= cnt;
@@ -4356,6 +4367,7 @@ void TStatisticsParam::AverageData(void)
 	 AvData.nS_Count /= cnt;
 	 AvData.Roughness /= cnt;
 	 AvData.AverageLevel /= cnt;
+	 AvData.Thickness /= cnt;
 	 AvData.Deleted = LastDeleted;
 	 m_vAveragedStatistics.push_back(AvData);
 	 m_vStatistics.clear();
@@ -4434,6 +4446,7 @@ void TDissolutionThread::CollectStatistics()
 	 sd.nS_Count = Get_nS_Count();
 	 sd.Roughness = Roughness();
 	 sd.AverageLevel = AverageLevel();
+	 sd.Thickness = Thickness();
 	 m_StatisticsParam.AddStatisticsData(sd);
 }
 //---------------------------------------------------------------------------
@@ -4486,22 +4499,15 @@ int TDissolutionThread::Get_nS_Count()
 	return ret;
 }
 //---------------------------------------------------------------------------
-float TDissolutionThread::AverageLevel()
+float TDissolutionThread::Thickness()
 {
 	//узнать глубину каждого поверхностного атома
-	UINT i, j, k;
-	UINT SurfaceAtomsCount = 0;
-	k=0;
-	//общее количество атомов
-	for(i = 0; i < KindAtoms.size(); i++)
-	{
-		SurfaceAtomsCount += KindAtoms[i].size();
-	}
+	UINT i, j;
 
-	std::vector<double> vAtomZ;
-	//vAtomZ.reserve(SurfaceAtomsCount);
 	double Depths;
-	double SummOfDepths = 0;
+	double MinDepths;
+	double MaxDepths;
+	bool MinMaxSet = false;
 	BigArrayCoord *BAC;
 	int x,y,z;
 
@@ -4513,21 +4519,69 @@ float TDissolutionThread::AverageLevel()
 			BAC = &(KindAtoms[i][j]);
 			ConFromBakToXyz(*BAC, x,y,z);
 			Depths = DepthsOfAtom(x,y,z);
-			vAtomZ.push_back(Depths);
+			if(MinMaxSet)
+			{
+				if(MinDepths > Depths)
+				{
+					MinDepths = Depths;
+				}
+				if(MaxDepths < Depths)
+				{
+					MaxDepths = Depths;
+                }
+			}
+			else
+			{
+				MinDepths = Depths;
+				MaxDepths = Depths;
+				MinMaxSet = true;
+			}
+		}
+	}
+
+	//проверка
+	if(MinMaxSet == false)
+	{
+		return -1;
+	}
+
+	//посчитать толщину
+	float ThicknessOfSample = MaxDepths - MinDepths;
+	return ThicknessOfSample;
+}
+//---------------------------------------------------------------------------
+float TDissolutionThread::AverageLevel()
+{
+	//узнать глубину каждого поверхностного атома
+	UINT i, j;
+	UINT SurfaceAtomsCount = 0;
+
+	double Depths;
+	double SummOfDepths = 0;
+	BigArrayCoord *BAC;
+	int x,y,z;
+
+	//глубина каждого атома
+	for(i = 0; i < KindAtoms.size(); i++)
+	{
+		SurfaceAtomsCount += KindAtoms[i].size();
+		for (j = 0; j < KindAtoms[i].size(); j++)
+		{
+			BAC = &(KindAtoms[i][j]);
+			ConFromBakToXyz(*BAC, x,y,z);
+			Depths = DepthsOfAtom(x,y,z);
 			SummOfDepths += Depths;
 		}
 	}
 
 	//проверка
-	UINT AllAtomsCount =vAtomZ.size();
-
-	if(AllAtomsCount == 0)
+	if(SurfaceAtomsCount == 0)
 	{
 		return 0;
 	}
 
 	//посчитать среднний уровень
-	float AverageOfDepths = SummOfDepths/AllAtomsCount;
+	float AverageOfDepths = SummOfDepths/SurfaceAtomsCount;
 	return AverageOfDepths;
 }
 //---------------------------------------------------------------------------

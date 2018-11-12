@@ -18,7 +18,7 @@
     Top = 0
     Width = 903
     Height = 541
-    ActivePage = AverageLevelTabSheet
+    ActivePage = RoughnessTabSheet
     Align = alClient
     TabOrder = 0
     object AtomQuantityByDeleteAtomQuantityTabSheet: TTabSheet
@@ -333,10 +333,11 @@
         DepthTopAxis.Maximum = 0.500000000000000000
         DepthTopAxis.Minimum = -0.500000000000000000
         LeftAxis.AxisValuesFormat = '#,##0.#####'
+        LeftAxis.MaximumOffset = 5
         LeftAxis.Title.Caption = #1064#1077#1088#1086#1093#1086#1074#1072#1090#1086#1089#1090#1100
-        RightAxis.Automatic = False
-        RightAxis.AutomaticMaximum = False
-        RightAxis.AutomaticMinimum = False
+        RightAxis.Grid.Visible = False
+        RightAxis.MaximumOffset = 5
+        RightAxis.Title.Caption = #1058#1086#1083#1097#1080#1085#1072' '#1085#1072#1088#1091#1096#1077#1085#1085#1086#1075#1086' '#1089#1083#1086#1103
         View3D = False
         Align = alClient
         BevelOuter = bvNone
@@ -358,6 +359,24 @@
           Pointer.Style = psRectangle
           Pointer.Visible = False
           Transparency = 50
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object ThicknessSeries: TLineSeries
+          Marks.Arrow.Visible = True
+          Marks.Callout.Brush.Color = clBlack
+          Marks.Callout.Arrow.Visible = True
+          Marks.Visible = False
+          SeriesColor = -1
+          VertAxis = aRightAxis
+          LinePen.Style = psDash
+          LinePen.Width = 2
+          LinePen.SmallSpace = 1
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
           XValues.Name = 'X'
           XValues.Order = loAscending
           YValues.Name = 'Y'

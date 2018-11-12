@@ -85,23 +85,20 @@ void TN1N2N3QuantityDiagramForm::SetDataAndShow(const TStatisticsDataVec& vecSD)
 
 	UpdateParametriсSeries();
 
-	//четвертая вкладка - шероховатость
+	//четвертая вкладка - шероховатость и толщина
 	RoughnessSeries->Clear();
-
-	for(int i=0; i < nCnt; i++)
-	{
-	 const TStatisticsData &sd = vecSD[i];
-	 RoughnessSeries->AddXY(sd.Deleted, sd.Roughness, strName, clTeeColor);
-	}
-
+	ThicknessSeries->Clear();
 	// пятая вкладка - средний уровень
 	AverageLevelSeries->Clear();
 
 	for(int i=0; i < nCnt; i++)
 	{
 	 const TStatisticsData &sd = vecSD[i];
+	 RoughnessSeries->AddXY(sd.Deleted, sd.Roughness, strName, clTeeColor);
+	 ThicknessSeries->AddXY(sd.Deleted, sd.Thickness, strName, clTeeColor);
 	 AverageLevelSeries->AddXY(sd.Deleted, sd.AverageLevel, strName, clTeeColor);
 	}
+
 
 
 	Show();

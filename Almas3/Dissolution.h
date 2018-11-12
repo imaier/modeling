@@ -146,6 +146,7 @@ public:
 	float nS_Count;//количество непрямых соседей
 	float Roughness;//шероховатость образца
 	float AverageLevel;//средний уровень
+	float Thickness;// толщина - разность высот самого верхнего и самого низкого поверхностного атома
 
 	bool SaveToFile(HANDLE hFile, int *pSeek = NULL);//сохранить структуру в поток
 	bool LoadFromFile(HANDLE hFile, int *pSeek = NULL);//загрузить структуру из потока
@@ -318,10 +319,12 @@ private:
 	TAlgoritm m_Algoritm;//алгоритм растворения
 	void __fastcall SetAlgoritm(TAlgoritm &newAlgoritm);
 
+	// параметры для статистики
 	int GetPopularTypeCount();//количество атомов наиболее популярного типа
 	int Get_nS_Count();//общее количество непрявых вторых соседей
 	float Roughness();//шероховатость поверхности (Среднеквадратичное отклонение от среднего уровня)
 	float AverageLevel();//средний уровень поерхности
+	float Thickness();//толщина растворяемого слоя
 
 	bool m_InitRng;//флаг инициализации ГСЧ (инициализация происходит в потоке растворения)
 
