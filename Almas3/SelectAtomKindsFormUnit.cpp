@@ -62,8 +62,14 @@ AnsiString TAtomKindsOnAxes::GetAxisDiscription(TContTypeOnAxis AxisType)
 		case eDeleted:
 			sRet = "Количество удаленных атомов";
 		break;
-		case eSCount:
-			sRet = "Количество непрямых соседей";
+		case enSCount:
+			sRet = "Количество непрямых вторых соседей";
+		break;
+		case edSCount:
+			sRet = "Количество прямых вторых соседей";
+		break;
+		case endSCount:
+			sRet = "Количество прямых и непрямых вторых соседей";
 		break;
 	}
 
@@ -89,8 +95,14 @@ float TAtomKindsOnAxes::GetCountForAxisType(TContTypeOnAxis AxisType, const TSta
 		case eDeleted:
 			fReurn = SD.Deleted;
 		break;
-		case eSCount:
+		case enSCount:
 			fReurn = SD.nS_Count;
+		break;
+		case edSCount:
+			fReurn = SD.dS_Count;
+		break;
+		case endSCount:
+			fReurn = SD.nS_Count + SD.dS_Count;
 		break;
 	}
 	return fReurn;

@@ -4171,6 +4171,7 @@ void TStatisticsData::operator=(const TStatisticsData& r)
 	Deleted = r.Deleted;
 	MostPopularTypeCount = r.MostPopularTypeCount;
 	nS_Count = r.nS_Count;
+	dS_Count = r.dS_Count;
 	Roughness = r.Roughness;
 	AverageLevel = r.AverageLevel;
 	Thickness = r.Thickness;
@@ -4184,6 +4185,7 @@ void TStatisticsData::Init(void)
 	Deleted = 0;
 	MostPopularTypeCount = 0;
 	nS_Count = 0;
+	dS_Count = 0;
 	Roughness = 0;
 	AverageLevel = 0;
 	Thickness = 0;
@@ -4218,6 +4220,10 @@ bool TStatisticsData::SaveToFile(HANDLE hFile, int *pSeek)
 
 	   NumberOfBytesToWrite = sizeof(nS_Count);
 	   bwf &= WriteFile(hFile,&(nS_Count),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
+	   nSeek+= (bwf)?NumberOfBytesWritten:0;
+
+	   NumberOfBytesToWrite = sizeof(dS_Count);
+	   bwf &= WriteFile(hFile,&(dS_Count),NumberOfBytesToWrite,&NumberOfBytesWritten,NULL);
 	   nSeek+= (bwf)?NumberOfBytesWritten:0;
 
 	   NumberOfBytesToWrite = sizeof(Roughness);
@@ -4269,6 +4275,10 @@ bool TStatisticsData::LoadFromFile(HANDLE hFile, int *pSeek)
 
 		NumberOfBytesRead = sizeof(nS_Count);
 		bwf &= ReadFile(hFile,&nS_Count,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
+		nSeek += (bwf)?NumberOfBytesReaded:0;
+
+		NumberOfBytesRead = sizeof(dS_Count);
+		bwf &= ReadFile(hFile,&dS_Count,NumberOfBytesRead,&NumberOfBytesReaded,NULL);
 		nSeek += (bwf)?NumberOfBytesReaded:0;
 
 		NumberOfBytesRead = sizeof(Roughness);
@@ -4356,6 +4366,7 @@ void TStatisticsParam::AverageData(void)
 	  AvData.N3 += Data.N3;
 	  AvData.MostPopularTypeCount += Data.MostPopularTypeCount;
 	  AvData.nS_Count += Data.nS_Count;
+	  AvData.dS_Count += Data.dS_Count;
 	  AvData.Roughness += Data.Roughness;
 	  AvData.AverageLevel += Data.AverageLevel;
 	  AvData.Thickness += Data.Thickness;
@@ -4365,6 +4376,7 @@ void TStatisticsParam::AverageData(void)
 	 AvData.N3 /= cnt;
 	 AvData.MostPopularTypeCount /= cnt;
 	 AvData.nS_Count /= cnt;
+	 AvData.dS_Count /= cnt;
 	 AvData.Roughness /= cnt;
 	 AvData.AverageLevel /= cnt;
 	 AvData.Thickness /= cnt;
@@ -4444,6 +4456,7 @@ void TDissolutionThread::CollectStatistics()
 	 sd.Deleted = iDeletedAtom;
 	 sd.MostPopularTypeCount = GetPopularTypeCount();
 	 sd.nS_Count = Get_nS_Count();
+	 sd.dS_Count = Get_dS_Count();
 	 sd.Roughness = Roughness();
 	 sd.AverageLevel = AverageLevel();
 	 sd.Thickness = Thickness();
@@ -4487,11 +4500,35 @@ int TDissolutionThread::Get_nS_Count()
 		int nCnt = pPS->GetGlobalData().GetAllNumProbality();
 		for(int i = 0; i< nCnt; i++ )
 		{
-			int nNumAtoms = KindAtoms[i].size();
-			if(nNumAtoms > 0)
+			nNumAtoms = KindAtoms[i].size();
+			nSCnt = pPS->GetGlobalData().Get_nS_CountForProb(i);
+			if((nNumAtoms > 0) && (nSCnt > 0))
 			{
-				nSCnt = pPS->GetGlobalData().Get_nS_CountForProb(i);
 				ret += nNumAtoms*nSCnt;
+			}
+		}
+	}
+
+	return ret;
+}
+//---------------------------------------------------------------------------
+int TDissolutionThread::Get_dS_Count()
+{//общее количество прямых вторых соседей
+	int ret=-1;
+
+	IBaseProbSet *pPS = SP.GetInterface();
+	if(pPS != NULL)
+	{
+		ret = 0;
+		int nNumAtoms, dSCnt;
+		int nCnt = pPS->GetGlobalData().GetAllNumProbality();
+		for(int i = 0; i< nCnt; i++ )
+		{
+			nNumAtoms = KindAtoms[i].size();
+			dSCnt = pPS->GetGlobalData().Get_dS_CountForProb(i);
+			if((nNumAtoms > 0) && (dSCnt > 0))
+			{
+				ret += nNumAtoms*dSCnt;
 			}
 		}
 	}
